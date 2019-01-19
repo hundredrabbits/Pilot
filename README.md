@@ -17,7 +17,7 @@ npm start
 
 ### Read
 
-The Read commands to play synth notes are of the format `[0-f][2-8][A-G]`.
+The Read commands to play synth notes are of the format: 
 
 | Command | Channel | Octave | Note | Velocity | Length |
 | :-      | :-:     | :-:    | :-:  | :-:      | :-:    |
@@ -27,11 +27,13 @@ The Read commands to play synth notes are of the format `[0-f][2-8][A-G]`.
 
 ### Write
 
-| Command    | Channel | CMD             | Type                            |
-| :-         | :-:     | :-:             | :-:                             | 
-| `0OSCTRI8` | 0       | Oscillator Type | `SINE`, `SQUR`, `TRI8`          |
-| `0VOLf`    | 0       | Volume          | 0-f                             |
-| `0ENV1234` | 0       | Envelope        | Attack, Decay, Sustain, Release | 
+The Write commands to setup synth values are of the format:
+
+| Command    | Channel | CMD             | Type                                   |
+| :-         | :-:     | :-:             | :-:                                    | 
+| `0ENV1234` | 0       | Envelope        | `Attack`, `Decay`, `ustain`, `Release` | 
+| `0OSCTRI`  | 0       | Oscillator Type | `SINE`, `SQUR`, `TRI8`                 |
+| `0VOLf`    | 0       | Volume          | `0-f`                                  |
 
 ## Extras
 
