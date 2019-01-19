@@ -15,13 +15,42 @@ npm start
 
 ## Commands
 
-### Play
+### Read
+
+The Read commands to play synth notes are of the format `[0-f][2-8][A-G]`.
 
 | Command | Channel | Octave | Note | Velocity | Length |
-| :-:     | :-:     | :-:    | :-:  | :-:      | :-:    |
-| `04C`   | 0       | 4      | C    | _64_     | 1/16   |
+| :-      | :-:     | :-:    | :-:  | :-:      | :-:    |
+| `04C`   | 0       | 4      | C    | _64_     | _1/16_ |
 | `04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
 | `04Cff` | 0       | 4      | C    | 127      | 1bar   |
+
+### Write
+
+The Write commands to set synth values are of the format `[0-f][3xA-Z][4x0-Z]`.
+
+### Envelope 
+
+| Command    | Channel | CMD      | Attack  | Decay  | Sustain | Release |
+| :-         | :-:     | :-:      | :-:     | :-:    | :-:     | :-:     | 
+| `0ENV1234` | 0       | Envelope | *       | *      | *       | *       |
+
+### Osc 
+
+| Command    | Channel | CMD             | Type      |
+| :-         | :-:     | :-:             | :-:       | 
+| `0OSCTRI8` | 0       | Oscillator Type | Triangle8 |
+
+## Options
+
+### Commands
+
+- `VOL`, set volume.
+- `ENV`, set ADSR envelope.
+- `OSC`, set Oscillator.
+  - `SINE`
+  - `SQUR`
+  - `TRI8`
 
 ## Extras
 
