@@ -27,31 +27,11 @@ The Read commands to play synth notes are of the format `[0-f][2-8][A-G]`.
 
 ### Write
 
-The Write commands to set synth values are of the format `[0-f][CMD]`.
-
-### Volume 
-
-Set volume.
-
-| Command    | Channel | CMD      | Attack  | Decay  | Sustain | Release |
-| :-         | :-:     | :-:      | :-:     | :-:    | :-:     | :-:     | 
-| `0VOLf`    | 0       | Volume   | *       | *      | *       | *       |
-
-### Envelope 
-
-Set ADSR envelope.
-
-| Command    | Channel | CMD      | Attack  | Decay  | Sustain | Release |
-| :-         | :-:     | :-:      | :-:     | :-:    | :-:     | :-:     | 
-| `0ENV1234` | 0       | Envelope | *       | *      | *       | *       |
-
-### Osc 
-
-Set Oscillator type.
-
-| Command    | Channel | CMD             | Type                   |
-| :-         | :-:     | :-:             | :-:                    | 
-| `0OSCTRI8` | 0       | Oscillator Type | `SINE`, `SQUR`, `TRI8` |
+| Command    | Channel | CMD             | Type                            |
+| :-         | :-:     | :-:             | :-:                             | 
+| `0OSCTRI8` | 0       | Oscillator Type | `SINE`, `SQUR`, `TRI8`          |
+| `0VOLf`    | 0       | Volume          | 0-f                             |
+| `0ENV1234` | 0       | Envelope        | Attack, Decay, Sustain, Release | 
 
 ## Extras
 
