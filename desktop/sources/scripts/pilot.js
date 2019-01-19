@@ -21,6 +21,7 @@ function Pilot () {
   }
 
   this.play = function (msg) {
-
+    console.log(`${msg}`)
+    this.synth.play(0, 3, 'C')
   }
 }

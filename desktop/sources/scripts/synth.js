@@ -1,7 +1,9 @@
 'use strict'
 
-function Synth () {
+function Synth (pilot) {
   const Tone = require('tone')
+
+  this.bpm = 120
 
   this.install = function () {
   }
@@ -31,10 +33,19 @@ function Synth () {
     }).toMaster()
   }
 
-  this.play = function () {
-    let mnote = Tone.Frequency(note, 'midi').toNote()
-    let noteLength = convertLength(data[4], terminal.bpm) / 1000
-    let vel = (velocity || 127) / 127
-    this.synth.triggerAttackRelease(mnote, noteLength, '+0', vel)
+  this.play = function (channel, octave, note, velocity, length) {
+    // const note = convertNote(octave, note)
+    // let mnote = Tone.Frequency(note, 'midi').toNote()
+    // let noteLength = convertLength(data[4], this.bpm) / 1000
+    // let vel = (velocity || 127) / 127
+    this.synth.triggerAttackRelease('C4', '8n')
+  }
+
+  function convertNote (octave, note) {
+    return 24 + (octave * 12) + note // 60 = C3
+  }
+
+  function convertLength (val, bpm) {
+    return (60000 / bpm) * (val / 15)
   }
 }
