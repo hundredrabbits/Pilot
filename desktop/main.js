@@ -12,7 +12,7 @@ app.on('ready', () => {
     minWidth: 405,
     minHeight: 430,
     webPreferences: { zoomFactor: 1.0 },
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     frame: false,
     autoHideMenuBar: true,
     icon: __dirname + '/icon.ico'
