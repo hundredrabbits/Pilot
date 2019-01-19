@@ -13,6 +13,16 @@ npm install
 npm start
 ```
 
+## Commands
+
+### Play
+
+| Command | Channel | Octave | Note | Velocity | Length |
+| :-:     | :-:     | :-:    | :-:  | :-:      |        |
+| `04C`   | 0       | 4      | C    | _64_     | 1/16   |
+| `04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
+| `04Cff` | 0       | 4      | C    | 127      | 1bar   |
+
 ## Extras
 
 - This application supports the [Ecosystem Theme](https://github.com/hundredrabbits/Themes).
