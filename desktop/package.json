@@ -1,0 +1,30 @@
+{
+  "name": "Pilot",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "time": "node time.js",
+    "docs": "node ../docs.js",
+    "fix": "standard --fix",
+    "clean": "rm -r ~/Desktop/Pilot-darwin-x64/ ; rm -r ~/Desktop/Pilot-linux-x64/ ; rm -r ~/Desktop/Pilot-win32-x64/ ; echo 'cleaned build location'",
+    "build_osx": "electron-packager . Pilot --platform=darwin --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.icns ; echo 'Built for OSX'",
+    "build_linux": "electron-packager . Pilot --platform=linux  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for LINUX'",
+    "build_win": "electron-packager . Pilot --platform=win32  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for WIN'",
+    "build": "npm run clean ; npm run build_osx ; npm run build_linux ; npm run build_win",
+    "push_osx": "~/butler push ~/Desktop/Pilot-darwin-x64/ hundredrabbits/pilot:osx-64",
+    "push_linux": "~/butler push ~/Desktop/Pilot-linux-x64/ hundredrabbits/pilot:linux-64",
+    "push_win": "~/butler push ~/Desktop/Pilot-win32-x64/ hundredrabbits/pilot:windows-64",
+    "push_status": "~/butler status hundredrabbits/pilot",
+    "push": "npm run build ; npm run push_osx ; npm run push_linux ; npm run push_win ; npm run clean ; npm run push_status"
+  },
+  "devDependencies": {
+    "electron": "^3.0.13",
+    "electron-packager": "^12.2.0",
+    "electron-rebuild": "^1.8.2"
+  },
+  "dependencies": {
+    "node-osc": "^3.0.0",
+    "tone": "^13.4.9"
+  }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Generics -->
+    <script type="text/javascript" src="scripts/lib/theme.js"></script>
+    <!-- Pilot -->
+    <script type="text/javascript" src="scripts/pilot.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="links/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="links/fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="links/main.css"/>
+    <link rel="stylesheet" type="text/css" href="links/theme.css"/>
+    <title>Pilot</title>
+  </head>
+  <body>
+    <script>
+      'use strict'
+      const webFrame = require('electron').webFrame
+      const {dialog,app} = require('electron').remote;
+      const fs = require('fs');
+      const pilot = new Pilot()
+      pilot.install()
+      pilot.listen()
+    </script>
+  </body>
+</html>
