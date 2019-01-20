@@ -7,7 +7,7 @@
     <!-- Generics -->
     <script type="text/javascript" src="scripts/lib/theme.js"></script>
     <!-- Pilot -->
-    <script type="text/javascript" src="scripts/pilot.js"></script>
+    <script type="text/javascript" src="scripts/lib/controller.js"></script>
     <script type="text/javascript" src="scripts/listener.js"></script>
     <script type="text/javascript" src="scripts/synth.js"></script>
     <!-- Styles -->
@@ -23,8 +23,13 @@
       'use strict'
       const webFrame = require('electron').webFrame
       const {dialog,app} = require('electron').remote;
-      const fs = require('fs');
+
+      const Pilot = require('./scripts/pilot')
       const pilot = new Pilot()
+
+      pilot.controller.add("default","File","Open",() => { pilot.open(); },"CmdOrCtrl+O")
+      pilot.controller.commit()
+
       pilot.install()
     </script>
   </body>
