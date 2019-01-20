@@ -63,7 +63,7 @@ app.toggleVisible = function () {
   }
 }
 
-app.inject_menu = function (menu) {
+app.injectMenu = function (menu) {
   try {
     Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
   } catch (err) {
