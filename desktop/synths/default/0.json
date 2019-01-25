@@ -22,7 +22,6 @@
     }
   },
   "effects": [
-    {"type": "Freeverb", "options": [0.7] },
-    {"type": "PingPongDelay", "options": [0.07, 0.2]}
+    {"type": "Freeverb", "options": [0.7] }
   ]
 }

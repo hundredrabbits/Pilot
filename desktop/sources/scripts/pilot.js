@@ -39,12 +39,37 @@ function Pilot () {
 
   this.play = function (msg) {
     // FIXME - not the right way to parse
-    let channel = Number(msg.toString().substring(0,1))
+    let _msg = msg.toString()
+    let channel = Number(_msg.substring(0,1))
+    let octave = _msg.substring(1,2)
+    let note = getNote(_msg.substring(2,3))
+    let velocity = _msg.substring(3,4) || 'F'
+    let vel = (valueOf(velocity) / 36) // vel between 0-Z. more space
+    let length = _msg.substring(4,6) || '8n'
+
     let details = this.channels[channel]
     if (!details || !details.synth) return
     let synth = details.synth
-    synth.triggerAttackRelease('C4', '8n')
+    synth.triggerAttackRelease(`${note}${octave}`, length, '+0', vel)
   }
+}
+
+const keys = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
+
+function valueOf (g, min, max) {
+  if (!min) min = 0
+  if (!max) max = 35
+  return clamp(keys.indexOf(`${g}`.toUpperCase()), min, max)
+}
+
+
+function getNote(n) {
+  let upperCase = n.toUpperCase()
+  if (n == upperCase) return n
+  // it was lowercase. make sharp
+  return `${upperCase}#`
 }
 
 module.exports = Pilot
