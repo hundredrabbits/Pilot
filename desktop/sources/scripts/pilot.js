@@ -1,9 +1,11 @@
 'use strict'
 const { dialog, app } = require('electron').remote
+const path = require('path')
+const Tone = require('tone')
+const fileUrl = require('file-url')
 const loader = require('./loader')
 const create = require('./create')
 const defaults = require('./defaults')
-const Tone = require('tone')
 
 function Pilot () {
   this.listener = null
@@ -17,7 +19,8 @@ function Pilot () {
   }
   this.start = function () {
     console.info('Pilot is starting..')
-    this.setupChannels(defaults)
+    // TODO: this path may be weird in a deployed electron app.
+    this.setupChannels(defaults, path.resolve('./synths/default'))
     Tone.start()
     Tone.Transport.start()
   }
@@ -27,14 +30,15 @@ function Pilot () {
     if (!paths || !paths.length) { return console.log('Nothing to load') }
     this.path = paths[0]
     const channelDefns = loader(paths[0])
-    this.setupChannels(channelDefns)
+    this.setupChannels(channelDefns, paths[0])
   }
 
-  this.setupChannels = function (channelDefns) {
+  this.setupChannels = function (channelDefns, baseDir) {
     // dispose old channels
     this.channels.forEach(channel => channel.disconnect() && channel.dispose())
     // create new channels
-    this.channels = channelDefns.map(create)
+    let baseUrl = fileUrl(baseDir) + '/'
+    this.channels = channelDefns.map(c => create(c, baseUrl))
   }
 
   this.play = function (msg) {

@@ -1,10 +1,17 @@
+const url = require('url')
+const _ = require('lodash')
 const Tone = require('tone')
 
 // create a channel from a defn
-module.exports = function (channelDefn) {
+module.exports = function (channelDefn, baseUrl) {
+  let _relative = relative.bind(null, baseUrl)
+
+  console.log('loading node', channelDefn)
   let channel = new Tone.Channel().toMaster()
-  console.log('loading node', channelDefn.synth.type)
-  let synth = new Tone[channelDefn.synth.type](channelDefn.synth.options)
+  let constructorArgs = channelDefn.synth.options
+  // we must remap urls for certain types
+  if (channelDefn.synth.type === 'Players') constructorArgs = _.mapValues(constructorArgs, _relative)
+  let synth = new Tone[channelDefn.synth.type](constructorArgs)
 
   let eff = channelDefn.effects || []
   let effects = eff.map(effect =>  {
@@ -26,4 +33,8 @@ module.exports = function (channelDefn) {
   }
   currentUnit.connect(channel)
   return {channel, synth, effects}
+}
+
+function relative (baseUrl, relativePath) {
+  return url.resolve(baseUrl, relativePath)
 }

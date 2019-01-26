@@ -24,6 +24,8 @@
     "electron-rebuild": "^1.8.2"
   },
   "dependencies": {
+    "file-url": "^2.0.2",
+    "lodash": "^4.17.11",
     "node-osc": "^3.0.0",
     "tone": "^13.4.9"
   }
