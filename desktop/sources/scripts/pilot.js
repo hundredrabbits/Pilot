@@ -50,7 +50,15 @@ function Pilot () {
     let details = this.channels[channel]
     if (!details || !details.synth) return
     let synth = details.synth
-    synth.triggerAttackRelease(`${note}${octave}`, length, '+0', vel)
+
+    if (synth._players) {
+      let playerName = _msg.substring(1,3)
+      let player = synth.get(playerName)
+      if (!player) return console.log('no player defined for note', note)
+      player.start()
+    } else {
+      synth.triggerAttackRelease(`${note}${octave}`, length, '+0', vel)
+    }
   }
 }
 
