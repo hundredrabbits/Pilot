@@ -15,25 +15,27 @@ npm start
 
 ## Commands
 
-### Read
+### Play
 
-The Read commands to play synth notes are of the format: 
+The Play commands to play synth notes are of the format:
 
-| Command | Channel | Octave | Note | Velocity | Length |
-| :-      | :-:     | :-:    | :-:  | :-:      | :-:    |
-| `04C`   | 0       | 4      | C    | _64_     | _1/16_ |
-| `04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
-| `04Cff` | 0       | 4      | C    | 127      | 1bar   |
+| Command  | Channel | Octave | Note | Velocity | Length |
+| :-       | :-:     | :-:    | :-:  | :-:      | :-:    |
+| `P04C`   | 0       | 4      | C    | _64_     | _1/16_ |
+| `P04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
+| `P04Cff` | 0       | 4      | C    | 127      | 1bar   |
 
-### Write
+### Channel
 
-The Write commands to setup synth values are of the format:
+The Channel commands adjusts mute,pan,solo,volume settings of the specified channel
 
-| Command    | Channel | CMD             | Type                                   |
-| :-         | :-:     | :-:             | :-:                                    | 
-| `0ENV1234` | 0       | Envelope        | `Attack`, `Decay`, `ustain`, `Release` | 
-| `0OSCTRI`  | 0       | Oscillator Type | `SINE`, `SQUR`, `TRI8`                 |
-| `0VOLf`    | 0       | Volume          | `0-f`                                  |
+| Command      | Channel | CMD             | Type                                   |
+| :-           | :-:     | :-:             | :-:                                    |
+| `C0VOLf`     | 0       | Volume          | `0-z`                                  |
+| `C0MUTE1`    | 0       | Mute            | `0-1` Mute/Unmute the channel          |
+| `C0SOLO1`    | 0       | Solo            | `0-1` Solo/Unsolo the channel          |
+| `C0PANI`     | 0       | Pan             | `0-z` Pan L/R  I is centre            |
+
 
 ## Extras
 
