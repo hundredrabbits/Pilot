@@ -25,9 +25,7 @@ function Listener (pilot) {
 
 function checkRoute(pilot, path, route) {
   let match = path.match(route.path)
-  console.log('checkint ', route.path, path)
   if (!match) return false
-  console.log('match!')
   let paramsName = Object.keys(route.params)
   let argValues = match.slice(1)
   // match args to the specified params
@@ -37,7 +35,6 @@ function checkRoute(pilot, path, route) {
     let argValue = argValues[i]
     if (paramName && argValue && argValue !== '') args[paramName] = argValue
   }
-  console.log(args)
   route.handler(pilot, args)
   return true
 }
