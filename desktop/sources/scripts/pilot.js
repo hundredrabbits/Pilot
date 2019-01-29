@@ -6,6 +6,7 @@ const fileUrl = require('file-url')
 const loader = require('./loader')
 const create = require('./create')
 const defaults = require('./defaults')
+const UdpListener = require('./udp/listener')
 
 function Pilot () {
   this.listener = null
@@ -14,7 +15,7 @@ function Pilot () {
 
   this.install = function () {
     console.info('Pilot is installing..')
-    this.listener = new Listener(this)
+    this.listener = new UdpListener(this)
     this.start()
   }
   this.start = function () {
@@ -41,54 +42,9 @@ function Pilot () {
     this.channels = channelDefns.map(c => create(c, baseUrl))
   }
 
-  this.play = function (channel, octave, note, _velocity, _length) {
-    let details = this.channels[channel]
-    if (!details || !details.synth) return
-    let synth = details.synth
-    if (synth._players) {
-      let player = synth.get(`${octave}${note}`)
-      if (!player) return console.log('no player defined for note', note)
-      player.start()
-    } else {
-      let length = _length || '8n'
-      let velocity = _velocity || 'F'
-      let vel = (valueOf(velocity) / 36) // vel between 0-Z. more space
-      synth.triggerAttackRelease(`${note}${octave}`, length, '+0', vel)
-    }
+  this.getChannel = function (channel) {
+    return this.channels[channel]
   }
-
-  this.channel = function (channel, param, value) {
-    let details = this.channels[channel]
-    if (!details || !details.channel) return
-    let chan = details.channel
-    let _param = param.toUpperCase()
-    if (_param === 'MUTE') valueOf(value, 0, 1) ? chan.mute = true : chan.mute = false;
-    if (_param === 'SOLO') valueOf(value, 0, 1) ? chan.solo = true : chan.solo = false;
-    if (_param === 'VOL') chan.volume.value = interpolate((valueOf(value) / 35), -80, 6)
-    if (_param === 'PAN') chan.pan.value = interpolate((valueOf(value) / 35), -1, 1)
-  }
-}
-
- function interpolate(t, a, b) {
-   return a * (1 - t) + b * t
- }
-
-const keys = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
-
-function valueOf (g, min, max) {
-  if (!min) min = 0
-  if (!max) max = 35
-  return clamp(keys.indexOf(`${g}`.toUpperCase()), min, max)
-}
-
-
-function getNote(n) {
-  let upperCase = n.toUpperCase()
-  if (n == upperCase) return n
-  // it was lowercase. make sharp
-  return `${upperCase}#`
 }
 
 module.exports = Pilot

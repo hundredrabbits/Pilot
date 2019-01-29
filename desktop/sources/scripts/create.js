@@ -1,6 +1,7 @@
 const url = require('url')
 const _ = require('lodash')
 const Tone = require('tone')
+const Channel = require('./channel')
 
 // create a channel from a defn
 module.exports = function (channelDefn, baseUrl) {
@@ -32,7 +33,7 @@ module.exports = function (channelDefn, baseUrl) {
     currentUnit = toUnit
   }
   currentUnit.connect(channel)
-  return {channel, synth, effects}
+  return new Channel({channel, synth, effects})
 }
 
 function relative (baseUrl, relativePath) {

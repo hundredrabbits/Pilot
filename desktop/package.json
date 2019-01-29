@@ -25,9 +25,8 @@
   },
   "dependencies": {
     "file-url": "^2.0.2",
-    "interpolate-range": "^2.1.0",
+    "joi-browser": "^13.4.0",
     "lodash": "^4.17.11",
-    "node-osc": "^3.0.0",
     "tone": "^13.4.9"
   }
 }

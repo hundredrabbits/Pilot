@@ -1,6 +1,6 @@
 # Pilot
 
-Coming soon..
+Web enabled synth.
 
 ## Install & Run
 
