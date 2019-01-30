@@ -18,7 +18,6 @@ Channel.prototype.play = function (octave, note, velocity, duration) {
 }
 
 Channel.prototype.mute = function (shouldMute) {
-  console.log('muting', shouldMute)
   this.channel.mute = shouldMute
 }
 
@@ -32,4 +31,8 @@ Channel.prototype.volume = function (normalRange) {
 
 Channel.prototype.pan = function (normalRange) {
   this.channel.pan.value = convert.interpolate(normalRange, -1, 1)
+}
+
+Channel.prototype.getEffect = function (index) {
+  return this.effects[index]
 }

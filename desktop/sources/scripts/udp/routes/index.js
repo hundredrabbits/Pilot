@@ -2,7 +2,8 @@
 module.exports = [
     require('./play')
   , require('./volume')
+  , require('./effects')
   , require('./mute')
-  , require('./pan')
   , require('./solo')
+  , require('./pan')
 ]
