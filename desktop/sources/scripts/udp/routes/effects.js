@@ -1,5 +1,8 @@
 const _ = require('lodash')
 const Joi = require('joi-browser')
+const keysDeep = require('lodash-flatkeystree')
+const get = require('getshortie')
+_.mixin(keysDeep)
 const base16 = require('../../lib/base16')
 
 module.exports = {
@@ -16,12 +19,12 @@ module.exports = {
     let effect = channel.getEffect(params.effect)
     if (!effect) return
     let describe = effect.describe()
-    let details = _.get(describe, 'children.settings.children', {}) // not sure why so deep
 
-    let selectedProperty = Object.keys(details)[params.effectProperty]
+    let selectedProperty = keysDeep(describe)[params.effectProperty]
     if (!selectedProperty) return
+    let effectSchema = get(describe, selectedProperty)
+    if (!effectSchema) return
 
-    let effectSchema = details[selectedProperty]
     let value = base16.fromSchemaType(effectSchema, params.value)
 
     effect.set(selectedProperty, value)

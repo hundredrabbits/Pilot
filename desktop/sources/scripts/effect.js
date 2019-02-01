@@ -1,7 +1,7 @@
 module.exports = Effect
-
+const _ = require('lodash')
 const Joi = require('joi-browser')
-const Effects = require('./effects')
+const Effects = require('./lib/types/effects')
 
 function Effect(type, options, rawEffect) {
   this.type = type
@@ -16,11 +16,11 @@ Effect.prototype.getRawEffect = function () {
 Effect.prototype.describe = function () {
   let schema = Effects[this.type]
   if (!schema) return null
-  return Joi.describe(schema)
+  return schema
 }
 
 Effect.prototype.set = function (property, value) {
-  let prop = this.rawEffect[property]
-  if (!prop) return
+  let prop = _.get(this.rawEffect, property)
   if (prop.value) prop.value = value
+  else _.set(this.rawEffect, property, value)
 }

@@ -5,7 +5,7 @@ const Frequency = require('../lib/types/FrequencySchema')
 const Rolloff = require('../lib/types/RolloffSchema')
 const Filter = require('../lib/types/FiterSchema')
 
-exports.settings = {
+module.exports = {
   wet: NormalRange,
   frequency: Time,
   type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
