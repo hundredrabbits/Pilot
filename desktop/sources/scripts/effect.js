@@ -20,6 +20,7 @@ Effect.prototype.describe = function () {
 }
 
 Effect.prototype.set = function (property, value) {
+  console.log(this.rawEffect, property)
   let prop = _.get(this.rawEffect, property)
   if (prop.value) prop.value = value
   else _.set(this.rawEffect, property, value)

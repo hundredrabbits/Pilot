@@ -12,10 +12,5 @@ module.exports = {
   depth: NormalRange,
   frequency: Time,
   spread: Joi.number().min(0).max(180),
-  type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
-  filter: {
-    type: Filter,
-    rolloff: Rolloff,
-    Q: Joi.number().positive()
-  }
+  type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth')
 }
