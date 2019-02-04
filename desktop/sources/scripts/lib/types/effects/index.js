@@ -15,5 +15,5 @@ module.exports = {
   Reverb: require('./Reverb'),
   StereoWidener: require('./StereoWidener'),
   Tremelo: require('./Tremelo'),
-  // Vibrato: require('./Vibrato')
+  Vibrato: require('./Vibrato')
 }

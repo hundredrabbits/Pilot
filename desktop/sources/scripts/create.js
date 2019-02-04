@@ -13,7 +13,8 @@ module.exports = function (channelDefn, baseUrl) {
   let constructorArgs = channelDefn.synth.options
   // we must remap urls for certain types
   if (channelDefn.synth.type === 'Players') constructorArgs = _.mapValues(constructorArgs, _relative)
-  let synth = new Tone[channelDefn.synth.type](constructorArgs)
+  let type = channelDefn.synth.type
+  let synth = new Tone[type](constructorArgs)
 
   let eff = channelDefn.effects || []
   let effects = eff.map(effect =>  {
@@ -36,7 +37,7 @@ module.exports = function (channelDefn, baseUrl) {
     currentUnit = toUnit
   }
   currentUnit.connect(channel)
-  return new Channel({channel, synth, effects})
+  return new Channel({channel, type, synth, effects})
 }
 
 function relative (baseUrl, relativePath) {

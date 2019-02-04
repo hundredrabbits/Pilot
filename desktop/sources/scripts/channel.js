@@ -1,11 +1,31 @@
 module.exports = Channel
+const _ = require('lodash')
 const convert = require('./lib/convert')
+const Joi = require('joi-browser')
+const Instruments = require('./lib/types/instruments')
 
-function Channel({channel, synth, effects}) {
+
+function Channel({channel, type, synth, effects}) {
+  this.type = type
   this.channel = channel
   this.synth = synth
   this.effects = effects
 }
+
+Channel.prototype.describe = function () {
+  let schema = Instruments[this.type]
+  if (!schema) return null
+  return schema
+
+}
+
+Channel.prototype.set = function (property, value) {
+  let prop = _.get(this.synth, property)
+  console.log(prop)
+  if (prop.value) prop.value = value
+  else _.set(this.synth, property, value)
+}
+
 
 Channel.prototype.play = function (octave, note, velocity, duration) {
   let synth = this.synth
