@@ -6,6 +6,7 @@ const fileUrl = require('file-url')
 const loader = require('./loader')
 const create = require('./create')
 const defaults = require('./defaults')
+const UdpListener = require('./udp/listener')
 
 function Pilot () {
   this.listener = null
@@ -14,7 +15,7 @@ function Pilot () {
 
   this.install = function () {
     console.info('Pilot is installing..')
-    this.listener = new Listener(this)
+    this.listener = new UdpListener(this)
     this.start()
   }
   this.start = function () {
@@ -41,47 +42,9 @@ function Pilot () {
     this.channels = channelDefns.map(c => create(c, baseUrl))
   }
 
-  this.play = function (msg) {
-    // FIXME - not the right way to parse
-    let _msg = msg.toString()
-    let channel = Number(_msg.substring(0,1))
-    let octave = _msg.substring(1,2)
-    let note = getNote(_msg.substring(2,3))
-    let velocity = _msg.substring(3,4) || 'F'
-    let vel = (valueOf(velocity) / 36) // vel between 0-Z. more space
-    let length = _msg.substring(4,6) || '8n'
-
-    let details = this.channels[channel]
-    if (!details || !details.synth) return
-    let synth = details.synth
-
-    if (synth._players) {
-      let playerName = _msg.substring(1,3)
-      let player = synth.get(playerName)
-      if (!player) return console.log('no player defined for note', note)
-      player.start()
-    } else {
-      synth.triggerAttackRelease(`${note}${octave}`, length, '+0', vel)
-    }
+  this.getChannel = function (channel) {
+    return this.channels[channel]
   }
-}
-
-const keys = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
-
-function valueOf (g, min, max) {
-  if (!min) min = 0
-  if (!max) max = 35
-  return clamp(keys.indexOf(`${g}`.toUpperCase()), min, max)
-}
-
-
-function getNote(n) {
-  let upperCase = n.toUpperCase()
-  if (n == upperCase) return n
-  // it was lowercase. make sharp
-  return `${upperCase}#`
 }
 
 module.exports = Pilot

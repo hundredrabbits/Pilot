@@ -1,6 +1,8 @@
 const url = require('url')
 const _ = require('lodash')
 const Tone = require('tone')
+const Channel = require('./channel')
+const Effect = require('./effect')
 
 // create a channel from a defn
 module.exports = function (channelDefn, baseUrl) {
@@ -11,7 +13,8 @@ module.exports = function (channelDefn, baseUrl) {
   let constructorArgs = channelDefn.synth.options
   // we must remap urls for certain types
   if (channelDefn.synth.type === 'Players') constructorArgs = _.mapValues(constructorArgs, _relative)
-  let synth = new Tone[channelDefn.synth.type](constructorArgs)
+  let type = channelDefn.synth.type
+  let synth = new Tone[type](constructorArgs)
 
   let eff = channelDefn.effects || []
   let effects = eff.map(effect =>  {
@@ -19,8 +22,9 @@ module.exports = function (channelDefn, baseUrl) {
       console.log('loading effect', effect.type)
       const constructor = Tone[effect.type]
       let factoryFunction = constructor.bind.apply(constructor, effect.options)
-      return new factoryFunction()
-    } catch (e) { console.log('ignoring', effect.type) } // ignore effects that dont load. should log
+      let rawEffect = new factoryFunction()
+      return new Effect(effect.type, effect.options, rawEffect)
+    } catch (e) { console.log('ignoring', effect.type, e) } // ignore effects that dont load. should log
     console.log(effect.type, 'loaded')
   }).filter(e => e)
 
@@ -28,11 +32,12 @@ module.exports = function (channelDefn, baseUrl) {
   var currentUnit = synth;
   for (var i = 0; i < effects.length; i++){
     var toUnit = effects[i]
+    toUnit = toUnit.getRawEffect()
     currentUnit.connect(toUnit)
     currentUnit = toUnit
   }
   currentUnit.connect(channel)
-  return {channel, synth, effects}
+  return new Channel({channel, type, synth, effects})
 }
 
 function relative (baseUrl, relativePath) {
