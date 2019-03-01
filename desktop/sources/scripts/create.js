@@ -5,11 +5,11 @@ const Channel = require('./channel')
 const Effect = require('./effect')
 
 // create a channel from a defn
-module.exports = function (channelDefn, baseUrl) {
+module.exports = function (channelDefn, baseUrl, outputNode) {
   let _relative = relative.bind(null, baseUrl)
 
   console.log('loading node', channelDefn)
-  let channel = new Tone.Channel().toMaster()
+  let channel = new Tone.Channel().connect(outputNode)
   let constructorArgs = channelDefn.synth.options
   // we must remap urls for certain types
   if (channelDefn.synth.type === 'Players') constructorArgs = _.mapValues(constructorArgs, _relative)
