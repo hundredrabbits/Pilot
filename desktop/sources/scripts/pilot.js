@@ -26,36 +26,16 @@ function Pilot () {
     console.info('Pilot is starting..')
     // TODO: this path may be weird in a deployed electron app.
     this.setupChannels(defaults, path.resolve('./synths/default'))
-    Tone.start()
-    Tone.Transport.start()
 
-  }
-
-  this.open = function () {
-    let paths = dialog.showOpenDialog(app.win, { title: 'Open Patch Folder', properties: ['openDirectory'] })
-    if (!paths || !paths.length) { return console.log('Nothing to load') }
-    this.path = paths[0]
-    const channelDefns = loader(paths[0])
-    this.setupChannels(channelDefns, paths[0])
-  }
-
-  this.setupChannels = function (channelDefns, baseDir) {
-    // dispose old channels
-    this.channels.forEach(channel => channel.disconnect() && channel.dispose())
 
     const audioContext = Tone.Master.context
-    const delayedAudible = audioContext.createDelay()
-    delayedAudible.delayTime.value = 0.26;
-    delayedAudible.connect(audioContext.destination);
     const canvas = document.getElementById('canvas')
     const visualizer = butterchurn.createVisualizer(audioContext, canvas, {
       width: 800,
       height: 600
     })
-    visualizer.connectAudio(delayedAudible)
-    // create new channels
-    let baseUrl = fileUrl(baseDir) + '/'
-    this.channels = channelDefns.map(c => create(c, baseUrl, delayedAudible))
+
+    visualizer.connectAudio(Tone.Master)
 
     const presets = butterchurnPresets.getPresets();
     const preset = presets['Flexi, martin + geiss - dedicated to the sherwin maxawow'];
@@ -73,7 +53,26 @@ function Pilot () {
     }
     startRenderer()
 
+    Tone.start()
+    Tone.Transport.start()
 
+  }
+
+  this.open = function () {
+    let paths = dialog.showOpenDialog(app.win, { title: 'Open Patch Folder', properties: ['openDirectory'] })
+    if (!paths || !paths.length) { return console.log('Nothing to load') }
+    this.path = paths[0]
+    const channelDefns = loader(paths[0])
+    this.setupChannels(channelDefns, paths[0])
+  }
+
+  this.setupChannels = function (channelDefns, baseDir) {
+    // dispose old channels
+    this.channels.forEach(channel => channel.disconnect() && channel.dispose())
+
+    // create new channels
+    let baseUrl = fileUrl(baseDir) + '/'
+    this.channels = channelDefns.map(c => create(c, baseUrl))
   }
 
   this.getChannel = function (channel) {
