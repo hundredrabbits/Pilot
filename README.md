@@ -21,9 +21,9 @@ The Play commands to play synth notes are of the format:
 
 | Command  | Channel | Octave | Note | Velocity | Length |
 | :-       | :-:     | :-:    | :-:  | :-:      | :-:    |
-| `P04C`   | 0       | 4      | C    | _64_     | _1/16_ |
-| `P04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
-| `P04Cff` | 0       | 4      | C    | 127      | 1bar   |
+| `04C`   | 0       | 4      | C    | _64_     | _1/16_ |
+| `04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
+| `04Cff` | 0       | 4      | C    | 127      | 1bar   |
 
 ### Channel
 
