@@ -20,7 +20,7 @@ function Listener (pilot) {
     console.log(`Server error:\n ${err.stack}`)
     server.close()
   })
-  this.server.bind(49160) // TODO - make this configurable
+  this.server.bind(49161) // TODO - make this configurable
 }
 
 function checkRoute(pilot, path, route) {
