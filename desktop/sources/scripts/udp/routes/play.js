@@ -3,7 +3,7 @@ const base16 = require('../../lib/base16')
 const note = require('../../lib/note')
 
 module.exports = {
-  path: /P(\d)(\d)([A-Ga-g])([0-9A-Fa-f]?)([0-9A-Fa-f]?)/,
+  path: /(\d)(\d)([A-Ga-g])([0-9A-Fa-f]?)([0-9A-Fa-f]?)/,
   params: {
     channel: Joi.string().required().description('The channel to play on'),
     octave: Joi.number().required().description('what octave for the note'),

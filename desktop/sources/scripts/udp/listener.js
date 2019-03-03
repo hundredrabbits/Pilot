@@ -35,7 +35,6 @@ function checkRoute(pilot, path, route) {
     let argValue = argValues[i]
     if (paramName && argValue && argValue !== '') args[paramName] = argValue
   }
-  console.log(route.path, args)
   route.handler(pilot, args)
   return true
 }

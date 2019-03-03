@@ -24,9 +24,7 @@ module.exports = {
     if (!effectSchema) return
 
     let schema = Joi.describe(effectSchema)
-    console.log('da schena', schema)
     let value = base16.fromSchemaType(schema, params.value)
-    console.log('da value', value)
     let fullPath = shortie.path(describe, _path)
     effect.set(fullPath, value)
     console.log('set channel', params.channel, 'effect', params.effect, effect.type, 'property', fullPath, 'to', value)
