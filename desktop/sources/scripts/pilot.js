@@ -68,7 +68,7 @@ function Pilot () {
 
   this.setupChannels = function (channelDefns, baseDir) {
     // dispose old channels
-    this.channels.forEach(channel => channel.disconnect() && channel.dispose())
+    this.channels.forEach(channel => channel.dispose())
 
     // create new channels
     let baseUrl = fileUrl(baseDir) + '/'

@@ -61,3 +61,8 @@ Channel.prototype.getEffect = function (index) {
 Channel.prototype.getSend = function (index) {
   return this.sends[index]
 };
+
+Channel.prototype.dispose = function () {
+  this.channel.disconnect()
+  this.channel.dispose()
+};
