@@ -37,7 +37,8 @@ module.exports = function (channelDefn, baseUrl) {
     currentUnit = toUnit
   }
   currentUnit.connect(channel)
-  return new Channel({channel, type, synth, effects})
+  let sends = channelDefn.sends || []
+  return new Channel({channel, type, synth, effects, sends})
 }
 
 function relative (baseUrl, relativePath) {

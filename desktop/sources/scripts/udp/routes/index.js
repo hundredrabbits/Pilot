@@ -2,6 +2,7 @@
 module.exports = [
     require('./play')
   , require('./volume')
+  , require('./send')
   , require('./effects')
   , require('./synths')
   , require('./effectsByPath')

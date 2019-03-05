@@ -5,11 +5,12 @@ const Joi = require('joi-browser')
 const Instruments = require('./lib/types/instruments')
 
 
-function Channel({channel, type, synth, effects}) {
+function Channel({channel, type, synth, effects, sends}) {
   this.type = type
   this.channel = channel
   this.synth = synth
   this.effects = effects
+  this.sends = sends
 }
 
 Channel.prototype.describe = function () {
@@ -56,3 +57,7 @@ Channel.prototype.pan = function (normalRange) {
 Channel.prototype.getEffect = function (index) {
   return this.effects[index]
 }
+
+Channel.prototype.getSend = function (index) {
+  return this.sends[index]
+};
