@@ -7,7 +7,7 @@ const path = require('path')
 module.exports = function (dir) {
   const files = fs.readdirSync(dir)
   const jsonFiles = files.filter(f => f.endsWith('.json'))
-  const channels = jsonFiles.map(f => {
+  const channels = jsonFiles.sort().map(f => {
     let fullPath = path.resolve(dir, f)
     try { return require(fullPath) } catch (e) {
       console.log('could not open, skipping', fullPath, e)
