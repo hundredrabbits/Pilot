@@ -9,4 +9,7 @@ module.exports = [
   , require('./mute')
   , require('./solo')
   , require('./pan')
+  , require('./viz')
+  , require('./vizprev')
+
 ]

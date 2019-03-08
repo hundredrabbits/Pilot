@@ -2,6 +2,7 @@
 const { dialog, app } = require('electron').remote
 const path = require('path')
 const Tone = require('tone')
+const _ = require('lodash')
 const fileUrl = require('file-url')
 const loader = require('./loader')
 const create = require('./create')
@@ -9,11 +10,12 @@ const defaults = require('./defaults')
 const UdpListener = require('./udp/listener')
 const butterchurn = require('butterchurn')
 const butterchurnPresets = require('butterchurn-presets')
-// import butterchurn from 'butterchurn'
-// import butterchurnPresets from 'butterchurn-presets'
+const presets = butterchurnPresets.getPresets()
 
 function Pilot () {
   this.listener = null
+  this.manifest = {}
+  this.currentViz = 0
   this.channels = []
   this.controller = new Controller()
 
@@ -30,26 +32,26 @@ function Pilot () {
 
     const audioContext = Tone.Master.context
     const canvas = document.getElementById('canvas')
-    const visualizer = butterchurn.createVisualizer(audioContext, canvas, {
+    this.visualizer = butterchurn.createVisualizer(audioContext, canvas, {
       width: 800,
       height: 600
     })
 
-    visualizer.connectAudio(Tone.Master)
+    this.visualizer.connectAudio(Tone.Master)
 
-    const presets = butterchurnPresets.getPresets();
+
     const preset = presets['Flexi, martin + geiss - dedicated to the sherwin maxawow'];
-
-    visualizer.loadPreset(preset, 0.0); // 2nd argument is the number of seconds to blend presets
+    this.manifest.viz = Object.keys(presets)
+    this.visualizer.loadPreset(preset, 0.0); // 2nd argument is the number of seconds to blend presets
 
     // resize visualizer
 
-    visualizer.setRendererSize(1600, 1200);
+    this.visualizer.setRendererSize(1600, 1200);
 
     // render a frame
     let startRenderer = () => {
       requestAnimationFrame(() => startRenderer());
-      visualizer.render();
+      this.visualizer.render();
     }
     startRenderer()
 
@@ -62,8 +64,13 @@ function Pilot () {
     let paths = dialog.showOpenDialog(app.win, { title: 'Open Patch Folder', properties: ['openDirectory'] })
     if (!paths || !paths.length) { return console.log('Nothing to load') }
     this.path = paths[0]
-    const channelDefns = loader(paths[0])
-    this.setupChannels(channelDefns, paths[0])
+    const {channels, manifest} = loader(paths[0])
+    this.manifest = manifest
+    if (!this.manifest.viz)  this.manifest.viz = Object.keys(presets)
+    console.log('this manifest', this.manifest)
+    console.log('channelDefns', channels)
+    this.setupChannels(channels, paths[0])
+    this.vizNext()
   }
 
   this.setupChannels = function (channelDefns, baseDir) {
@@ -77,6 +84,25 @@ function Pilot () {
 
   this.getChannel = function (channel) {
     return this.channels[channel]
+  }
+
+  this.vizNext = function () {
+    let viz = _.get(this.manifest, 'viz', [])
+    this.currentViz++
+    if (this.currentViz >= viz.length) this.currentViz = 0
+    let vizName = viz[this.currentViz]
+    if (!vizName) return
+    let _preset = presets[vizName]
+    this.visualizer.loadPreset(_preset, 0.0); // 2nd argument is the number of seconds to blend presets
+  }
+  this.vizPrev = function () {
+    let viz = _.get(this.manifest, 'viz', [])
+    this.currentViz--
+    if (this.currentViz < 0) this.currentViz = viz.length - 1
+    let vizName = viz[this.currentViz]
+    if (!vizName) return
+    let _preset = presets[vizName]
+    this.visualizer.loadPreset(_preset, 0.0); // 2nd argument is the number of seconds to blend presets
   }
 }
 
