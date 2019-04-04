@@ -33,7 +33,7 @@ function Terminal (pilot) {
   }
 
   this._envelope = function (env) {
-    return `ATK ${env.attack} DCA ${env.decay} SUS ${env.sustain} REL ${env.release}`
+    return `ATK ${env.attack.toFixed(2)} DCA ${env.decay.toFixed(2)} SUS ${env.sustain.toFixed(2)} REL ${env.release.toFixed(2)}`
   }
 }
 

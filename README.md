@@ -1,6 +1,6 @@
 # Pilot
 
-Web enabled synth.
+Pilot is a UDP synth to be used alongside [ORCA](https://hundredrabbits.itch.io/orca).
 
 ## Install & Run
 

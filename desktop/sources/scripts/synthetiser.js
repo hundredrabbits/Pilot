@@ -39,8 +39,12 @@ function Synthetiser (pilot) {
   this.run = function (msg) {
     const data = this.parse(`${msg}`)
 
-    if (data.note) {
-      this.play(data)
+    if (!this.channels[data.channel]) { console.warn(`Unknown Channel:${data.channel}`); return }
+
+    if (data.isEnv) {
+      this.setEnv(data)
+    } else if (data.isNote) {
+      this.playNote(data)
     } else {
       console.warn('Unknown format', data)
     }
@@ -60,13 +64,21 @@ function Synthetiser (pilot) {
     return parseNote(channel, msg.substr(1))
   }
 
-  this.operate = function (data) {
+  // Operations
 
+  this.playNote = function (data) {
+    if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
+    if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
+    if (isNaN(data.note)) { console.warn(`Unknown Note`); return }
+
+    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.octave}`, 0.1)
   }
 
-  this.play = function (data) {
-    if (!this.channels[data.channel]) { console.warn(`Unknown Channel:${data.channel}`); return }
-    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.octave}`, 0.1)
+  this.setEnv = function (data) {
+    this.channels[data.channel].envelope.attack = data.attack
+    this.channels[data.channel].envelope.decay = data.decay
+    this.channels[data.channel].envelope.sustain = data.sustain
+    this.channels[data.channel].envelope.release = data.release
   }
 
   // Parsers
@@ -76,13 +88,19 @@ function Synthetiser (pilot) {
   }
 
   function parseNote (channel, msg) {
+    if (msg.length < 2) { console.warn(`Misformatted note`); return }
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
-    return { channel: channel, octave: octave, note: note }
+    return { isNote: true, channel: channel, octave: octave, note: note }
   }
 
   function parseEnv (channel, msg) {
-    return { channel: channel, attack: attack, decay: decay, sustain: sustain, release: release }
+    if (msg.length != 4) { console.warn(`Misformatted env`); return }
+    const attack = base36(msg.substr(0, 1)) / 15
+    const decay = base36(msg.substr(1, 1)) / 15
+    const sustain = base36(msg.substr(2, 1)) / 15
+    const release = base36(msg.substr(3, 1)) / 15
+    return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release }
   }
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
