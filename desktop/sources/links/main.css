@@ -1,4 +1,6 @@
-body { padding:30px; font-family: 'input_mono_medium'; font-size:11px; }
+body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; }
 
-#terminal { line-height: 15px }
-#terminal input { background:red; padding:5px; position: absolute; bottom:30px; left:30px; width:calc(100vw - 70px);}
+#terminal { line-height: 15px; color:#999; white-space: pre}
+#terminal input { padding: 0px; width: calc(100vw - 70px); background: transparent; color: white;}
+#terminal span { color:white; }
+#terminal b { font-family: 'input_mono_medium'; font-weight: normal;}

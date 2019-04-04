@@ -71,7 +71,7 @@ function Synthetiser (pilot) {
   }
 
   this.parse = function (msg) {
-    const channel = clamp(parseInt(base36(msg.substr(0, 1))), 0, 16)
+    const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
     const cmd = msg.substr(1, 3).toLowerCase()
     const val = msg.substr(5)
 
@@ -100,10 +100,6 @@ function Synthetiser (pilot) {
 
   // Parsers
 
-  function base36 (val) {
-    return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(val.toLowerCase())
-  }
-
   function parseNote (channel, msg) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
@@ -113,13 +109,15 @@ function Synthetiser (pilot) {
 
   function parseEnv (channel, msg) {
     if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-    const attack = base36(msg.substr(0, 1)) / 15
-    const decay = base36(msg.substr(1, 1)) / 15
-    const sustain = base36(msg.substr(2, 1)) / 15
-    const release = base36(msg.substr(3, 1)) / 15
+    const attack = str36int(msg.substr(0, 1)) / 15
+    const decay = str36int(msg.substr(1, 1)) / 15
+    const sustain = str36int(msg.substr(2, 1)) / 15
+    const release = str36int(msg.substr(3, 1)) / 15
     return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release }
   }
 
+  function int36str (val) { return val.toString(36) }
+  function str36int (val) { return parseInt(val, 36) }
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
 
