@@ -4,6 +4,7 @@ const Tone = require('tone')
 
 function Synthetiser (pilot) {
   this.channels = []
+  this.effects = { }
 
   this.install = function () {
     Tone.start()
@@ -28,11 +29,28 @@ function Synthetiser (pilot) {
     this.channels[13] = new Tone.MembraneSynth()
     this.channels[14] = new Tone.MembraneSynth()
     this.channels[15] = new Tone.MembraneSynth()
+
+    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
+    this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
+    this.effects.cheby = new Tone.Chebyshev(50)
+    this.effects.distortion = new Tone.Distortion(0.8)
+    this.effects.reverb = new Tone.JCReverb(0.4)
+    this.effects.feedback = new Tone.FeedbackDelay(0.5)
+    this.effects.freeverb = new Tone.Freeverb()
   }
 
   this.start = function () {
+    // Connect instruments to effects
     for (const id in this.channels) {
-      this.channels[id].toMaster()
+      const channel = this.channels[id]
+      for (const i in this.effects) {
+        const effect = this.effects[i]
+        channel.connect(effect)
+      }
+    }
+    // Connect effects to Master
+    for (const i in this.effects) {
+      this.effects[i].toMaster()
     }
   }
 
@@ -69,7 +87,6 @@ function Synthetiser (pilot) {
   this.playNote = function (data) {
     if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
-    if (isNaN(data.note)) { console.warn(`Unknown Note`); return }
 
     this.channels[data.channel].triggerAttackRelease(`${data.note}${data.octave}`, 0.1)
   }

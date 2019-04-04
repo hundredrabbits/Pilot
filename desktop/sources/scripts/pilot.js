@@ -9,6 +9,7 @@ function Pilot () {
   this.terminal = null
   this.synthetiser = null
   this.controller = new Controller()
+  this.theme = new Theme({ background: '#000000', f_high: '#ffffff', f_med: '#777777', f_low: '#444444', f_inv: '#000000', b_high: '#eeeeee', b_med: '#72dec2', b_low: '#444444', b_inv: '#ffb545' })
 
   this.el = document.createElement('div')
   this.el.id = 'pilot'
@@ -21,6 +22,7 @@ function Pilot () {
     this.listener = new Listener(this)
 
     host.appendChild(this.el)
+    this.theme.install()
     this.synthetiser.install()
     this.terminal.install(this.el)
   }
@@ -29,6 +31,7 @@ function Pilot () {
     console.info('Pilot is starting..')
     this.synthetiser.start()
     this.terminal.start()
+    this.theme.start()
   }
 }
 
