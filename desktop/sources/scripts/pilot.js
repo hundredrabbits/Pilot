@@ -28,6 +28,7 @@ function Pilot () {
   this.start = function () {
     console.info('Pilot is starting..')
     this.synthetiser.start()
+    this.terminal.start()
   }
 }
 

@@ -24,7 +24,7 @@ function Synthetiser (pilot) {
   this.run = function (msg) {
     const data = this.parse(`${msg}`)
     this.operate(data)
-    pilot.terminal.log(data)
+    pilot.terminal.update()
   }
 
   this.parse = function (msg) {
