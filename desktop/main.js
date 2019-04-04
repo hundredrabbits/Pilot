@@ -13,8 +13,6 @@ app.on('ready', () => {
     minHeight: 430,
     webPreferences: { zoomFactor: 1.0 },
     backgroundColor: '#fff',
-    frame: false,
-    autoHideMenuBar: true,
     icon: __dirname + '/icon.ico'
   })
 
@@ -56,10 +54,10 @@ app.toggleFullscreen = function () {
 }
 
 app.toggleVisible = function () {
-  if (process.platform == 'win32') {
-    if (!app.win.isMinimized()) { app.win.minimize() } else { app.win.restore() }
-  } else {
+  if (process.platform === 'darwin') {
     if (isShown && !app.win.isFullScreen()) { app.win.hide() } else { app.win.show() }
+  } else {
+    if (!app.win.isMinimized()) { app.win.minimize() } else { app.win.restore() }
   }
 }
 

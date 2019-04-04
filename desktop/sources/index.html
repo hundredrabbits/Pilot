@@ -16,19 +16,15 @@
     <title>Pilot</title>
   </head>
   <body>
-    <canvas id='canvas' width='800' height='600'></canvas>    
     <script>
       'use strict'
       const webFrame = require('electron').webFrame
       const {dialog,app} = require('electron').remote;
-
       const Pilot = require('./scripts/pilot')
       const pilot = new Pilot()
 
-      pilot.controller.add("default","File","Open",() => { pilot.open(); },"CmdOrCtrl+O")
-      pilot.controller.commit()
-
-      pilot.install()
+      pilot.install(document.body)
+      pilot.start()
     </script>
   </body>
 </html>

@@ -4,8 +4,8 @@ const Frequency = require('../core/FrequencySchema')
 
 module.exports = {
   wet: NormalRange,
-  frequency: Frequency ,
+  frequency: Frequency,
   octaves: Joi.number().integer().positive(),
-  baseFrequency: Frequency ,
+  baseFrequency: Frequency,
   Q: Joi.number().integer().positive()
 }

@@ -6,56 +6,36 @@ const fileUrl = require('file-url')
 const loader = require('./loader')
 const create = require('./create')
 const defaults = require('./defaults')
-const UdpListener = require('./udp/listener')
-const butterchurn = require('butterchurn')
-const butterchurnPresets = require('butterchurn-presets')
-// import butterchurn from 'butterchurn'
-// import butterchurnPresets from 'butterchurn-presets'
+
+const Listener = require('./listener')
+const Terminal = require('./terminal')
 
 function Pilot () {
   this.listener = null
-  this.channels = []
   this.controller = new Controller()
+  this.terminal = null
 
-  this.install = function () {
+  this.el = document.createElement('div')
+  this.el.id = 'pilot'
+
+  this.install = function (host) {
     console.info('Pilot is installing..')
-    this.listener = new UdpListener(this)
-    this.start()
+
+    this.terminal = new Terminal(this)
+    this.listener = new Listener(this)
+
+    host.appendChild(this.el)
+    this.terminal.install(this.el)
   }
+
   this.start = function () {
     console.info('Pilot is starting..')
-    // TODO: this path may be weird in a deployed electron app.
-    this.setupChannels(defaults, path.resolve('./synths/default'))
-
-
-    const audioContext = Tone.Master.context
-    const canvas = document.getElementById('canvas')
-    const visualizer = butterchurn.createVisualizer(audioContext, canvas, {
-      width: 800,
-      height: 600
-    })
-
-    visualizer.connectAudio(Tone.Master)
-
-    const presets = butterchurnPresets.getPresets();
-    const preset = presets['Flexi, martin + geiss - dedicated to the sherwin maxawow'];
-
-    visualizer.loadPreset(preset, 0.0); // 2nd argument is the number of seconds to blend presets
-
-    // resize visualizer
-
-    visualizer.setRendererSize(1600, 1200);
-
-    // render a frame
-    let startRenderer = () => {
-      requestAnimationFrame(() => startRenderer());
-      visualizer.render();
-    }
-    startRenderer()
-
     Tone.start()
     Tone.Transport.start()
+  }
 
+  this.read = function (msg) {
+    this.terminal.log(msg)
   }
 
   this.open = function () {

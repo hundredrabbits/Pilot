@@ -11,7 +11,7 @@ module.exports = {
   oscillator: {
     type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
     frequency: Frequency,
-    detune:  Joi.number().min(0).max(100)
+    detune: Joi.number().min(0).max(100)
   },
   envelope: {
     attack: Time,
@@ -25,7 +25,7 @@ module.exports = {
   modulation: {
     type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
     frequency: Frequency,
-    detune:  Joi.number().min(0).max(100)
+    detune: Joi.number().min(0).max(100)
   },
   modulationEnvelope: {
     attack: Time,

@@ -9,7 +9,7 @@ module.exports = {
     octave: Joi.number().required().description('what octave for the note'),
     note: Joi.string().required().description('a valid musical node. lowercase will be a sharp note'),
     velocity: Joi.string().description('the velocity to play the note'),
-    duration: Joi.string().description('duration to play the note'),
+    duration: Joi.string().description('duration to play the note')
   },
   handler: (pilot, params) => {
     let channel = pilot.getChannel(params.channel)

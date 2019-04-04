@@ -4,8 +4,7 @@ const convert = require('./lib/convert')
 const Joi = require('joi-browser')
 const Instruments = require('./lib/types/instruments')
 
-
-function Channel({channel, type, synth, effects}) {
+function Channel ({ channel, type, synth, effects }) {
   this.type = type
   this.channel = channel
   this.synth = synth
@@ -16,7 +15,6 @@ Channel.prototype.describe = function () {
   let schema = Instruments[this.type]
   if (!schema) return null
   return schema
-
 }
 
 Channel.prototype.set = function (property, value) {
@@ -25,7 +23,6 @@ Channel.prototype.set = function (property, value) {
   if (prop.value) prop.value = value
   else _.set(this.synth, property, value)
 }
-
 
 Channel.prototype.play = function (octave, note, velocity, duration) {
   let synth = this.synth

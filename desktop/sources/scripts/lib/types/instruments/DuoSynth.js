@@ -13,11 +13,11 @@ module.exports = {
     volume: Decibels,
     portamento: Time,
     oscillator: {
-      type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth') ,
+      type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
       frequency: Frequency,
-      detune:  Joi.number().min(0).max(100)
+      detune: Joi.number().min(0).max(100)
     },
-    filterEnvelope  : {
+    filterEnvelope: {
       attack: Time,
       attackCurve: Joi.string().valid('linear', 'exponential', 'sine', 'cosine', 'bounce', 'ripple', 'step'),
       decay: Time,
@@ -39,10 +39,10 @@ module.exports = {
   voice1: {
     volume: Decibels,
     portamento: Time,
-    oscillator  : {
+    oscillator: {
       type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
       frequency: Frequency,
-      detune:  Joi.number().min(0).max(100)
+      detune: Joi.number().min(0).max(100)
     },
     filterEnvelope: {
       attack: Time,

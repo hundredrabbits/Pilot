@@ -6,14 +6,14 @@ const Rolloff = require('../core/RolloffSchema')
 const Decibels = require('../core/Decibels')
 
 module.exports = {
-  pitchDecay  : Time,
+  pitchDecay: Time,
   octaves: Joi.number().positive().integer(),
-  oscillator  : {
-    type  : Joi.string().valid('sine', 'square', 'triangle', 'sawtooth') ,
-    frequency  : Frequency,
-    detune:  Joi.number().min(0).max(100)
+  oscillator: {
+    type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
+    frequency: Frequency,
+    detune: Joi.number().min(0).max(100)
   },
-  envelope  : {
+  envelope: {
     attack: Time,
     attackCurve: Joi.string().valid('linear', 'exponential', 'sine', 'cosine', 'bounce', 'ripple', 'step'),
     decay: Time,

@@ -3,7 +3,7 @@ const _ = require('lodash')
 const Joi = require('joi-browser')
 const Effects = require('./lib/types/effects')
 
-function Effect(type, options, rawEffect) {
+function Effect (type, options, rawEffect) {
   this.type = type
   this.options = options
   this.rawEffect = rawEffect

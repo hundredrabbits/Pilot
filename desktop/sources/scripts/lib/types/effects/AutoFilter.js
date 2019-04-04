@@ -10,7 +10,7 @@ module.exports = {
   frequency: Time,
   type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
   depth: NormalRange,
-  baseFrequency: Frequency ,
+  baseFrequency: Frequency,
   octaves: Joi.number().integer().positive(),
   filter: {
     type: Filter,

@@ -17,7 +17,7 @@ module.exports = function (channelDefn, baseUrl) {
   let synth = new Tone[type](constructorArgs)
 
   let eff = channelDefn.effects || []
-  let effects = eff.map(effect =>  {
+  let effects = eff.map(effect => {
     try {
       console.log('loading effect', effect.type)
       const constructor = Tone[effect.type]
@@ -29,15 +29,15 @@ module.exports = function (channelDefn, baseUrl) {
   }).filter(e => e)
 
   // chain all the audio node from synth to effects to channel
-  var currentUnit = synth;
-  for (var i = 0; i < effects.length; i++){
+  var currentUnit = synth
+  for (var i = 0; i < effects.length; i++) {
     var toUnit = effects[i]
     toUnit = toUnit.getRawEffect()
     currentUnit.connect(toUnit)
     currentUnit = toUnit
   }
   currentUnit.connect(channel)
-  return new Channel({channel, type, synth, effects})
+  return new Channel({ channel, type, synth, effects })
 }
 
 function relative (baseUrl, relativePath) {

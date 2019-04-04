@@ -6,14 +6,13 @@ const Rolloff = require('../core/RolloffSchema')
 const Decibels = require('../core/Decibels')
 const Filter = require('../core/FilterSchema')
 
-
 module.exports = {
-  frequency  : Frequency,
-  detune:  Joi.number().min(0).max(100),
+  frequency: Frequency,
+  detune: Joi.number().min(0).max(100),
   oscillator: {
-    type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth') ,
+    type: Joi.string().valid('sine', 'square', 'triangle', 'sawtooth'),
     frequency: Frequency,
-    detune:  Joi.number().min(0).max(100)
+    detune: Joi.number().min(0).max(100)
   },
   filter: {
     type: Filter,
@@ -29,7 +28,7 @@ module.exports = {
     release: Time,
     releaseCurve: Joi.string().valid('linear', 'exponential', 'sine', 'cosine', 'bounce', 'ripple', 'step')
   },
-  filterEnvelope  : {
+  filterEnvelope: {
     attack: Time,
     attackCurve: Joi.string().valid('linear', 'exponential', 'sine', 'cosine', 'bounce', 'ripple', 'step'),
     decay: Time,

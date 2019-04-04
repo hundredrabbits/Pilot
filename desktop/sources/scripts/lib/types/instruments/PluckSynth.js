@@ -7,7 +7,7 @@ const Decibels = require('../core/Decibels')
 
 module.exports = {
   attackNoise: Joi.number().min(0.1).max(20),
-  dampening: Frequency ,
+  dampening: Frequency,
   resonance: NormalRange
 
 }
