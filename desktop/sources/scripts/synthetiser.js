@@ -32,7 +32,7 @@ function Synthetiser (pilot) {
 
   this.start = function () {
     for (const id in this.channels) {
-      const ch = this.channels[id].toMaster()
+      this.channels[id].toMaster()
     }
   }
 
@@ -55,7 +55,7 @@ function Synthetiser (pilot) {
   this.parse = function (msg) {
     const channel = clamp(parseInt(base36(msg.substr(0, 1))), 0, 16)
     const cmd = msg.substr(1, 3).toLowerCase()
-    const val = msg.substr(4)
+    const val = msg.substr(5)
 
     if (cmd === 'env') {
       return parseEnv(channel, val)
@@ -95,7 +95,7 @@ function Synthetiser (pilot) {
   }
 
   function parseEnv (channel, msg) {
-    if (msg.length != 4) { console.warn(`Misformatted env`); return }
+    if (msg.length !== 4) { console.warn(`Misformatted env`); return }
     const attack = base36(msg.substr(0, 1)) / 15
     const decay = base36(msg.substr(1, 1)) / 15
     const sustain = base36(msg.substr(2, 1)) / 15
