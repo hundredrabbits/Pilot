@@ -4,11 +4,17 @@ const convert = require('./lib/convert')
 const Joi = require('joi-browser')
 const Instruments = require('./lib/types/instruments')
 
+<<<<<<< HEAD
 function Channel ({ channel, type, synth, effects }) {
+=======
+
+function Channel({channel, type, synth, effects, sends}) {
+>>>>>>> master
   this.type = type
   this.channel = channel
   this.synth = synth
   this.effects = effects
+  this.sends = sends
 }
 
 Channel.prototype.describe = function () {
@@ -53,3 +59,12 @@ Channel.prototype.pan = function (normalRange) {
 Channel.prototype.getEffect = function (index) {
   return this.effects[index]
 }
+
+Channel.prototype.getSend = function (index) {
+  return this.sends[index]
+};
+
+Channel.prototype.dispose = function () {
+  this.channel.disconnect()
+  this.channel.dispose()
+};

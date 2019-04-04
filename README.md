@@ -39,9 +39,9 @@ The Channel Routes adjusts mute,pan,solo,volume settings of the specified channe
 ### Synth
 
 The synth routes adjust the instrument params on for the channel. The params you can adjust are
-different, depending on the instrument. The params can be found [here](./sources/scripts/lib/types/instruments)
+different, depending on the instrument. The params can be found [here](https://github.com/hundredrabbits/Pilot/tree/master/desktop/sources/scripts/lib/types/instruments)
 
-To choose the setting to adjust use a path notation. For example, to select the [FMSynth](./sources/scripts/lib/types/instruments/FMSynth.js) oscillator type, use
+To choose the setting to adjust use a path notation. For example, to select the [FMSynth](https://github.com/hundredrabbits/Pilot/blob/master/desktop/sources/scripts/lib/types/instruments/FMSynth.js) oscillator type, use
 C0oscillator#type#2 where the '#' character is a path operator, and denotes where the path
 ends and the value starts. Here are some more examples, on the FMSynth
 
@@ -55,7 +55,7 @@ ends and the value starts. Here are some more examples, on the FMSynth
 The effects routes let you modify values on channel effects to change the sound. Effects are specified as an array on the channel, and so you must specify the effect you want
 to operate on as a 0 index array.
 
-Path notation is also used to select what param to change. The params can be found [here](./sources/scripts/lib/types/effects)
+Path notation is also used to select what param to change. The params can be found [here](https://github.com/hundredrabbits/Pilot/tree/master/desktop/sources/scripts/lib/types/effects)
 
 | Command      | Channel | Effect| CMD              | Type                                   |
 | :-           | :-:     | :-:   | :-:              | :-:                                    |
