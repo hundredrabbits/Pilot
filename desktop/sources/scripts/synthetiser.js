@@ -38,24 +38,35 @@ function Synthetiser (pilot) {
 
   this.run = function (msg) {
     const data = this.parse(`${msg}`)
-    this.operate(data)
+
+    if (data.note) {
+      this.play(data)
+    } else {
+      console.warn('Unknown format', data)
+    }
+
     pilot.terminal.update()
   }
 
   this.parse = function (msg) {
-    return parseNote(msg)
+    const channel = clamp(parseInt(base36(msg.substr(0, 1))), 0, 16)
+    const cmd = msg.substr(1, 3).toLowerCase()
+    const val = msg.substr(4)
+
+    if (cmd === 'env') {
+      return parseEnv(channel, val)
+    }
+
+    return parseNote(channel, msg.substr(1))
   }
 
   this.operate = function (data) {
-    if (data.type === 'play') {
-      this.play(data)
-    }
+
   }
 
   this.play = function (data) {
-    if (!this.channels[data.channel]) { return }
-    const name = `${data.note}${data.octave}`
-    this.channels[data.channel].triggerAttackRelease(name, 0.1)
+    if (!this.channels[data.channel]) { console.warn(`Unknown Channel:${data.channel}`); return }
+    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.octave}`, 0.1)
   }
 
   // Parsers
@@ -64,11 +75,14 @@ function Synthetiser (pilot) {
     return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(val.toLowerCase())
   }
 
-  function parseNote (msg) {
-    const channel = clamp(parseInt(base36(msg.substr(0, 1))), 0, 16)
-    const octave = clamp(parseInt(msg.substr(1, 1)), 0, 8)
-    const note = msg.substr(2, 1)
-    return { type: 'play', channel: channel, octave: octave, note: note }
+  function parseNote (channel, msg) {
+    const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
+    const note = msg.substr(1, 1)
+    return { channel: channel, octave: octave, note: note }
+  }
+
+  function parseEnv (channel, msg) {
+    return { channel: channel, attack: attack, decay: decay, sustain: sustain, release: release }
   }
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
