@@ -4,16 +4,24 @@ function Terminal (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'terminal'
   this.display = document.createElement('div')
-  this.display.id = 'terminal'
+  this.display.id = 'display'
   this.input = document.createElement('input')
-  this.input.id = 'terminal'
   this.input.setAttribute('placeholder', '>')
-  const spacer = ' | '
+  const spacer = '.'
+
+  this.channels = []
 
   this.install = function (host) {
     this.el.appendChild(this.display)
     this.el.appendChild(this.input)
     host.appendChild(this.el)
+
+    for (const id in pilot.synthetiser.channels) {
+      const el = document.createElement('div')
+      el.id = `ch${id}`
+      this.channels.push(el)
+      this.display.appendChild(el)
+    }
   }
 
   this.start = function () {
@@ -21,22 +29,22 @@ function Terminal (pilot) {
     this.input.focus()
   }
 
-  this.update = function () {
-    let html = `<div><span>#</span>${spacer}<span>ENV </span>${spacer}<span>VOL</span>${spacer}</div>`
+  this.update = function (data) {
+    if (!data || !this.channels[data.channel]) { return }
 
-    for (const id in pilot.synthetiser.channels) {
-      html += this._channel(id, pilot.synthetiser.channels[id])
-    }
+    const synth = pilot.synthetiser.channels[data.channel]
 
-    this.display.innerHTML = html
+    this.channels[data.channel].innerHTML = this._channel(data.channel, synth, data.string)
+    this.channels[data.channel].className = data.isNote === true ? 'note' : 'ctrl'
+    setTimeout(() => { this.channels[data.channel].className = '' }, 50)
   }
 
-  this._channel = function (id, data) {
-    return `<div><span><b>${str36(id).toUpperCase().padEnd(1, '-')}</b></span>${spacer}<span>${this._envelope(data.envelope)}</span>${spacer}</div>`
+  this._channel = function (ch, synth, msg = '') {
+    return `<span><b>${str36(ch).toUpperCase().padEnd(1, '-')}</b></span>${spacer}<span>${this._envelope(synth.envelope)}</span>${spacer}<span>${msg}</span>`
   }
 
   this._envelope = function (env) {
-    if (!env || !env.attack) { return '' }
+    if (!env) { return '??' }
     return `${str36(Math.floor(env.attack * 15))}${str36(Math.floor(env.decay * 15))}${str36(Math.floor(env.sustain * 15))}${str36(Math.floor(env.release * 15))}`
   }
 

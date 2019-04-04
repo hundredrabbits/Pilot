@@ -1,1 +1,5 @@
 body { background:var(--background) !important; color:var(--f_high) !important; }
+
+#terminal #display div.note { background-color: var(--b_med) !important; -webkit-transition: background-color 10ms linear; }
+#terminal #display div.ctrl { background-color: var(--b_inv) !important; -webkit-transition: background-color 10ms linear; }
+#terminal #display div.ctrl span { color:var(--f_inv) !important}

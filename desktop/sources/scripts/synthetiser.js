@@ -33,8 +33,8 @@ function Synthetiser (pilot) {
     // this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
     // this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
     // this.effects.cheby = new Tone.Chebyshev(50)
-    this.effects.distortion = new Tone.Distortion(0.8)
-    // this.effects.reverb = new Tone.JCReverb(0.4)
+    // this.effects.distortion = new Tone.Distortion(0.8)
+    this.effects.reverb = new Tone.JCReverb(0.4)
     // this.effects.feedback = new Tone.FeedbackDelay(0.5)
     // this.effects.freeverb = new Tone.Freeverb()
   }
@@ -57,6 +57,7 @@ function Synthetiser (pilot) {
   this.run = function (msg) {
     const data = this.parse(`${msg}`)
 
+    if (!data) { console.warn(`Unknown data`); return }
     if (!this.channels[data.channel]) { console.warn(`Unknown Channel:${data.channel}`); return }
 
     if (data.isEnv) {
@@ -66,8 +67,6 @@ function Synthetiser (pilot) {
     } else {
       console.warn('Unknown format', data)
     }
-
-    pilot.terminal.update()
   }
 
   this.parse = function (msg) {
@@ -84,11 +83,13 @@ function Synthetiser (pilot) {
 
   // Operations
 
-  this.playNote = function (data) {
+  this.playNote = function (data, msg) {
     if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
 
     this.channels[data.channel].triggerAttackRelease(`${data.note}${data.octave}`, 0.1)
+
+    pilot.terminal.update(data)
   }
 
   this.setEnv = function (data) {
@@ -96,6 +97,8 @@ function Synthetiser (pilot) {
     this.channels[data.channel].envelope.decay = data.decay
     this.channels[data.channel].envelope.sustain = data.sustain
     this.channels[data.channel].envelope.release = data.release
+
+    pilot.terminal.update(data)
   }
 
   // Parsers
@@ -104,7 +107,7 @@ function Synthetiser (pilot) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
-    return { isNote: true, channel: channel, octave: octave, note: note }
+    return { isNote: true, channel: channel, octave: octave, note: note, string: `${octave}${note}` }
   }
 
   function parseEnv (channel, msg) {
@@ -113,7 +116,7 @@ function Synthetiser (pilot) {
     const decay = str36int(msg.substr(1, 1)) / 15
     const sustain = str36int(msg.substr(2, 1)) / 15
     const release = str36int(msg.substr(3, 1)) / 15
-    return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release }
+    return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release, string: `env` }
   }
 
   function int36str (val) { return val.toString(36) }
