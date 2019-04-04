@@ -1,13 +1,5 @@
 'use strict'
 
-const { dialog, app } = require('electron').remote
-const path = require('path')
-
-const fileUrl = require('file-url')
-const loader = require('./loader')
-const create = require('./create')
-const defaults = require('./defaults')
-
 const Listener = require('./listener')
 const Terminal = require('./terminal')
 const Synthetiser = require('./synthetiser')
@@ -29,6 +21,7 @@ function Pilot () {
     this.listener = new Listener(this)
 
     host.appendChild(this.el)
+    this.synthetiser.install()
     this.terminal.install(this.el)
   }
 
