@@ -10,7 +10,7 @@ app.on('ready', () => {
     width: 405,
     height: 430,
     minWidth: 405,
-    minHeight: 430,
+    minHeight: 350,
     webPreferences: { zoomFactor: 1.0 },
     backgroundColor: '#fff',
     icon: __dirname + '/icon.ico'

@@ -1,1 +1,4 @@
 body { padding:30px; font-family: 'input_mono_medium'; font-size:11px; }
+
+#terminal { line-height: 15px }
+#terminal input { background:red; padding:5px; position: absolute; bottom:30px; left:30px; width:calc(100vw - 70px);}
