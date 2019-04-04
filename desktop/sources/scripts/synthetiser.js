@@ -3,18 +3,22 @@
 const Tone = require('tone')
 
 function Synthetiser (pilot) {
-  this.synths = []
-  this.synth = null
+  this.channels = []
 
   this.install = function () {
     Tone.start()
     Tone.Transport.start()
 
-    this.synth = new Tone.FMSynth().toMaster()
+    this.channels[0] = new Tone.FMSynth()
+    this.channels[1] = new Tone.FMSynth()
+    this.channels[2] = new Tone.FMSynth()
+    this.channels[3] = new Tone.FMSynth()
   }
 
   this.start = function () {
-
+    for (const id in this.channels) {
+      const ch = this.channels[id].toMaster()
+    }
   }
 
   this.run = function (msg) {
@@ -32,10 +36,6 @@ function Synthetiser (pilot) {
   }
 
   this.operate = function (data) {
-    this.synth.triggerAttackRelease('C5', 0.1)
-  }
-
-  this.operate = function (data) {
     if (data.type === 'play') {
       this.play(data)
     }
@@ -43,7 +43,7 @@ function Synthetiser (pilot) {
 
   this.play = function (data) {
     const name = `${data.note}${data.octave}`
-    this.synth.triggerAttackRelease(name, 0.1)
+    this.channels[data.channel].triggerAttackRelease(name, 0.1)
   }
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }

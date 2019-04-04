@@ -11,6 +11,20 @@ function Terminal (pilot) {
   this.log = function (msg) {
     this.el.innerHTML = `${msg}`
   }
+
+  this.update = function () {
+    let html = ''
+
+    for (const id in pilot.synthetiser.channels) {
+      html += this._channel(id, pilot.synthetiser.channels[id])
+    }
+
+    this.el.innerHTML = html
+  }
+
+  this._channel = function (id, data) {
+    return `${id}`
+  }
 }
 
 module.exports = Terminal
