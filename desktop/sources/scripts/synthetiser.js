@@ -30,13 +30,13 @@ function Synthetiser (pilot) {
     this.channels[14] = new Tone.MembraneSynth()
     this.channels[15] = new Tone.MembraneSynth()
 
-    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
-    this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
-    this.effects.cheby = new Tone.Chebyshev(50)
+    // this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
+    // this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
+    // this.effects.cheby = new Tone.Chebyshev(50)
     this.effects.distortion = new Tone.Distortion(0.8)
-    this.effects.reverb = new Tone.JCReverb(0.4)
-    this.effects.feedback = new Tone.FeedbackDelay(0.5)
-    this.effects.freeverb = new Tone.Freeverb()
+    // this.effects.reverb = new Tone.JCReverb(0.4)
+    // this.effects.feedback = new Tone.FeedbackDelay(0.5)
+    // this.effects.freeverb = new Tone.Freeverb()
   }
 
   this.start = function () {

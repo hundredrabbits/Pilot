@@ -16,6 +16,7 @@ function Terminal (pilot) {
 
   this.start = function () {
     this.update()
+    this.input.focus()
   }
 
   this.update = function () {
@@ -35,6 +36,24 @@ function Terminal (pilot) {
   this._envelope = function (env) {
     if (!env || !env.attack) { return '' }
     return `ATK ${env.attack.toFixed(2)} DCA ${env.decay.toFixed(2)} SUS ${env.sustain.toFixed(2)} REL ${env.release.toFixed(2)}`
+  }
+
+  this.validate = function (value) {
+    pilot.synthetiser.run(value)
+    this.update()
+  }
+
+  // Events
+
+  this.input.oninput = (e) => {
+
+  }
+
+  this.input.onkeypress = (e) => {
+    if (e.keyCode !== 13) { return }
+    e.preventDefault()
+    this.validate(this.input.value)
+    this.input.value = ''
   }
 }
 
