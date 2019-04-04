@@ -6,7 +6,7 @@ function Listener (pilot) {
   this.server = dgram.createSocket('udp4')
 
   this.server.on('message', (msg, rinfo) => {
-    pilot.read(msg)
+    pilot.synthetiser.run(msg)
   })
 
   this.server.on('listening', () => {

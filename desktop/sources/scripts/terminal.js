@@ -1,3 +1,5 @@
+'use strict'
+
 function Terminal (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'terminal'
@@ -7,7 +9,6 @@ function Terminal (pilot) {
   }
 
   this.log = function (msg) {
-    console.log(msg)
     this.el.innerHTML = `${msg}`
   }
 }
