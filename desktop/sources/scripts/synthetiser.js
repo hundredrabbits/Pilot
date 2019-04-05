@@ -98,7 +98,8 @@ function Synthetiser (pilot) {
     if (!this.channels[data.channel]) { console.warn(`Unknown Channel: ${data.channel}`); return }
     if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
-
+    if(['A','B','C','D','E','F','G','a','b','c','d','e','f','g'].indexOf(data.note) < 0){ console.warn(`Unknown Note`); return}
+    
     this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, 0.1)
 
     pilot.terminal.updateChannel(data)
