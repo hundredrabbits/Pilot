@@ -5,10 +5,7 @@ const Tone = require('tone')
 function Synthetiser (pilot) {
   this.channels = []
   this.effects = { }
-  this.equalizer = null
-  this.compressor = null
-  this.limiter = null
-  this.volume = null
+  this.mastering = {}
 
   this.install = function () {
     Tone.start()
@@ -34,6 +31,7 @@ function Synthetiser (pilot) {
     this.channels[14] = new Tone.MembraneSynth()
     this.channels[15] = new Tone.MembraneSynth()
 
+    // Effects
     this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
     this.effects.cheby = new Tone.Chebyshev(50)
     this.effects.distortion = new Tone.Distortion(0)
@@ -41,10 +39,11 @@ function Synthetiser (pilot) {
     this.effects.reverb = new Tone.JCReverb(0)
     this.effects.feedback = new Tone.FeedbackDelay(0.5)
 
-    this.equalizer = new Tone.EQ3(2, -2, 3)
-    this.compressor = new Tone.Compressor(-30, 3)
-    this.limiter = new Tone.Limiter(-12)
-    this.volume = new Tone.Volume(-12)
+    // Mastering
+    this.mastering.equalizer = new Tone.EQ3(2, -2, 3)
+    this.mastering.compressor = new Tone.Compressor(-30, 3)
+    this.mastering.limiter = new Tone.Limiter(-12)
+    this.mastering.volume = new Tone.Volume(-12)
   }
 
   this.start = function () {
@@ -58,13 +57,13 @@ function Synthetiser (pilot) {
     }
     // Connect effects to Master
     for (const i in this.effects) {
-      this.effects[i].connect(this.equalizer)
+      this.effects[i].connect(this.mastering.equalizer)
     }
 
-    this.equalizer.connect(this.compressor)
-    this.compressor.connect(this.limiter)
-    this.compressor.connect(this.volume)
-    this.volume.toMaster()
+    this.mastering.equalizer.connect(this.mastering.compressor)
+    this.mastering.compressor.connect(this.mastering.limiter)
+    this.mastering.compressor.connect(this.mastering.volume)
+    this.mastering.volume.toMaster()
   }
 
   this.run = function (msg) {

@@ -6,3 +6,4 @@ body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-h
 #terminal b { font-family: 'input_mono_medium'; font-weight: normal;}
 #terminal #display {}
 #terminal #display div { background-color: transparent; -webkit-transition: background-color 500ms linear; padding:0px 2px;  }
+#terminal #display > .wrapper { display: inline-block;vertical-align: top; }

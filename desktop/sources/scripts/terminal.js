@@ -7,9 +7,16 @@ function Terminal (pilot) {
   this.display.id = 'display'
   this.input = document.createElement('input')
   this.input.setAttribute('placeholder', '>')
-  const spacer = '.'
+
+  this.chwr = document.createElement('div')
+  this.chwr.className = 'wrapper'
+  this.chwr.id = 'chwr'
+  this.fxwr = document.createElement('div')
+  this.fxwr.className = 'wrapper'
+  this.fxwr.id = 'fxwr'
 
   this.channels = []
+  this.effects = {}
 
   this.install = function (host) {
     this.el.appendChild(this.display)
@@ -20,8 +27,18 @@ function Terminal (pilot) {
       const el = document.createElement('div')
       el.id = `ch${id}`
       this.channels.push(el)
-      this.display.appendChild(el)
+      this.chwr.appendChild(el)
     }
+
+    for (const id in pilot.synthetiser.effects) {
+      const el = document.createElement('div')
+      el.id = `fx${id}`
+      this.effects[id] = el
+      this.fxwr.appendChild(el)
+    }
+
+    this.display.appendChild(this.chwr)
+    this.display.appendChild(this.fxwr)
   }
 
   this.start = function () {
@@ -42,6 +59,10 @@ function Terminal (pilot) {
       const synth = pilot.synthetiser.channels[id]
       this.channels[id].innerHTML = this._channel(id, synth)
     }
+    for (const id in this.effects) {
+      const synth = pilot.synthetiser.effects[id]
+      this.effects[id].innerHTML = this._effect(id, synth)
+    }
   }
 
   this._channel = function (channel, data) {
@@ -59,6 +80,12 @@ function Terminal (pilot) {
     for (let i = 0; i < 8; i++) {
       html += (data && data.note && i === data.octave ? data.note : '.')
     }
+    return html
+  }
+
+  this._effect = function (id, data) {
+    let html = ''
+    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span>`
     return html
   }
 
