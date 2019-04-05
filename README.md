@@ -70,6 +70,16 @@ Just use ffmpeg.
 ~/Documents/ffmpeg -i last.{ogg,mp3}  
 ```
 
+## TODOs
+
+- Implement the `wav` command.
+- Implement note length.
+- Implement note velocity.
+- Improve ORCA example to demonstrate chords.
+- Design icon.
+- Push builds to Itch.
+- Recycle Marabu into a UDP sequencer.
+
 ## Extras
 
 - This application supports the [Ecosystem Theme](https://github.com/hundredrabbits/Themes).
