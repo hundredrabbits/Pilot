@@ -33,6 +33,8 @@ function Synthetiser (pilot) {
 
     // Effects
     this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
+    this.effects.tremolo = new Tone.Tremolo(9, 0.75)
+    this.effects.bitcrusher = new Tone.BitCrusher(2)
     this.effects.cheby = new Tone.Chebyshev(50)
     this.effects.distortion = new Tone.Distortion(0)
     this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
@@ -41,6 +43,7 @@ function Synthetiser (pilot) {
 
     // Mastering
     this.mastering.equalizer = new Tone.EQ3(2, -2, 3)
+    this.mastering.stereo = new Tone.StereoWidener(0.5)
     this.mastering.compressor = new Tone.Compressor(-30, 3)
     this.mastering.limiter = new Tone.Limiter(-12)
     this.mastering.volume = new Tone.Volume(-12)
@@ -58,9 +61,11 @@ function Synthetiser (pilot) {
     // Connect effects to Master
     for (const i in this.effects) {
       this.effects[i].connect(this.mastering.equalizer)
+      this.effects[i].wet.value = 0
     }
 
-    this.mastering.equalizer.connect(this.mastering.compressor)
+    this.mastering.equalizer.connect(this.mastering.stereo)
+    this.mastering.stereo.connect(this.mastering.compressor)
     this.mastering.compressor.connect(this.mastering.limiter)
     this.mastering.compressor.connect(this.mastering.volume)
     this.mastering.volume.toMaster()
@@ -96,6 +101,10 @@ function Synthetiser (pilot) {
       return parseEffect('feedback', msg.substr(4))
     } else if (msg.substr(0, 3).toLowerCase() === 'che') {
       return parseEffect('cheby', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'bit') {
+      return parseEffect('bitcrusher', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'tre') {
+      return parseEffect('tremolo', msg.substr(4))
     }
     // Channels
     const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
@@ -118,7 +127,7 @@ function Synthetiser (pilot) {
 
     this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, 0.1)
 
-    pilot.terminal.update(data)
+    pilot.terminal.updateChannel(data)
   }
 
   this.setEnv = function (data) {
@@ -129,7 +138,7 @@ function Synthetiser (pilot) {
     this.channels[data.channel].envelope.sustain = data.sustain
     this.channels[data.channel].envelope.release = data.release
 
-    pilot.terminal.update(data)
+    pilot.terminal.updateChannel(data)
   }
 
   this.setEffect = function (data) {
@@ -149,7 +158,12 @@ function Synthetiser (pilot) {
       this.effects[data.name].delayTime.value = data.value
     } else if (data.name === 'cheby') {
       this.effects[data.name].order = parseInt(50 * data.value)
+    } else if (data.name === 'tremolo') {
+      this.effects[data.name].depth = data.value
+    } else if (data.name === 'bitcrusher') {
+      this.effects[data.name].bits = clamp(data.value, 1, 8)
     }
+    pilot.terminal.updateEffect(data)
   }
 
   // Parsers
@@ -172,7 +186,7 @@ function Synthetiser (pilot) {
   }
 
   function parseEffect (name, msg) {
-    if (msg.length != 2) { console.warn(`Misformatted effect`, msg); return }
+    if (msg.length !== 2) { console.warn(`Misformatted effect`, msg); return }
     const wet = str36int(msg.substr(0, 1)) / 15
     const value = str36int(msg.substr(1, 1)) / 15
     return { isEffect: true, name: name, wet: wet, value: value }

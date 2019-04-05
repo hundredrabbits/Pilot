@@ -46,52 +46,87 @@ function Terminal (pilot) {
     this.input.focus()
   }
 
-  this.update = function (data) {
+  this.updateAll = function () {
+    for (const id in this.channels) {
+      this.channels[id].innerHTML = this._channel(id, pilot.synthetiser.channels[id])
+    }
+    for (const id in this.effects) {
+      this.effects[id].innerHTML = this._effect(id, pilot.synthetiser.effects[id])
+    }
+  }
+
+  this.updateChannel = function (data) {
     if (!data || !this.channels[data.channel]) { return }
 
     this.channels[data.channel].innerHTML = this._channel(data.channel, data)
     this.channels[data.channel].className = data.isNote === true ? 'note' : 'ctrl'
-    setTimeout(() => { this.channels[data.channel].className = '' }, 50)
+    setTimeout(() => { this.channels[data.channel].className = '' }, 100)
   }
 
-  this.updateAll = function () {
-    for (const id in this.channels) {
-      const synth = pilot.synthetiser.channels[id]
-      this.channels[id].innerHTML = this._channel(id, synth)
-    }
-    for (const id in this.effects) {
-      const synth = pilot.synthetiser.effects[id]
-      this.effects[id].innerHTML = this._effect(id, synth)
-    }
+  this.updateEffect = function (data) {
+    if (!data || !this.effects[data.name]) { return }
+
+    this.effects[data.name].innerHTML = this._effect(data.name, data)
+    this.effects[data.name].className = data.isNote === true ? 'note' : 'ctrl'
+    setTimeout(() => { this.effects[data.name].className = '' }, 100)
   }
 
   this._channel = function (channel, data) {
     const synth = pilot.synthetiser.channels[channel]
-    return `<span><b>${str36(channel).toUpperCase().padEnd(1, '-')}</b> ${this._envelope(synth.envelope)} ${this._octaves(data)}`
+    return `<span><b>${str36(channel).toUpperCase().padEnd(1, '-')}</b> ${this._envelope(synth.envelope)}</span> ${this._octaves(data)}`
   }
 
   this._envelope = function (env) {
     if (!env) { return '??' }
-    return `${str36(Math.floor(env.attack * 15))}${str36(Math.floor(env.decay * 15))}${str36(Math.floor(env.sustain * 15))}${str36(Math.floor(env.release * 15))}`
+    return `${to16(env.attack)}${to16(env.decay)}${to16(env.sustain)}${to16(env.release)}`
   }
 
   this._octaves = function (data) {
     let html = ''
     for (let i = 0; i < 8; i++) {
-      html += (data && data.note && i === data.octave ? data.note : '.')
+      html += (data && data.note && i === data.octave ? '<span>' + data.note + '</span>' : '.')
     }
     return html
   }
 
   this._effect = function (id, data) {
     let html = ''
-    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span>`
+    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> `
+    html += `<span>${to16(pilot.synthetiser.effects[id].wet.value)}`
+
+    if (id === 'reverb') {
+      html += to16(pilot.synthetiser.effects[id].roomSize.value)
+    } else if (id === 'distortion') {
+      html += to16(pilot.synthetiser.effects[id].distortion)
+    } else if (id === 'chorus') {
+      html += to16(pilot.synthetiser.effects[id].depth)
+    } else if (id === 'delay') {
+      html += to16(pilot.synthetiser.effects[id].delayTime.value)
+    } else if (id === 'feedback') {
+      html += to16(pilot.synthetiser.effects[id].delayTime.value)
+    } else if (id === 'cheby') {
+      html += to16(parseInt(pilot.synthetiser.effects[id].order / 50))
+    } else if (data.name === 'tremolo') {
+      html += to16(pilot.synthetiser.effects[id].depth)
+    } else if (data.name === 'bitcrusher') {
+      html += to16(pilot.synthetiser.effects[id].bits)
+    } else {
+      html += '?'
+    }
+    html += '</span> '
+
+    for (let i = 0; i < 8; i++) {
+      const reach = parseInt(pilot.synthetiser.effects[id].wet.value * 8)
+      html += i < reach ? '<span>|</span>' : '.'
+    }
+
+    html += ``
     return html
   }
 
   this.validate = function (value) {
     pilot.synthetiser.run(value)
-    this.update()
+    this.updateAll()
   }
 
   // Events
@@ -107,6 +142,7 @@ function Terminal (pilot) {
     this.input.value = ''
   }
 
+  function to16 (float) { return str36(Math.floor(float * 15)) }
   function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }
   function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`) }
 }

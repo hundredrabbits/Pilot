@@ -7,10 +7,10 @@ let isShown = true
 
 app.on('ready', () => {
   app.win = new BrowserWindow({
-    width: 405,
-    height: 430,
-    minWidth: 405,
-    minHeight: 350,
+    width: 420,
+    height: 190,
+    minWidth: 420,
+    minHeight: 190,
     icon: __dirname + '/' + { darwin: 'icon.icns', linux: 'icon.png', win32: 'icon.ico' }[process.platform] || 'icon.ico',
     resizable: true,
     frame: process.platform !== 'darwin',
