@@ -1,6 +1,6 @@
 # Pilot
 
-[Pilot](http://wiki.xxiivv.com/Pilot) is a commands-based UDP synthetiser designed to be controlled externally. It was created as a companion application to the livecoding environment [ORCA](https://hundredrabbits.itch.io/orca).
+[Pilot](http://wiki.xxiivv.com/Pilot) is a **UDP synthetiser** designed to be controlled externally. It was created as a companion application to the livecoding environment [ORCA](https://hundredrabbits.itch.io/orca).
 
 ## Install & Run
 
@@ -15,7 +15,7 @@ npm start
 
 ## Commands
 
-Commands can be entered in Pilot's input bar, or directly through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;03E` will place a `C3` and `E3` chord.
+Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;03E` will play a `C3` and `E3` chord.
 
 ### Channel
 
@@ -33,16 +33,16 @@ The Play commands allows you to play synth notes.
 
 The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`.
 
-| Command     | Channel      | Name       | Info |
-| :-          | :-           | :-         | :-   |                    
-| `0ENV056f`  | 0            | Envelope   | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
-| `1WAVtri `  | 1            | Waveform   | Set **Waveform**:Triangle |
+| Command     | Channel | Name       | Info |
+| :-          | :-      | :-         | :-   |                    
+| `0ENV056f`  | 0       | Envelope   | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
+| `1WAVtria`  | 1       | Waveform   | Set **Waveform**:Triangle       |
 
 ### Global
 
 #### Effects
 
-The Effects are applied to all channels. The effect command format is a 3 characters long **name**, followed by two values between `0-G` — Or `name(wet,value)`.
+The Effects are applied to all channels. The effect command format is a 3 characters long **name**, followed by one values between `0-G` for **wet** and **depth**.
 
 | Command     | Channel      | Operation  | Info |
 | :-          | :-           | :-         | :-   |
@@ -57,7 +57,7 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 
 #### Masters
 
-The Masters are applied at the end of the effects. The effect command format is a 3 characters long **name**, followed by one value between `0-G` — Or `name(wet)`.
+The Masters are applied at the end of the effects. The effect command format is a 3 characters long **name**, followed by one value between `0-G`.
 
 | Command     | Channel      | Operation  | Info |
 | :-          | :-           | :-         | :-   |
