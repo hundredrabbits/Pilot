@@ -15,7 +15,7 @@ npm start
 
 ## Commands
 
-Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;03E` will play a `C3` and `E3` chord.
+Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
 
 ### Channel
 
@@ -49,7 +49,7 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 | `CHO9f`     | All          | Chorus     | ..   |
 | `TRE9f`     | All          | Tremolo    | ..   |
 | `BIT9f`     | All          | Bitcrusher | ..   |
-| `CHE9f`     | All          | ?          | ..   |
+| `CHE9f`     | All          | Cheby      | ..   |
 | `DIS9f`     | All          | Distortion | ..   |
 | `DEL9f`     | All          | Delay      | ..   |
 | `REV9f`     | All          | Reverb     | ..   |

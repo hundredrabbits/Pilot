@@ -72,8 +72,8 @@ function Synthetiser (pilot) {
   }
 
   this.run = function (msg) {
-    const data = this.parse(`${msg}`)
-
+    if (msg.indexOf(';') > -1) { this.multi(msg); return }
+    const data = parse(`${msg}`)
     if (!data) { console.warn(`Unknown data`); return }
 
     if (data.isEffect) {
@@ -87,35 +87,11 @@ function Synthetiser (pilot) {
     }
   }
 
-  this.parse = function (msg) {
-    // Globals
-    if (msg.substr(0, 3).toLowerCase() === 'rev') {
-      return parseEffect('reverb', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'dis') {
-      return parseEffect('distortion', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'cho') {
-      return parseEffect('chorus', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'del') {
-      return parseEffect('delay', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'fed') {
-      return parseEffect('feedback', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'che') {
-      return parseEffect('cheby', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'bit') {
-      return parseEffect('bitcrusher', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'tre') {
-      return parseEffect('tremolo', msg.substr(4))
+  this.multi = function (msg) {
+    const parts = msg.split(';')
+    for (const id in parts) {
+      this.run(parts[id])
     }
-    // Channels
-    const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
-    const cmd = msg.substr(1, 3).toLowerCase()
-    const val = msg.substr(5)
-
-    if (cmd === 'env') {
-      return parseEnv(channel, val)
-    }
-
-    return parseNote(channel, msg.substr(1))
   }
 
   // Operations
@@ -167,6 +143,37 @@ function Synthetiser (pilot) {
   }
 
   // Parsers
+
+  function parse (msg) {
+    // Globals
+    if (msg.substr(0, 3).toLowerCase() === 'rev') {
+      return parseEffect('reverb', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'dis') {
+      return parseEffect('distortion', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'cho') {
+      return parseEffect('chorus', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'del') {
+      return parseEffect('delay', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'fed') {
+      return parseEffect('feedback', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'che') {
+      return parseEffect('cheby', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'bit') {
+      return parseEffect('bitcrusher', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'tre') {
+      return parseEffect('tremolo', msg.substr(4))
+    }
+    // Channels
+    const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
+    const cmd = msg.substr(1, 3).toLowerCase()
+    const val = msg.substr(5)
+
+    if (cmd === 'env') {
+      return parseEnv(channel, val)
+    }
+
+    return parseNote(channel, msg.substr(1))
+  }
 
   function parseNote (channel, msg) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
