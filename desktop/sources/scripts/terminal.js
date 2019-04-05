@@ -126,6 +126,18 @@ function Terminal (pilot) {
     return html
   }
 
+  this._master = function (id, data) {
+    let html = ''
+    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> -- `
+    for (let i = 0; i < 8; i++) {
+      const reach = 0
+      html += i < reach ? '<span>|</span>' : '.'
+    }
+
+    html += ``
+    return html
+  }
+
   this.read16 = function (id) {
     return to16(this.read(id))
   }
@@ -144,21 +156,15 @@ function Terminal (pilot) {
     }
   }
 
-  this._master = function (id, data) {
-    let html = ''
-    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> -- `
-    for (let i = 0; i < 8; i++) {
-      const reach = 0
-      html += i < reach ? '<span>|</span>' : '.'
-    }
-
-    html += ``
-    return html
-  }
-
   this.validate = function (value) {
     pilot.synthetiser.run(value)
     this.updateAll()
+  }
+
+  // Modes
+
+  this.setMode = function (mode) {
+    this.el.className = mode ? `${mode}` : ''
   }
 
   // Events

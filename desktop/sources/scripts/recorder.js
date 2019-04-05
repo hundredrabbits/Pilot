@@ -1,11 +1,12 @@
 'use strict'
 
+const { dialog, app } = require('electron').remote
 const Tone = require('tone')
+const fs = require('fs')
 
 function Recorder (pilot) {
   this.isRecording = false
 
-  const audio = new Audio()
   let chunks = []
 
   this.install = function () {
@@ -16,9 +17,11 @@ function Recorder (pilot) {
     pilot.synthetiser.masters.volume.connect(pilot.synthetiser.hook)
 
     pilot.synthetiser.recorder.onstop = evt => {
-      let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
-      audio.src = URL.createObjectURL(blob)
-      console.log(blob)
+      const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
+      pilot.recorder.save(blob)
+      const url = URL.createObjectURL(blob)
+      const audio = new Audio(url)
+      audio.play()
     }
 
     pilot.synthetiser.recorder.ondataavailable = evt => {
@@ -31,12 +34,14 @@ function Recorder (pilot) {
     this.isRecording = true
     chunks = []
     pilot.synthetiser.recorder.start()
+    pilot.synthetiser.terminal.setMode('recording')
   }
 
   this.stop = function () {
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
     pilot.synthetiser.recorder.stop()
+    pilot.synthetiser.terminal.setMode()
   }
 
   this.toggle = function () {
@@ -47,10 +52,24 @@ function Recorder (pilot) {
     }
   }
 
-  this.xxxx = function () {
-    recorder.start()
+  this.save = function (blob) {
+    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['ogg'] }] }, (path) => {
+      if (path === undefined) { return }
+      pilot.recorder.write(path, blob)
+    })
+  }
 
-    setTimeout(() => { recorder.stop() }, 2000)
+  this.write = function (path, blob) {
+    var reader = new FileReader()
+
+    reader.onload = function () {
+      var buffer = new Buffer.from(reader.result)
+      fs.writeFile(path, buffer, {}, (err, res) => {
+        if (err) { console.error(err); return }
+        console.log('Recorder', 'Export complete.')
+      })
+    }
+    reader.readAsArrayBuffer(blob)
   }
 }
 

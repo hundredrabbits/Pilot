@@ -32,6 +32,14 @@
 
       controller.add("default","File","Record",() => { pilot.recorder.toggle() },"CmdOrCtrl+R")
 
+      controller.add_role('default', 'Edit', 'undo')
+      controller.add_role('default', 'Edit', 'redo')
+      controller.add_role('default', 'Edit', 'cut')
+      controller.add_role('default', 'Edit', 'copy')
+      controller.add_role('default', 'Edit', 'paste')
+      controller.add_role('default', 'Edit', 'delete')
+      controller.add_role('default', 'Edit', 'selectall')
+
       controller.commit()
 
       pilot.install(document.body)

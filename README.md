@@ -62,6 +62,14 @@ The Masters are applied at the end of the effects. The effect command format is 
 | `LIMf`      | All          | Limiter    | ..   | 
 | `VOLf`      | All          | Volume     | ..   | 
 
+## Convert OGG to MP3
+
+Just use ffmpeg.
+
+```
+~/Documents/ffmpeg -i last.{ogg,mp3}  
+```
+
 ## Extras
 
 - This application supports the [Ecosystem Theme](https://github.com/hundredrabbits/Themes).
