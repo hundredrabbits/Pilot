@@ -25,11 +25,25 @@ The Play commands to play synth notes are of the format:
 | `04Cf`   | 0       | 4      | C    | 127      | _1/16_ |
 | `04Cff`  | 0       | 4      | C    | 127      | 1bar   |
 
-### Settings
+### Commands
 
-| Command     | Channel | Operation | Info                                                                       |
-| :-          | :-:     | :-:       | :-:                                                                        |
-| `0ENV:056f` | 0       | Envelope  | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
+| Command     | Channel      | Operation  | Info |
+| :-          | :-:          | :-:        | :-:  |
+| `0ENV:056f` | 0            | Envelope   | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
+| `1WAV:tri ` | 0            | Envelope   | Set **Waveform**:Triangle                                                  |
+| `CHO9f`     | All(Effects) | Chorus     | ..   |
+| `TRE9f`     | All(Effects) | Tremolo    | ..   |
+| `BIT9f`     | All(Effects) | Bitcrusher | ..   |
+| `CHE9f`     | All(Effects) | ?          | ..   |
+| `DIS9f`     | All(Effects) | Distortion | ..   |
+| `DEL9f`     | All(Effects) | Delay      | ..   |
+| `REV9f`     | All(Effects) | Reverb     | ..   |
+| `FEE9f`     | All(Effects) | Feedback   | ..   |
+| `EQUf`      | All(Masters) | Equalizer  | ..   | 
+| `STEf`      | All(Masters) | Stereo     | ..   | 
+| `COMf`      | All(Masters) | Compressor | ..   | 
+| `LIMf`      | All(Masters) | Limiter    | ..   | 
+| `VOLf`      | All(Masters) | Volume     | ..   | 
 
 ### Channel
 
