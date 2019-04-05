@@ -74,6 +74,8 @@ function Synthetiser (pilot) {
 
     if (data.isEffect) {
       this.setEffect(data)
+    } else if (data.isMaster) {
+      this.setMaster(data)
     } else if (data.isEnv) {
       this.setEnv(data)
     } else if (data.isNote) {
@@ -124,46 +126,41 @@ function Synthetiser (pilot) {
       this.effects[data.name].distortion = data.value
     } else if (data.name === 'chorus') {
       this.effects[data.name].depth = data.value
-    } else if (data.name === 'delay') {
-      this.effects[data.name].delayTime.value = data.value
     } else if (data.name === 'feedback') {
       this.effects[data.name].delayTime.value = data.value
-    } else if (data.name === 'cheby') {
-      this.effects[data.name].order = parseInt(50 * data.value)
-    } else if (data.name === 'tremolo') {
-      this.effects[data.name].depth = data.value
-    } else if (data.name === 'bitcrusher') {
-      this.effects[data.name].bits = clamp(data.value, 1, 8)
     }
     pilot.terminal.updateEffect(data)
+  }
+
+  this.setMaster = function (data) {
+    if (!this.masters[data.name]) { console.warn(`Unknown Master: ${data.name}`) }
+
+    if (data.name === 'volume') {
+      console.log(data.value)
+      // this.masters[data.name].unmutedVolume = data.value
+    }
+    pilot.terminal.updateMaster(data)
   }
 
   // Parsers
 
   function parse (msg) {
-    // Globals
-    if (msg.substr(0, 3).toLowerCase() === 'rev') {
-      return parseEffect('reverb', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'dis') {
-      return parseEffect('distortion', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'cho') {
-      return parseEffect('chorus', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'del') {
-      return parseEffect('delay', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'fed') {
-      return parseEffect('feedback', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'che') {
-      return parseEffect('cheby', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'bit') {
-      return parseEffect('bitcrusher', msg.substr(4))
-    } else if (msg.substr(0, 3).toLowerCase() === 'tre') {
-      return parseEffect('tremolo', msg.substr(4))
+    // Effect
+    const effect = isEffect(msg)
+    if (effect) {
+      return parseEffect(effect, msg.substr(3))
     }
-    // Channels
+
+    // Master
+    const master = isMaster(msg)
+    if (master) {
+      return parseMaster(master, msg.substr(3))
+    }
+
+    // Channel
     const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
     const cmd = msg.substr(1, 3).toLowerCase()
-    const val = msg.substr(5)
-
+    const val = msg.substr(4)
     if (cmd === 'env') {
       return parseEnv(channel, val)
     }
@@ -193,6 +190,22 @@ function Synthetiser (pilot) {
     const wet = str36int(msg.substr(0, 1)) / 15
     const value = str36int(msg.substr(1, 1)) / 15
     return { isEffect: true, name: name, wet: wet, value: value }
+  }
+
+  function parseMaster (name, msg) {
+    if (msg.length !== 1) { console.warn(`Misformatted master`, msg); return }
+    const wet = str36int(msg.substr(0, 1)) / 15
+    return { isMaster: true, name: name, wet: wet }
+  }
+
+  function isEffect (msg) {
+    const cmd = msg.substr(0, 3).toLowerCase()
+    return { rev: 'reverb', dis: 'distortion', cho: 'chorus', fee: 'feedback' }[cmd]
+  }
+
+  function isMaster (msg) {
+    const cmd = msg.substr(0, 3).toLowerCase()
+    return { equ: 'equalizer', com: 'compressor', lim: 'limiter', vol: 'volume' }[cmd]
   }
 
   function int36str (val) { return val.toString(36) }

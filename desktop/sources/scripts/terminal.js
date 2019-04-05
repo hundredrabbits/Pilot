@@ -81,8 +81,16 @@ function Terminal (pilot) {
     if (!data || !this.effects[data.name]) { return }
 
     this.effects[data.name].innerHTML = this._effect(data.name, data)
-    this.effects[data.name].className = data.isNote === true ? 'note' : 'ctrl'
+    this.effects[data.name].className = 'ctrl'
     setTimeout(() => { this.effects[data.name].className = '' }, 100)
+  }
+
+  this.updateMaster = function (data) {
+    if (!data || !this.masters[data.name]) { return }
+
+    this.masters[data.name].innerHTML = this._master(data.name, data)
+    this.masters[data.name].className = 'ctrl'
+    setTimeout(() => { this.masters[data.name].className = '' }, 100)
   }
 
   this._channel = function (channel, data) {
@@ -114,16 +122,8 @@ function Terminal (pilot) {
       html += to16(pilot.synthetiser.effects[id].distortion)
     } else if (id === 'chorus') {
       html += to16(pilot.synthetiser.effects[id].depth)
-    } else if (id === 'delay') {
-      html += to16(pilot.synthetiser.effects[id].delayTime.value)
     } else if (id === 'feedback') {
       html += to16(pilot.synthetiser.effects[id].delayTime.value)
-    } else if (id === 'cheby') {
-      html += to16(parseInt(pilot.synthetiser.effects[id].order / 50))
-    } else if (data.name === 'tremolo') {
-      html += to16(pilot.synthetiser.effects[id].depth)
-    } else if (data.name === 'bitcrusher') {
-      html += to16(pilot.synthetiser.effects[id].bits)
     } else {
       html += '?'
     }
@@ -140,34 +140,11 @@ function Terminal (pilot) {
 
   this._master = function (id, data) {
     let html = ''
-    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> `
-    // html += `<span>${to16(pilot.synthetiser.effects[id].wet.value)}`
-
-    // if (id === 'reverb') {
-    //   html += to16(pilot.synthetiser.effects[id].roomSize.value)
-    // } else if (id === 'distortion') {
-    //   html += to16(pilot.synthetiser.effects[id].distortion)
-    // } else if (id === 'chorus') {
-    //   html += to16(pilot.synthetiser.effects[id].depth)
-    // } else if (id === 'delay') {
-    //   html += to16(pilot.synthetiser.effects[id].delayTime.value)
-    // } else if (id === 'feedback') {
-    //   html += to16(pilot.synthetiser.effects[id].delayTime.value)
-    // } else if (id === 'cheby') {
-    //   html += to16(parseInt(pilot.synthetiser.effects[id].order / 50))
-    // } else if (data.name === 'tremolo') {
-    //   html += to16(pilot.synthetiser.effects[id].depth)
-    // } else if (data.name === 'bitcrusher') {
-    //   html += to16(pilot.synthetiser.effects[id].bits)
-    // } else {
-    //   html += '?'
-    // }
-    // html += '</span> '
-
-    // for (let i = 0; i < 8; i++) {
-    //   const reach = parseInt(pilot.synthetiser.effects[id].wet.value * 8)
-    //   html += i < reach ? '<span>|</span>' : '.'
-    // }
+    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> -- `
+    for (let i = 0; i < 8; i++) {
+      const reach = 0
+      html += i < reach ? '<span>|</span>' : '.'
+    }
 
     html += ``
     return html
