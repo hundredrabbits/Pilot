@@ -5,6 +5,10 @@ const Tone = require('tone')
 function Synthetiser (pilot) {
   this.channels = []
   this.effects = { }
+  this.equalizer = null
+  this.compressor = null
+  this.limiter = null
+  this.volume = null
 
   this.install = function () {
     Tone.start()
@@ -30,13 +34,18 @@ function Synthetiser (pilot) {
     this.channels[14] = new Tone.MembraneSynth()
     this.channels[15] = new Tone.MembraneSynth()
 
-    // this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
-    // this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
+    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
+    this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
     // this.effects.cheby = new Tone.Chebyshev(50)
-    // this.effects.distortion = new Tone.Distortion(0.8)
-    this.effects.reverb = new Tone.JCReverb(0.9)
+    this.effects.distortion = new Tone.Distortion(0)
+    this.effects.reverb = new Tone.JCReverb(0)
     // this.effects.feedback = new Tone.FeedbackDelay(0.5)
     // this.effects.freeverb = new Tone.Freeverb()
+
+    this.equalizer = new Tone.EQ3(2, -2, 3)
+    this.compressor = new Tone.Compressor(-30, 3)
+    this.limiter = new Tone.Limiter(-12)
+    this.volume = new Tone.Volume(-12)
   }
 
   this.start = function () {
@@ -50,8 +59,13 @@ function Synthetiser (pilot) {
     }
     // Connect effects to Master
     for (const i in this.effects) {
-      this.effects[i].toMaster()
+      this.effects[i].connect(this.equalizer)
     }
+
+    this.equalizer.connect(this.compressor)
+    this.compressor.connect(this.limiter)
+    this.compressor.connect(this.volume)
+    this.volume.toMaster()
   }
 
   this.run = function (msg) {
@@ -74,6 +88,12 @@ function Synthetiser (pilot) {
     // Globals
     if (msg.substr(0, 3).toLowerCase() === 'rev') {
       return parseEffect('reverb', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'dis') {
+      return parseEffect('distortion', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'cho') {
+      return parseEffect('chorus', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'del') {
+      return parseEffect('delay', msg.substr(4))
     }
     // Channels
     const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
@@ -113,10 +133,17 @@ function Synthetiser (pilot) {
   this.setEffect = function (data) {
     if (!this.effects[data.name]) { console.warn(`Unknown Effect: ${data.name}`) }
 
-    const key = { reverb: 'roomSize' }[data.name]
-
     this.effects[data.name].wet.value = data.wet
-    this.effects[data.name][key].value = data.value
+
+    if (data.name === 'reverb') {
+      this.effects[data.name].roomSize.value = data.value
+    } else if (data.name === 'distortion') {
+      this.effects[data.name].distortion = data.value
+    } else if (data.name === 'chorus') {
+      this.effects[data.name].depth = data.value
+    } else if (data.name === 'delay') {
+      this.effects[data.name].delayTime.value = data.value
+    }
   }
 
   // Parsers
