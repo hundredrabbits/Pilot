@@ -25,9 +25,11 @@ function Pilot () {
     this.recorder = new Recorder(this)
 
     host.appendChild(this.el)
+
     this.theme.install()
     this.synthetiser.install()
     this.terminal.install(this.el)
+    this.recorder.install()
   }
 
   this.start = function () {

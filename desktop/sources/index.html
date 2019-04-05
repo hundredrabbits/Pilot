@@ -28,7 +28,7 @@
       controller.add("default","*","Hide",() => { app.toggleVisible() },"CmdOrCtrl+H")
       controller.add("default","*","Inspect",() => { app.inspect() },"CmdOrCtrl+.")
       controller.add("default","*","Reset",() => { terminal.reset() },"CmdOrCtrl+Backspace")
-      controller.add("default","*","Quit",() => { terminal.unload(); app.exit() },"CmdOrCtrl+Q")
+      controller.add("default","*","Quit",() => { app.exit() },"CmdOrCtrl+Q")
 
       controller.add("default","File","Record",() => { pilot.recorder.toggle() },"CmdOrCtrl+R")
 
