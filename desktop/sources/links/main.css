@@ -1,13 +1,10 @@
-body {
-  margin: 0px,
-  padding: 0px
-}
-#canvas:-webkit-full-screen {
-  width: 100%;
-  height: 100%;
-}
+body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms;}
 
-#canvas {
-  width: 100%;
-  height: 100%;
-}
+#terminal { line-height: 15px; color:#666; }
+#terminal input { padding: 0px 5px; width: calc(100vw - 70px); background: transparent; color: white;}
+#terminal span { color:white; }
+#terminal b { font-family: 'input_mono_medium'; font-weight: normal;}
+#terminal #display {}
+#terminal #display div { background-color: transparent; -webkit-transition: background-color 10ms linear; padding:0px 2px;  }
+#terminal #display > .wrapper { display: inline-block;vertical-align: top; }
+#terminal #display #chwr { columns: 2 }

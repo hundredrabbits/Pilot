@@ -1,6 +1,6 @@
 # Pilot
 
-Web enabled synth.
+Pilot is a UDP synth to be used alongside [ORCA](https://hundredrabbits.itch.io/orca).
 
 ## Install & Run
 
@@ -21,9 +21,15 @@ The Play commands to play synth notes are of the format:
 
 | Command  | Channel | Octave | Note | Velocity | Length |
 | :-       | :-:     | :-:    | :-:  | :-:      | :-:    |
-| `04C`   | 0       | 4      | C    | _64_     | _1/16_ |
-| `04Cf`  | 0       | 4      | C    | 127      | _1/16_ |
-| `04Cff` | 0       | 4      | C    | 127      | 1bar   |
+| `04C`    | 0       | 4      | C    | _64_     | _1/16_ |
+| `04Cf`   | 0       | 4      | C    | 127      | _1/16_ |
+| `04Cff`  | 0       | 4      | C    | 127      | 1bar   |
+
+### Settings
+
+| Command     | Channel | Operation | Info                                                                       |
+| :-          | :-:     | :-:       | :-:                                                                        |
+| `0ENV:056f` | 0       | Envelope  | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
 
 ### Channel
 
