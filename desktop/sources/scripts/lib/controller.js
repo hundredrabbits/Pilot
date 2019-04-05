@@ -42,4 +42,4 @@ function Controller () {
   }
 }
 
-module.exports = new Controller()
+module.exports = Controller
