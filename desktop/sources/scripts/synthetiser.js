@@ -7,6 +7,9 @@ function Synthetiser (pilot) {
   this.effects = { }
   this.masters = {}
 
+  this.hook = null
+  this.recorder = null
+
   this.install = function () {
     Tone.start()
     Tone.Transport.start()
@@ -43,6 +46,9 @@ function Synthetiser (pilot) {
     this.masters.limiter = new Tone.Limiter(-12)
     this.masters.volume = new Tone.Volume(-12)
 
+    this.hook = Tone.context.createMediaStreamDestination()
+    // this.recorder = new MediaRecorder(hook.stream);
+
     // Connect instruments to effects
     for (const id in this.channels) {
       const channel = this.channels[id]
@@ -61,6 +67,7 @@ function Synthetiser (pilot) {
     this.masters.compressor.connect(this.masters.limiter)
     this.masters.limiter.connect(this.masters.volume)
     this.masters.volume.toMaster()
+    this.masters.volume.connect(this.hook)
   }
 
   this.start = function () {
@@ -140,6 +147,24 @@ function Synthetiser (pilot) {
       // this.masters[data.name].unmutedVolume = data.value
     }
     pilot.terminal.updateMaster(data)
+  }
+
+  this.record = function () {
+    const chunks = []
+    const recorder = this.recorder
+
+    recorder.ondataavailable = evt => chunks.push(evt.data)
+
+    const audio = new Audio()
+
+    recorder.onstop = evt => {
+      let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
+      audio.src = URL.createObjectURL(blob)
+    }
+
+    recorder.start()
+
+    setTimeout(() => { recorder.stop() }, 2000)
   }
 
   // Parsers
