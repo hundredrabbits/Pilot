@@ -87,7 +87,7 @@ function Synthetiser (pilot) {
     if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
 
-    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.octave}`, 0.1)
+    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, 0.1)
 
     pilot.terminal.update(data)
   }
@@ -107,7 +107,8 @@ function Synthetiser (pilot) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
-    return { isNote: true, channel: channel, octave: octave, note: note, string: `${octave}${note}` }
+    const sharp = note.toLowerCase() === note ? '#' : ''
+    return { isNote: true, channel: channel, octave: octave, note: note, sharp: sharp, string: `${octave}${note}` }
   }
 
   function parseEnv (channel, msg) {

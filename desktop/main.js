@@ -11,9 +11,13 @@ app.on('ready', () => {
     height: 430,
     minWidth: 405,
     minHeight: 350,
+    icon: __dirname + '/' + { darwin: 'icon.icns', linux: 'icon.png', win32: 'icon.ico' }[process.platform] || 'icon.ico',
+    resizable: true,
+    frame: process.platform !== 'darwin',
+    skipTaskbar: process.platform === 'darwin',
+    autoHideMenuBar: process.platform === 'darwin',
     webPreferences: { zoomFactor: 1.0 },
-    backgroundColor: '#fff',
-    icon: __dirname + '/icon.ico'
+    webPreferences: { backgroundThrottling: false }
   })
 
   app.win.loadURL(`file://${__dirname}/sources/index.html`)

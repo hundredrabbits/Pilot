@@ -25,27 +25,41 @@ function Terminal (pilot) {
   }
 
   this.start = function () {
-    this.update()
+    this.updateAll()
     this.input.focus()
   }
 
   this.update = function (data) {
     if (!data || !this.channels[data.channel]) { return }
 
-    const synth = pilot.synthetiser.channels[data.channel]
-
-    this.channels[data.channel].innerHTML = this._channel(data.channel, synth, data.string)
+    this.channels[data.channel].innerHTML = this._channel(data.channel, data)
     this.channels[data.channel].className = data.isNote === true ? 'note' : 'ctrl'
     setTimeout(() => { this.channels[data.channel].className = '' }, 50)
   }
 
-  this._channel = function (ch, synth, msg = '') {
-    return `<span><b>${str36(ch).toUpperCase().padEnd(1, '-')}</b></span>${spacer}<span>${this._envelope(synth.envelope)}</span>${spacer}<span>${msg}</span>`
+  this.updateAll = function () {
+    for (const id in this.channels) {
+      const synth = pilot.synthetiser.channels[id]
+      this.channels[id].innerHTML = this._channel(id, synth)
+    }
+  }
+
+  this._channel = function (channel, data) {
+    const synth = pilot.synthetiser.channels[channel]
+    return `<span><b>${str36(channel).toUpperCase().padEnd(1, '-')}</b> ${this._envelope(synth.envelope)} ${this._octaves(data)}`
   }
 
   this._envelope = function (env) {
     if (!env) { return '??' }
     return `${str36(Math.floor(env.attack * 15))}${str36(Math.floor(env.decay * 15))}${str36(Math.floor(env.sustain * 15))}${str36(Math.floor(env.release * 15))}`
+  }
+
+  this._octaves = function (data) {
+    let html = ''
+    for (let i = 0; i < 8; i++) {
+      html += (data && data.note && i === data.octave ? data.note : '.')
+    }
+    return html
   }
 
   this.validate = function (value) {
