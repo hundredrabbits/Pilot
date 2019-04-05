@@ -5,11 +5,15 @@ const Tone = require('tone')
 const fs = require('fs')
 
 function Recorder (pilot) {
+  this.el = document.createElement('div')
+  this.el.id = 'recorder'
+  this.el.className = 'blink'
+  this.el.textContent = '•'
   this.isRecording = false
 
   let chunks = []
 
-  this.install = function () {
+  this.install = function (host) {
     console.log('Recorder', 'Installing..')
 
     pilot.synthetiser.hook = Tone.context.createMediaStreamDestination()
@@ -27,6 +31,8 @@ function Recorder (pilot) {
     pilot.synthetiser.recorder.ondataavailable = evt => {
       chunks.push(evt.data)
     }
+
+    host.appendChild(this.el)
   }
 
   this.start = function () {
@@ -34,14 +40,14 @@ function Recorder (pilot) {
     this.isRecording = true
     chunks = []
     pilot.synthetiser.recorder.start()
-    pilot.synthetiser.terminal.setMode('recording')
+    pilot.terminal.setMode('recording')
   }
 
   this.stop = function () {
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
     pilot.synthetiser.recorder.stop()
-    pilot.synthetiser.terminal.setMode()
+    pilot.terminal.setMode()
   }
 
   this.toggle = function () {

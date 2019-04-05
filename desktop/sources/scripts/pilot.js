@@ -29,7 +29,7 @@ function Pilot () {
     this.theme.install()
     this.synthetiser.install()
     this.terminal.install(this.el)
-    this.recorder.install()
+    this.recorder.install(this.terminal.el)
   }
 
   this.start = function () {

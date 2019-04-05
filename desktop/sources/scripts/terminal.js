@@ -6,7 +6,6 @@ function Terminal (pilot) {
   this.display = document.createElement('div')
   this.display.id = 'display'
   this.input = document.createElement('input')
-  this.input.setAttribute('placeholder', '>')
 
   this.chwr = document.createElement('div')
   this.chwr.className = 'wrapper'
