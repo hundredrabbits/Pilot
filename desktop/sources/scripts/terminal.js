@@ -114,28 +114,34 @@ function Terminal (pilot) {
   this._effect = function (id, data) {
     let html = ''
     html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> `
-    html += `<span>${to16(pilot.synthetiser.effects[id].wet.value)}`
-
-    if (id === 'reverb') {
-      html += to16(pilot.synthetiser.effects[id].roomSize.value)
-    } else if (id === 'distortion') {
-      html += to16(pilot.synthetiser.effects[id].distortion)
-    } else if (id === 'chorus') {
-      html += to16(pilot.synthetiser.effects[id].depth)
-    } else if (id === 'feedback') {
-      html += to16(pilot.synthetiser.effects[id].delayTime.value)
-    } else {
-      html += '?'
-    }
-    html += '</span> '
+    html += `<span>${to16(pilot.synthetiser.effects[id].wet.value)}${this.read16(id)}</span> `
 
     for (let i = 0; i < 8; i++) {
       const reach = parseInt(pilot.synthetiser.effects[id].wet.value * 8)
-      html += i < reach ? '<span>|</span>' : '.'
+      const longs = this.read(id) * reach
+      html += i < longs ? '<span>|</span>' : i < reach ? '|' : '.'
     }
 
     html += ``
     return html
+  }
+
+  this.read16 = function (id) {
+    return to16(this.read(id))
+  }
+
+  this.read = function (id) {
+    if (id === 'reverb') {
+      return pilot.synthetiser.effects[id].roomSize.value
+    } else if (id === 'distortion') {
+      return pilot.synthetiser.effects[id].distortion
+    } else if (id === 'chorus') {
+      return pilot.synthetiser.effects[id].depth
+    } else if (id === 'feedback') {
+      return pilot.synthetiser.effects[id].delayTime.value
+    } else {
+      return 0
+    }
   }
 
   this._master = function (id, data) {
