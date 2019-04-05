@@ -14,9 +14,13 @@ function Terminal (pilot) {
   this.fxwr = document.createElement('div')
   this.fxwr.className = 'wrapper'
   this.fxwr.id = 'fxwr'
+  this.mswr = document.createElement('div')
+  this.mswr.className = 'wrapper'
+  this.mswr.id = 'mswr'
 
   this.channels = []
   this.effects = {}
+  this.masters = {}
 
   this.install = function (host) {
     this.el.appendChild(this.display)
@@ -36,9 +40,16 @@ function Terminal (pilot) {
       this.effects[id] = el
       this.fxwr.appendChild(el)
     }
+    for (const id in pilot.synthetiser.masters) {
+      const el = document.createElement('div')
+      el.id = `ms${id}`
+      this.masters[id] = el
+      this.mswr.appendChild(el)
+    }
 
     this.display.appendChild(this.chwr)
     this.display.appendChild(this.fxwr)
+    this.display.appendChild(this.mswr)
   }
 
   this.start = function () {
@@ -52,6 +63,9 @@ function Terminal (pilot) {
     }
     for (const id in this.effects) {
       this.effects[id].innerHTML = this._effect(id, pilot.synthetiser.effects[id])
+    }
+    for (const id in this.masters) {
+      this.masters[id].innerHTML = this._master(id, pilot.synthetiser.masters[id])
     }
   }
 
@@ -119,6 +133,41 @@ function Terminal (pilot) {
       const reach = parseInt(pilot.synthetiser.effects[id].wet.value * 8)
       html += i < reach ? '<span>|</span>' : '.'
     }
+
+    html += ``
+    return html
+  }
+
+  this._master = function (id, data) {
+    let html = ''
+    html += `<span><b>${id.substr(0, 3).toUpperCase()}</b></span> `
+    // html += `<span>${to16(pilot.synthetiser.effects[id].wet.value)}`
+
+    // if (id === 'reverb') {
+    //   html += to16(pilot.synthetiser.effects[id].roomSize.value)
+    // } else if (id === 'distortion') {
+    //   html += to16(pilot.synthetiser.effects[id].distortion)
+    // } else if (id === 'chorus') {
+    //   html += to16(pilot.synthetiser.effects[id].depth)
+    // } else if (id === 'delay') {
+    //   html += to16(pilot.synthetiser.effects[id].delayTime.value)
+    // } else if (id === 'feedback') {
+    //   html += to16(pilot.synthetiser.effects[id].delayTime.value)
+    // } else if (id === 'cheby') {
+    //   html += to16(parseInt(pilot.synthetiser.effects[id].order / 50))
+    // } else if (data.name === 'tremolo') {
+    //   html += to16(pilot.synthetiser.effects[id].depth)
+    // } else if (data.name === 'bitcrusher') {
+    //   html += to16(pilot.synthetiser.effects[id].bits)
+    // } else {
+    //   html += '?'
+    // }
+    // html += '</span> '
+
+    // for (let i = 0; i < 8; i++) {
+    //   const reach = parseInt(pilot.synthetiser.effects[id].wet.value * 8)
+    //   html += i < reach ? '<span>|</span>' : '.'
+    // }
 
     html += ``
     return html

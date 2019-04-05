@@ -5,7 +5,7 @@ const Tone = require('tone')
 function Synthetiser (pilot) {
   this.channels = []
   this.effects = { }
-  this.mastering = {}
+  this.masters = {}
 
   this.install = function () {
     Tone.start()
@@ -32,24 +32,17 @@ function Synthetiser (pilot) {
     this.channels[15] = new Tone.MembraneSynth()
 
     // Effects
-    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
-    this.effects.tremolo = new Tone.Tremolo(9, 0.75)
-    this.effects.bitcrusher = new Tone.BitCrusher(2)
-    this.effects.cheby = new Tone.Chebyshev(50)
     this.effects.distortion = new Tone.Distortion(0)
-    this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
+    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
     this.effects.reverb = new Tone.JCReverb(0)
     this.effects.feedback = new Tone.FeedbackDelay(0.5)
 
     // Mastering
-    this.mastering.equalizer = new Tone.EQ3(2, -2, 3)
-    this.mastering.stereo = new Tone.StereoWidener(0.5)
-    this.mastering.compressor = new Tone.Compressor(-30, 3)
-    this.mastering.limiter = new Tone.Limiter(-12)
-    this.mastering.volume = new Tone.Volume(-12)
-  }
+    this.masters.equalizer = new Tone.EQ3(2, -2, 3)
+    this.masters.compressor = new Tone.Compressor(-30, 3)
+    this.masters.limiter = new Tone.Limiter(-12)
+    this.masters.volume = new Tone.Volume(-12)
 
-  this.start = function () {
     // Connect instruments to effects
     for (const id in this.channels) {
       const channel = this.channels[id]
@@ -60,15 +53,18 @@ function Synthetiser (pilot) {
     }
     // Connect effects to Master
     for (const i in this.effects) {
-      this.effects[i].connect(this.mastering.equalizer)
+      this.effects[i].connect(this.masters.equalizer)
       this.effects[i].wet.value = 0
     }
 
-    this.mastering.equalizer.connect(this.mastering.stereo)
-    this.mastering.stereo.connect(this.mastering.compressor)
-    this.mastering.compressor.connect(this.mastering.limiter)
-    this.mastering.compressor.connect(this.mastering.volume)
-    this.mastering.volume.toMaster()
+    this.masters.equalizer.connect(this.masters.compressor)
+    this.masters.compressor.connect(this.masters.limiter)
+    this.masters.limiter.connect(this.masters.volume)
+    this.masters.volume.toMaster()
+  }
+
+  this.start = function () {
+
   }
 
   this.run = function (msg) {

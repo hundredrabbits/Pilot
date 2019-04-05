@@ -1,6 +1,6 @@
 # Pilot
 
-[Pilot](http://wiki.xxiivv.com/Pilot) is a **UDP synthetiser** designed to be controlled externally. It was created as a companion application to the livecoding environment [ORCA](https://hundredrabbits.itch.io/orca).
+[Pilot](http://wiki.xxiivv.com/Pilot) is a **UDP synthetiser** designed to be controlled externally. It was created as a companion application to the livecoding environment [ORCA](https://hundredrabbits.itch.io/orca). 
 
 ## Install & Run
 
@@ -15,7 +15,7 @@ npm start
 
 ## Commands
 
-Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
+Pilot has 16 voices, 4 effects and 4 mastering filters. Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
 
 ### Channel
 
@@ -47,11 +47,7 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 | Command     | Channel      | Operation  | Info |
 | :-          | :-           | :-         | :-   |
 | `CHO9f`     | All          | Chorus     | ..   |
-| `TRE9f`     | All          | Tremolo    | ..   |
-| `BIT9f`     | All          | Bitcrusher | ..   |
-| `CHE9f`     | All          | Cheby      | ..   |
 | `DIS9f`     | All          | Distortion | ..   |
-| `DEL9f`     | All          | Delay      | ..   |
 | `REV9f`     | All          | Reverb     | ..   |
 | `FEE9f`     | All          | Feedback   | ..   |
 
@@ -62,7 +58,6 @@ The Masters are applied at the end of the effects. The effect command format is 
 | Command     | Channel      | Operation  | Info |
 | :-          | :-           | :-         | :-   |
 | `EQUf`      | All          | Equalizer  | ..   | 
-| `STEf`      | All          | Stereo     | ..   | 
 | `COMf`      | All          | Compressor | ..   | 
 | `LIMf`      | All          | Limiter    | ..   | 
 | `VOLf`      | All          | Volume     | ..   | 
