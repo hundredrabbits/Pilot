@@ -35,12 +35,11 @@ function Synthetiser (pilot) {
     this.channels[15] = new Tone.MembraneSynth()
 
     this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
-    this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
-    // this.effects.cheby = new Tone.Chebyshev(50)
+    this.effects.cheby = new Tone.Chebyshev(50)
     this.effects.distortion = new Tone.Distortion(0)
+    this.effects.delay = new Tone.PingPongDelay('4n', 0.2)
     this.effects.reverb = new Tone.JCReverb(0)
-    // this.effects.feedback = new Tone.FeedbackDelay(0.5)
-    // this.effects.freeverb = new Tone.Freeverb()
+    this.effects.feedback = new Tone.FeedbackDelay(0.5)
 
     this.equalizer = new Tone.EQ3(2, -2, 3)
     this.compressor = new Tone.Compressor(-30, 3)
@@ -94,6 +93,10 @@ function Synthetiser (pilot) {
       return parseEffect('chorus', msg.substr(4))
     } else if (msg.substr(0, 3).toLowerCase() === 'del') {
       return parseEffect('delay', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'fed') {
+      return parseEffect('feedback', msg.substr(4))
+    } else if (msg.substr(0, 3).toLowerCase() === 'che') {
+      return parseEffect('cheby', msg.substr(4))
     }
     // Channels
     const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
@@ -143,6 +146,10 @@ function Synthetiser (pilot) {
       this.effects[data.name].depth = data.value
     } else if (data.name === 'delay') {
       this.effects[data.name].delayTime.value = data.value
+    } else if (data.name === 'feedback') {
+      this.effects[data.name].delayTime.value = data.value
+    } else if (data.name === 'cheby') {
+      this.effects[data.name].order = parseInt(50 * data.value)
     }
   }
 
