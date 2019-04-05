@@ -59,10 +59,9 @@ function Synthetiser (pilot) {
 
     if (!data) { console.warn(`Unknown data`); return }
 
-    if(data.isEffect){
+    if (data.isEffect) {
       this.setEffect(data)
-    }
-    else if (data.isEnv) {
+    } else if (data.isEnv) {
       this.setEnv(data)
     } else if (data.isNote) {
       this.playNote(data)
@@ -73,8 +72,8 @@ function Synthetiser (pilot) {
 
   this.parse = function (msg) {
     // Globals
-    if(msg.substr(0,3).toLowerCase() === 'rev'){
-      return parseEffect('reverb',msg.substr(4))
+    if (msg.substr(0, 3).toLowerCase() === 'rev') {
+      return parseEffect('reverb', msg.substr(4))
     }
     // Channels
     const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
@@ -91,17 +90,17 @@ function Synthetiser (pilot) {
   // Operations
 
   this.playNote = function (data, msg) {
-    if (!this.channels[data.channel]) { console.warn(`Unknown Channel:${data.channel}`); return }
+    if (!this.channels[data.channel]) { console.warn(`Unknown Channel: ${data.channel}`); return }
     if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
-    
+
     this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, 0.1)
 
     pilot.terminal.update(data)
   }
 
   this.setEnv = function (data) {
-    if (!this.channels[data.channel]) { console.warn(`Unknown Channel:${data.channel}`); return }
+    if (!this.channels[data.channel]) { console.warn(`Unknown Channel: ${data.channel}`); return }
 
     this.channels[data.channel].envelope.attack = data.attack
     this.channels[data.channel].envelope.decay = data.decay
@@ -111,11 +110,13 @@ function Synthetiser (pilot) {
     pilot.terminal.update(data)
   }
 
-  this.setEffect = function(data){
-    // this.effects.reverb.roomSize.value = data.value
-    // this.effects.reverb.wet.value = data.value
-    // this.effects.reverb.roomSize = data.value
-    // pilot.terminal.update(data)
+  this.setEffect = function (data) {
+    if (!this.effects[data.name]) { console.warn(`Unknown Effect: ${data.name}`) }
+
+    const key = { reverb: 'roomSize' }[data.name]
+
+    this.effects[data.name].wet.value = data.wet
+    this.effects[data.name][key].value = data.value
   }
 
   // Parsers
@@ -137,11 +138,11 @@ function Synthetiser (pilot) {
     return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release, string: `env` }
   }
 
-  function parseEffect(name,value){
-    if (msg.length != 2) { console.warn(`Misformatted effect`); return }
-    const wet = str36int(value.substr(0, 1)) / 15
-    const value = str36int(value.substr(1, 1)) / 15
-    return {isEffect:true, name:name, wet:wet, value:value}
+  function parseEffect (name, msg) {
+    if (msg.length != 2) { console.warn(`Misformatted effect`, msg); return }
+    const wet = str36int(msg.substr(0, 1)) / 15
+    const value = str36int(msg.substr(1, 1)) / 15
+    return { isEffect: true, name: name, wet: wet, value: value }
   }
 
   function int36str (val) { return val.toString(36) }
