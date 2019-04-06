@@ -8,6 +8,8 @@ function Interface (id, synth) {
   this.cid_el.className = `cid`
   this.env_el = document.createElement('span')
   this.env_el.className = `env`
+  this.osc_el = document.createElement('span')
+  this.osc_el.className = `osc`
   this.wav_el = document.createElement('span')
   this.wav_el.className = `wav`
   this.mod_el = document.createElement('span')
@@ -22,8 +24,9 @@ function Interface (id, synth) {
 
     this.el.appendChild(this.cid_el)
     this.el.appendChild(this.env_el)
-    this.el.appendChild(this.wav_el)
-    this.el.appendChild(this.mod_el)
+    this.osc_el.appendChild(this.wav_el)
+    this.osc_el.appendChild(this.mod_el)
+    this.el.appendChild(this.osc_el)
     this.el.appendChild(this.oct_el)
 
     host.appendChild(this.el)
@@ -36,10 +39,16 @@ function Interface (id, synth) {
 
   this.update = function () {
     this.updateEnv()
+    this.updateOsc()
   }
 
   this.updateEnv = function () {
     this.env_el.innerHTML = `${to16(this.synth.envelope.attack)}${to16(this.synth.envelope.decay)}${to16(this.synth.envelope.sustain)}${to16(this.synth.envelope.release)}`
+  }
+
+  this.updateOsc = function () {
+    this.wav_el.innerHTML = `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 2) : '--'}`
+    this.mod_el.innerHTML = `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 2) : '--'}`
   }
 
   function to16 (float) { return str36(Math.floor(float * 15)) }
