@@ -143,6 +143,8 @@ function Mixer (pilot) {
       this.channels[id].synth.connect(this.masters.volume)
     }
 
+    this.masters.volume.toMaster()
+
     // Add all instruments to dom
     for (const id in this.channels) {
       this.channels[id].install(this.el)
