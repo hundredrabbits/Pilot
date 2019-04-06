@@ -11,37 +11,85 @@ function Synthetiser (pilot) {
     Tone.start()
     Tone.Transport.start()
 
-    this.channels[0] = new Tone.FMSynth()
-    this.channels[1] = new Tone.FMSynth()
-    this.channels[2] = new Tone.FMSynth()
-    this.channels[3] = new Tone.FMSynth()
+    // AM
+    this.channels[0] = new Tone.AMSynth({
+      'harmonicity': 1.25,
+      'oscillator': { 'type': 'sine8' },
+      'modulation': { 'type': 'square8' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
 
-    this.channels[4] = new Tone.AMSynth()
-    this.channels[5] = new Tone.AMSynth()
-    this.channels[6] = new Tone.AMSynth()
-    this.channels[7] = new Tone.AMSynth()
+    this.channels[1] = new Tone.AMSynth({
+      'harmonicity': 1.5,
+      'oscillator': { 'type': 'square8' },
+      'modulation': { 'type': 'triangle8' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
 
-    this.channels[8] = new Tone.AMSynth()
-    this.channels[9] = new Tone.AMSynth()
-    this.channels[10] = new Tone.MonoSynth()
-    this.channels[11] = new Tone.MonoSynth()
+    this.channels[2] = new Tone.AMSynth({
+      'harmonicity': 1.75,
+      'oscillator': { 'type': 'triangle8' },
+      'modulation': { 'type': 'square8' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[3] = new Tone.AMSynth({
+      'harmonicity': 2,
+      'oscillator': { 'type': 'square8' },
+      'modulation': { 'type': 'sine8' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
 
-    this.channels[12] = new Tone.MembraneSynth()
-    this.channels[13] = new Tone.MembraneSynth()
-    this.channels[14] = new Tone.MembraneSynth()
-    this.channels[15] = new Tone.MembraneSynth()
+    // FM
+    this.channels[4] = new Tone.AMSynth({
+      'modulationIndex': 0,
+      'oscillator': { 'type': 'sine4' },
+      'modulation': { 'type': 'square4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[5] = new Tone.AMSynth({
+      'modulationIndex': 10,
+      'oscillator': { 'type': 'square4' },
+      'modulation': { 'type': 'triangle4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[6] = new Tone.AMSynth({
+      'modulationIndex': 20,
+      'oscillator': { 'type': 'triangle4' },
+      'modulation': { 'type': 'square4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[7] = new Tone.AMSynth({
+      'modulationIndex': 40,
+      'oscillator': { 'type': 'square4' },
+      'modulation': { 'type': 'sine4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+
+    // this.channels[8] = new Tone.MonoSynth()
+    // this.channels[9] = new Tone.MonoSynth()
+    // this.channels[10] = new Tone.MetalSynth()
+    // this.channels[11] = new Tone.MetalSynth()
+
+    // this.channels[12] = new Tone.PluckSynth()
+    // this.channels[13] = new Tone.PluckSynth()
+    // this.channels[14] = new Tone.MembraneSynth()
+    // this.channels[15] = new Tone.MembraneSynth()
 
     // Effects
     this.effects.distortion = new Tone.Distortion(0)
     this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
     this.effects.reverb = new Tone.JCReverb(0)
     this.effects.feedback = new Tone.FeedbackDelay(0.5)
-
     // Mastering
     this.masters.equalizer = new Tone.EQ3(2, -2, 3)
     this.masters.compressor = new Tone.Compressor(-30, 3)
     this.masters.limiter = new Tone.Limiter(-12)
     this.masters.volume = new Tone.Volume(-12)
+
+    // Turn off all effects
+    for (const i in this.effects) {
+      this.effects[i].wet.value = 0
+    }
 
     // Connect instruments to distortion
     for (const id in this.channels) {
@@ -77,6 +125,8 @@ function Synthetiser (pilot) {
       this.setMaster(data)
     } else if (data.isEnv) {
       this.setEnv(data)
+    } else if (data.isWav) {
+      this.setWav(data)
     } else if (data.isNote) {
       this.playNote(data)
     } else {
@@ -111,6 +161,14 @@ function Synthetiser (pilot) {
     this.channels[data.channel].envelope.decay = data.decay
     this.channels[data.channel].envelope.sustain = data.sustain
     this.channels[data.channel].envelope.release = data.release
+
+    pilot.terminal.updateChannel(data)
+  }
+
+  this.setWav = function (data) {
+    if (!this.channels[data.channel]) { console.warn(`Unknown Channel: ${data.channel}`); return }
+
+    this.channels[data.channel].oscillator._oscillator.set('type', data.value)
 
     pilot.terminal.updateChannel(data)
   }
@@ -161,6 +219,9 @@ function Synthetiser (pilot) {
     const channel = clamp(parseInt(int36(msg.substr(0, 1))), 0, 16)
     const cmd = msg.substr(1, 3).toLowerCase()
     const val = msg.substr(4)
+    if (cmd === 'wav') {
+      return parseWav(channel, val)
+    }
     if (cmd === 'env') {
       return parseEnv(channel, val)
     }
@@ -185,6 +246,12 @@ function Synthetiser (pilot) {
     const sustain = int36(msg.substr(2, 1)) / 15
     const release = int36(msg.substr(3, 1)) / 15
     return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release, string: `env` }
+  }
+
+  function parseWav (channel, msg) {
+    if (msg.length !== 4) { console.warn(`Misformatted env`); return }
+    const value = 'f'
+    return { isWav: true, channel: channel, value: value, string: `wav` }
   }
 
   function parseEffect (name, msg) {
@@ -213,7 +280,7 @@ function Synthetiser (pilot) {
   function from16 (str) { return (int36(str) / 15) }
   function to16 (float) { return str36(Math.floor(float * 15)) }
   function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }
-  function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`) }
+  function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`.toLowerCase()) }
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }

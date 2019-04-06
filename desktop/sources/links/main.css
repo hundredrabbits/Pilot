@@ -1,6 +1,6 @@
 body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms;}
 
-#terminal { line-height: 15px; color:#666; position: relative;}
+#terminal { line-height: 15px; color:#666; position: relative; text-transform: uppercase;}
 #terminal input { padding: 0px 5px 0px 18px; width: calc(100vw - 70px); background: transparent; color: white; }
 #terminal span { color:white; }
 #terminal b { font-family: 'input_mono_medium'; font-weight: normal;}

@@ -94,7 +94,12 @@ function Terminal (pilot) {
 
   this._channel = function (channel, data) {
     const synth = pilot.synthetiser.channels[channel]
-    return `<span><b>${str36(channel).toUpperCase().padEnd(1, '-')}</b> ${this._envelope(synth.envelope)}</span> ${this._octaves(data)}`
+    const algo = channel < 4 ? 'AM' : 'FM'
+    return `<span><b>${str36(channel).toUpperCase().padEnd(1, '-')}</b> ${this._osc(pilot.synthetiser.channels[channel])} ${this._envelope(synth.envelope)}</span> ${this._octaves(data)}`
+  }
+
+  this._osc = function (synth) {
+    return `<span>${synth.oscillator._oscillator.type.substr(0, 2)}/${synth.modulation._oscillator.type.substr(0, 2)}</span>`
   }
 
   this._envelope = function (env) {

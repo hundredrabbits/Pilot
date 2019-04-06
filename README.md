@@ -44,12 +44,12 @@ The Settings commands allow you to change the sound of the synth. The settings c
 
 The Effects are applied to all channels. The effect command format is a 3 characters long **name**, followed by one values between `0-G` for **wet** and **depth**.
 
-| Command     | Channel      | Operation  | Info |
-| :-          | :-           | :-         | :-   |
-| `CHO9f`     | All          | Chorus     | ..   |
-| `DIS9f`     | All          | Distortion | ..   |
-| `REV9f`     | All          | Reverb     | ..   |
-| `FEE9f`     | All          | Feedback   | ..   |
+| Command     | Channel | Operation  | Info |
+| :-          | :-      | :-         | :-   |
+| `DISff`     | All     | Distortion | ..   |
+| `CHOff`     | All     | Chorus     | ..   |
+| `REVff`     | All     | Reverb     | ..   |
+| `FEEff`     | All     | Feedback   | ..   |
 
 #### Masters
 
@@ -72,14 +72,14 @@ Just use ffmpeg.
 
 ## TODOs
 
-- Display Chords
 - Implement the `wav` command.
-- Implement note length.
 - Implement note velocity.
 - Improve ORCA example to demonstrate chords.
 - Design icon.
 - Push builds to Itch.
 - Recycle Marabu into a UDP sequencer.
+- Implement masters.
+- Implement `clear` command.
 
 ## Extras
 
