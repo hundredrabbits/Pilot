@@ -21,8 +21,8 @@ function Synthetiser (pilot) {
     this.channels[6] = new Tone.AMSynth()
     this.channels[7] = new Tone.AMSynth()
 
-    this.channels[8] = new Tone.MonoSynth()
-    this.channels[9] = new Tone.MonoSynth()
+    this.channels[8] = new Tone.AMSynth()
+    this.channels[9] = new Tone.AMSynth()
     this.channels[10] = new Tone.MonoSynth()
     this.channels[11] = new Tone.MonoSynth()
 
@@ -43,20 +43,19 @@ function Synthetiser (pilot) {
     this.masters.limiter = new Tone.Limiter(-12)
     this.masters.volume = new Tone.Volume(-12)
 
-    // Connect instruments to effects
+    // Connect instruments to distortion
     for (const id in this.channels) {
       const channel = this.channels[id]
       for (const i in this.effects) {
         const effect = this.effects[i]
-        channel.connect(effect)
+        channel.connect(this.effects.distortion)
       }
     }
-    // Connect effects to Master
-    for (const i in this.effects) {
-      this.effects[i].connect(this.masters.equalizer)
-      this.effects[i].wet.value = 0
-    }
 
+    this.effects.distortion.connect(this.effects.chorus)
+    this.effects.chorus.connect(this.effects.reverb)
+    this.effects.reverb.connect(this.effects.feedback)
+    this.effects.feedback.connect(this.masters.equalizer)
     this.masters.equalizer.connect(this.masters.compressor)
     this.masters.compressor.connect(this.masters.limiter)
     this.masters.limiter.connect(this.masters.volume)
@@ -98,9 +97,9 @@ function Synthetiser (pilot) {
     if (!this.channels[data.channel]) { console.warn(`Unknown Channel: ${data.channel}`); return }
     if (isNaN(data.channel)) { console.warn(`Unknown Channel`); return }
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
-    if(['A','B','C','D','E','F','G','a','b','c','d','e','f','g'].indexOf(data.note) < 0){ console.warn(`Unknown Note`); return}
-    
-    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, 0.1)
+    if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
+
+    this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, data.length)
 
     pilot.terminal.updateChannel(data)
   }
@@ -159,7 +158,7 @@ function Synthetiser (pilot) {
     }
 
     // Channel
-    const channel = clamp(parseInt(str36int(msg.substr(0, 1))), 0, 16)
+    const channel = clamp(parseInt(int36(msg.substr(0, 1))), 0, 16)
     const cmd = msg.substr(1, 3).toLowerCase()
     const val = msg.substr(4)
     if (cmd === 'env') {
@@ -174,22 +173,24 @@ function Synthetiser (pilot) {
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
     const sharp = note.toLowerCase() === note ? '#' : ''
-    return { isNote: true, channel: channel, octave: octave, note: note, sharp: sharp, string: `${octave}${note}` }
+    const velocity = 1
+    const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
+    return { isNote: true, channel: channel, octave: octave, note: note, sharp: sharp, string: `${octave}${note}`, length: length }
   }
 
   function parseEnv (channel, msg) {
     if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-    const attack = str36int(msg.substr(0, 1)) / 15
-    const decay = str36int(msg.substr(1, 1)) / 15
-    const sustain = str36int(msg.substr(2, 1)) / 15
-    const release = str36int(msg.substr(3, 1)) / 15
+    const attack = int36(msg.substr(0, 1)) / 15
+    const decay = int36(msg.substr(1, 1)) / 15
+    const sustain = int36(msg.substr(2, 1)) / 15
+    const release = int36(msg.substr(3, 1)) / 15
     return { isEnv: true, channel: channel, attack: attack, decay: decay, sustain: sustain, release: release, string: `env` }
   }
 
   function parseEffect (name, msg) {
     if (msg.length !== 2) { console.warn(`Misformatted effect`, msg); return }
-    const wet = str36int(msg.substr(0, 1)) / 15
-    const value = str36int(msg.substr(1, 1)) / 15
+    const wet = int36(msg.substr(0, 1)) / 15
+    const value = int36(msg.substr(1, 1)) / 15
     return { isEffect: true, name: name, wet: wet, value: value }
   }
 
@@ -209,8 +210,11 @@ function Synthetiser (pilot) {
     return { equ: 'equalizer', com: 'compressor', lim: 'limiter', vol: 'volume' }[cmd]
   }
 
-  function int36str (val) { return val.toString(36) }
-  function str36int (val) { return parseInt(val, 36) }
+  function from16 (str) { return (int36(str) / 15) }
+  function to16 (float) { return str36(Math.floor(float * 15)) }
+  function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }
+  function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`) }
+
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
 

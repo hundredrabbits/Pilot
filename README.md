@@ -72,6 +72,7 @@ Just use ffmpeg.
 
 ## TODOs
 
+- Display Chords
 - Implement the `wav` command.
 - Implement note length.
 - Implement note velocity.
