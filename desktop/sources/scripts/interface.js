@@ -32,6 +32,8 @@ function Interface (id, synth) {
     host.appendChild(this.el)
   }
 
+  // Run
+
   this.run = function (msg) {
     const channel = `${msg}`.substr(0, 1)
     if (int36(channel) === id) {
@@ -77,27 +79,44 @@ function Interface (id, synth) {
     this.update(data)
   }
 
-  this.update = function () {
-    this.updateEnv()
-    this.updateOsc()
-    this.updateOct()
+  // Updates
+
+  this.update = function (data) {
+    setClass(this.el, data ? 'active' : '')
+    this.updateEnv(data)
+    this.updateOsc(data)
+    this.updateOct(data)
   }
 
-  this.updateEnv = function () {
-    this.env_el.innerHTML = `${to16(this.synth.envelope.attack)}${to16(this.synth.envelope.decay)}${to16(this.synth.envelope.sustain)}${to16(this.synth.envelope.release)}`
+  this.updateEnv = function (data) {
+    setContent(this.env_el, `${to16(this.synth.envelope.attack)}${to16(this.synth.envelope.decay)}${to16(this.synth.envelope.sustain)}${to16(this.synth.envelope.release)}`)
   }
 
-  this.updateOsc = function () {
-    this.wav_el.innerHTML = `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 2) : '--'}`
-    this.mod_el.innerHTML = `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 2) : '--'}`
+  this.updateOsc = function (data) {
+    setContent(this.wav_el, `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 2) : '--'}`)
+    setContent(this.mod_el, `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 2) : '--'}`)
   }
 
   this.updateOct = function (data) {
     let html = ''
     for (let i = 0; i < 8; i++) {
-      html += (data && data.note && i === data.octave ? '<span>' + data.note + '</span>' : '.')
+      html += (data && data.note && i === data.octave ? data.note : '.')
     }
-    this.oct_el.innerHTML = html
+    setContent(this.oct_el, html)
+  }
+
+  // Dom Tools
+
+  function setClass (el, cl) {
+    if (el.className !== cl) {
+      el.className = cl
+    }
+  }
+
+  function setContent (el, ct) {
+    if (el.innerHTML !== ct) {
+      el.innerHTML = ct
+    }
   }
 
   // Parsers
