@@ -7,9 +7,9 @@ let isShown = true
 
 app.on('ready', () => {
   app.win = new BrowserWindow({
-    width: 480,
+    width: 490,
     height: 190,
-    minWidth: 480,
+    minWidth: 490,
     minHeight: 190,
     icon: __dirname + '/' + { darwin: 'icon.icns', linux: 'icon.png', win32: 'icon.ico' }[process.platform] || 'icon.ico',
     resizable: true,

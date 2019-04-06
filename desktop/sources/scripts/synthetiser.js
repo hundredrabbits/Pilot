@@ -39,7 +39,7 @@ function Synthetiser (pilot) {
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     })
 
-    // FM
+    // AM
     this.channels[4] = new Tone.AMSynth({
       'modulationIndex': 0,
       'oscillator': { 'type': 'sine4' },
@@ -65,15 +65,51 @@ function Synthetiser (pilot) {
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     })
 
-    // this.channels[8] = new Tone.MonoSynth()
-    // this.channels[9] = new Tone.MonoSynth()
-    // this.channels[10] = new Tone.MetalSynth()
-    // this.channels[11] = new Tone.MetalSynth()
-
-    // this.channels[12] = new Tone.PluckSynth()
-    // this.channels[13] = new Tone.PluckSynth()
-    // this.channels[14] = new Tone.MembraneSynth()
-    // this.channels[15] = new Tone.MembraneSynth()
+    // AM
+    this.channels[8] = new Tone.FMSynth({
+      'modulationIndex': 0,
+      'oscillator': { 'type': 'sine4' },
+      'modulation': { 'type': 'square4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[9] = new Tone.FMSynth({
+      'modulationIndex': 10,
+      'oscillator': { 'type': 'square4' },
+      'modulation': { 'type': 'triangle4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[10] = new Tone.FMSynth({
+      'modulationIndex': 20,
+      'oscillator': { 'type': 'triangle4' },
+      'modulation': { 'type': 'square4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[11] = new Tone.FMSynth({
+      'modulationIndex': 40,
+      'oscillator': { 'type': 'square4' },
+      'modulation': { 'type': 'sine4' },
+      'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[12] = new Tone.MembraneSynth({
+      'octaves': 5,
+      'oscillator': { 'type': 'sine' },
+      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[13] = new Tone.MembraneSynth({
+      'octaves': 10,
+      'oscillator': { 'type': 'sine8' },
+      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[14] = new Tone.MembraneSynth({
+      'octaves': 15,
+      'oscillator': { 'type': 'triangle8' },
+      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
+    this.channels[15] = new Tone.MembraneSynth({
+      'octaves': 20,
+      'oscillator': { 'type': 'square8' },
+      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+    })
 
     // Effects
     this.effects.distortion = new Tone.Distortion(0)

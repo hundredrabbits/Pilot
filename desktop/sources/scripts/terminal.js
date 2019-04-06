@@ -99,7 +99,7 @@ function Terminal (pilot) {
   }
 
   this._osc = function (synth) {
-    return `<span>${synth.oscillator._oscillator.type.substr(0, 2)}/${synth.modulation._oscillator.type.substr(0, 2)}</span>`
+    return `<span>${synth.oscillator ? synth.oscillator._oscillator.type.substr(0, 2) : '--'}/${synth.modulation ? synth.modulation._oscillator.type.substr(0, 2) : '--'}</span>`
   }
 
   this._envelope = function (env) {
