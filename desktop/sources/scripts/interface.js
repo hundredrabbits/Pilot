@@ -40,6 +40,7 @@ function Interface (id, synth) {
   this.update = function () {
     this.updateEnv()
     this.updateOsc()
+    this.updateOct()
   }
 
   this.updateEnv = function () {
@@ -49,6 +50,14 @@ function Interface (id, synth) {
   this.updateOsc = function () {
     this.wav_el.innerHTML = `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 2) : '--'}`
     this.mod_el.innerHTML = `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 2) : '--'}`
+  }
+
+  this.updateOct = function (data) {
+    let html = ''
+    for (let i = 0; i < 8; i++) {
+      html += (data && data.note && i === data.octave ? '<span>' + data.note + '</span>' : '.')
+    }
+    this.oct_el.innerHTML = html
   }
 
   function to16 (float) { return str36(Math.floor(float * 15)) }
