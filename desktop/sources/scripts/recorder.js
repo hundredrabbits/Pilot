@@ -23,9 +23,6 @@ function Recorder (pilot) {
     pilot.synthetiser.recorder.onstop = evt => {
       const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
       pilot.recorder.save(blob)
-      const url = URL.createObjectURL(blob)
-      const audio = new Audio(url)
-      audio.play()
     }
 
     pilot.synthetiser.recorder.ondataavailable = evt => {

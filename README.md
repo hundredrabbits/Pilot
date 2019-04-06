@@ -82,6 +82,7 @@ Just use ffmpeg.
 - Implement masters.
 - Implement `clear` command.
 - Draw TTF graphics for channels.
+- Create instrument class.
 
 ## Extras
 
