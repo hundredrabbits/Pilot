@@ -105,20 +105,6 @@ function Interface (id, synth) {
     setContent(this.oct_el, html)
   }
 
-  // Dom Tools
-
-  function setClass (el, cl) {
-    if (el.className !== cl) {
-      el.className = cl
-    }
-  }
-
-  function setContent (el, ct) {
-    if (el.innerHTML !== ct) {
-      el.innerHTML = ct
-    }
-  }
-
   // Parsers
 
   function parse (msg) {
@@ -158,10 +144,15 @@ function Interface (id, synth) {
     return { isWav: true, value: value, string: `wav` }
   }
 
+  // Helpers
   function to16 (float) { return str36(Math.floor(float * 15)) }
   function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }
   function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`) }
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
+
+  // Dom Tools
+  function setClass (el, cl) { if (el.className !== cl) { el.className = cl } }
+  function setContent (el, ct) { if (el.innerHTML !== ct) { el.innerHTML = ct } }
 }
 
 module.exports = Interface
