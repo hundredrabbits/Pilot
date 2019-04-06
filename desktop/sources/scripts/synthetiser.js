@@ -187,7 +187,7 @@ function Synthetiser (pilot) {
 
     this.channels[data.channel].triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, data.length)
 
-    pilot.terminal.updateChannel(data)
+    pilot.mixer.updateChannel(data)
   }
 
   this.setEnv = function (data) {
@@ -198,7 +198,7 @@ function Synthetiser (pilot) {
     this.channels[data.channel].envelope.sustain = data.sustain
     this.channels[data.channel].envelope.release = data.release
 
-    pilot.terminal.updateChannel(data)
+    pilot.mixer.updateChannel(data)
   }
 
   this.setWav = function (data) {
@@ -206,7 +206,7 @@ function Synthetiser (pilot) {
 
     this.channels[data.channel].oscillator._oscillator.set('type', data.value)
 
-    pilot.terminal.updateChannel(data)
+    pilot.mixer.updateChannel(data)
   }
 
   this.setEffect = function (data) {
@@ -223,7 +223,7 @@ function Synthetiser (pilot) {
     } else if (data.name === 'feedback') {
       this.effects[data.name].delayTime.value = data.value
     }
-    pilot.terminal.updateEffect(data)
+    pilot.mixer.updateEffect(data)
   }
 
   this.setMaster = function (data) {
@@ -233,7 +233,7 @@ function Synthetiser (pilot) {
       console.log(data.value)
       // this.masters[data.name].unmutedVolume = data.value
     }
-    pilot.terminal.updateMaster(data)
+    pilot.mixer.updateMaster(data)
   }
 
   // Parsers

@@ -1,8 +1,8 @@
 'use strict'
 
-function Terminal (pilot) {
+function Mixer (pilot) {
   this.el = document.createElement('div')
-  this.el.id = 'terminal'
+  this.el.id = 'mixer'
   this.display = document.createElement('div')
   this.display.id = 'display'
   this.input = document.createElement('input')
@@ -189,4 +189,4 @@ function Terminal (pilot) {
   function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`) }
 }
 
-module.exports = Terminal
+module.exports = Mixer

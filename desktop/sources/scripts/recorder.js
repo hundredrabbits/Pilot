@@ -37,14 +37,14 @@ function Recorder (pilot) {
     this.isRecording = true
     chunks = []
     pilot.synthetiser.recorder.start()
-    pilot.terminal.setMode('recording')
+    pilot.mixer.setMode('recording')
   }
 
   this.stop = function () {
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
     pilot.synthetiser.recorder.stop()
-    pilot.terminal.setMode()
+    pilot.mixer.setMode()
   }
 
   this.toggle = function () {

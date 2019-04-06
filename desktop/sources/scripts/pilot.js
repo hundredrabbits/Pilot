@@ -1,13 +1,13 @@
 'use strict'
 
 const Listener = require('./listener')
-const Terminal = require('./terminal')
+const Mixer = require('./mixer')
 const Synthetiser = require('./synthetiser')
 const Recorder = require('./recorder')
 
 function Pilot () {
   this.listener = null
-  this.terminal = null
+  this.mixer = null
   this.synthetiser = null
   this.recorder = null
   this.controller = new Controller()
@@ -20,7 +20,7 @@ function Pilot () {
     console.info('Pilot is installing..')
 
     this.synthetiser = new Synthetiser(this)
-    this.terminal = new Terminal(this)
+    this.mixer = new Mixer(this)
     this.listener = new Listener(this)
     this.recorder = new Recorder(this)
 
@@ -28,14 +28,14 @@ function Pilot () {
 
     this.theme.install()
     this.synthetiser.install()
-    this.terminal.install(this.el)
-    this.recorder.install(this.terminal.el)
+    this.mixer.install(this.el)
+    this.recorder.install(this.mixer.el)
   }
 
   this.start = function () {
     console.info('Pilot is starting..')
     this.synthetiser.start()
-    this.terminal.start()
+    this.mixer.start()
     this.theme.start()
   }
 }
