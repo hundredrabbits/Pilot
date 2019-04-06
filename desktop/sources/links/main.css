@@ -1,12 +1,8 @@
 body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms;}
 
-#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase;}
+#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 2}
 #mixer input { padding: 0px 5px 0px 18px; width: calc(100vw - 70px); background: transparent; color: white; }
-#mixer span { color:white; }
+#mixer span { color:white; margin-right:5px; }
 #mixer b { font-family: 'input_mono_medium'; font-weight: normal;}
-#mixer #display {}
-#mixer #display div { background-color: transparent; -webkit-transition: background-color 10ms linear; padding:0px 2px;  }
-#mixer #display > .wrapper { display: inline-block;vertical-align: top; float:left; }
-#mixer #display #chwr { columns: 2 }
 #mixer #recorder { position: absolute; bottom: 0px;padding: 0px 5px;font-size: 16px;text-indent: -2px; color:#666;}
 #mixer.recording #recorder { color:var(--b_inv) !important; animation: blink 500ms linear infinite; }

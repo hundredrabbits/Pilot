@@ -82,7 +82,8 @@ Just use ffmpeg.
 - Implement masters.
 - Implement `clear` command.
 - Draw TTF graphics for channels.
-- Create instrument class.
+- Create synth interface class.
+- Add `saw` shapes.
 
 ## Extras
 
