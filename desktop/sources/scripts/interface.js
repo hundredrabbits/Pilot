@@ -27,10 +27,7 @@ function Interface (id, synth) {
   }
 
   this.start = function () {
-    // set Osc
-    const wav = wavNames[id % wavNames.length]
-    const mod = wavNames[(Math.floor(id / 3) + 6) % wavNames.length]
-    this.setOsc({ wav: wav, mod: mod })
+
   }
 
   // Run
@@ -39,8 +36,7 @@ function Interface (id, synth) {
     const channel = `${msg}`.substr(0, 1)
     if (int36(channel) === id) {
       this.operate(`${msg}`.substr(1))
-    } else {
-      this.update()
+      setTimeout(() => { this.update() },50)
     }
   }
 
@@ -86,7 +82,7 @@ function Interface (id, synth) {
   // Updates
 
   this.update = function (data) {
-    setClass(this.el, data && data.isNote ? 'channel note active' : data ? 'channel setting active' : '')
+    setClass(this.el, data && data.isNote ? 'channel note active' : data ? 'channel setting active' : 'channel')
     this.updateEnv(data)
     this.updateOsc(data)
     this.updateOct(data)
@@ -163,6 +159,7 @@ function Interface (id, synth) {
   }
 
   // Helpers
+  function from16 (str) { return (int36(str) / 15) }
   function to16 (float) { return str36(Math.floor(float * 15)) }
   function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }
   function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str}`) }
