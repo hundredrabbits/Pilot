@@ -31,7 +31,7 @@ The Play commands allows you to play synth notes.
 
 #### Settings
 
-The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `si`, `4i`, `8i`, `tr`, `4r`, `8r`, `sq`, `4q` and `8q`.
+The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `si`, `4i`, `8i`, `tr`, `4r`, `8r`, `sq`, `4q` `8q`, `sw`, `4w` and `8w`.
 
 | Command     | Channel | Name         | Info |
 | :-          | :-      | :-           | :-   |                    
@@ -81,9 +81,7 @@ Just use ffmpeg.
 - Design icon.
 - Push builds to Itch.
 - Recycle Marabu into a UDP sequencer.
-- Implement masters.
 - Implement `clear` command.
-- Add `saw` shapes.
 
 ## Extras
 
