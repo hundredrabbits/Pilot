@@ -168,6 +168,9 @@ function Mixer (pilot) {
 
   this.start = function () {
     console.log('Synthetiser', 'Starting..')
+    for (const id in this.channels) {
+      this.channels[id].start()
+    }
     this.run()
   }
 

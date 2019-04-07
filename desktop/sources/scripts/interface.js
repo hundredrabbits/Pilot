@@ -26,6 +26,13 @@ function Interface (id, synth) {
     host.appendChild(this.el)
   }
 
+  this.start = function () {
+    // set Osc
+    const wav = wavNames[id % wavNames.length]
+    const mod = wavNames[(Math.floor(id / 3) + 6) % wavNames.length]
+    this.setOsc({ wav: wav, mod: mod })
+  }
+
   // Run
 
   this.run = function (msg) {
@@ -79,7 +86,7 @@ function Interface (id, synth) {
   // Updates
 
   this.update = function (data) {
-    setClass(this.el, data ? 'active' : '')
+    setClass(this.el, data && data.isNote ? 'channel note active' : data ? 'channel setting active' : '')
     this.updateEnv(data)
     this.updateOsc(data)
     this.updateOct(data)
@@ -136,43 +143,23 @@ function Interface (id, synth) {
 
   function parseOsc (msg) {
     if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-
     return { isOsc: true, wav: (msg.length == 2 || msg.length == 4 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length == 4 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
   }
 
   // Wave Codes
+  const wavCodes = ['si', 'tr', 'sq', '4i', '4r', '4q', '8i', '8r', '8q']
+  const wavNames = ['sine', 'triangle', 'square', 'sine4', 'triangle4', 'square4', 'sine8', 'triangle8', 'square8']
+
   function wavCode (n) {
     const name = n.toLowerCase()
-    if (name === 'sine') { return 'si' }
-    if (name === 'saw') { return 'sw' }
-    if (name === 'triangle') { return 'tr' }
-    if (name === 'square') { return 'sq' }
-    if (name === 'sine4') { return '4i' }
-    if (name === 'saw4') { return '4w' }
-    if (name === 'triangle4') { return '4r' }
-    if (name === 'square4') { return '4q' }
-    if (name === 'sine8') { return '8i' }
-    if (name === 'saw8') { return '8w' }
-    if (name === 'triangle8') { return '8r' }
-    if (name === 'square8') { return '8q' }
-    return '??'
+    const index = wavNames.indexOf(name)
+    return index > -1 ? wavCodes[index] : '??'
   }
 
   function wavName (c) {
     const code = c.toLowerCase()
-    if (code === 'si') { return 'sine' }
-    if (code === 'sw') { return 'saw' }
-    if (code === 'tr') { return 'triangle' }
-    if (code === 'sq') { return 'square' }
-    if (code === '4i') { return 'sine4' }
-    if (code === '4w') { return 'saw4' }
-    if (code === '4r') { return 'triangle4' }
-    if (code === '4q') { return 'square4' }
-    if (code === '8i') { return 'sine4' }
-    if (code === '8w') { return 'saw4' }
-    if (code === '8r') { return 'triangle4' }
-    if (code === '8q') { return 'square4' }
-    return 'sine'
+    const index = wavCodes.indexOf(code)
+    return index > -1 ? wavNames[index] : 'sine'
   }
 
   // Helpers

@@ -4,6 +4,9 @@ body { background:var(--background) !important; color:var(--f_high) !important; 
 #mixer #display div.ctrl { background-color: var(--b_inv) !important; -webkit-transition: background-color 10ms linear; }
 #mixer #display div.ctrl span { color:var(--f_inv) !important}
 
+#mixer > .channel.note.active .cid { background-color: var(--b_med) !important; -webkit-transition: background-color 10ms linear; color:var(--background) !important;; }
+#mixer > .channel.setting.active .cid { background-color: var(--b_inv) !important; -webkit-transition: background-color 10ms linear; color:var(--background) !important;; }
+
 @keyframes blink {  
   0% { color: var(--b_inv) !important; }
   100% { color: black; }

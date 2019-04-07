@@ -1,7 +1,7 @@
 body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms;}
 
 #mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 2}
-#mixer span { color:white; margin-right:5px; }
+#mixer span { color:white;padding: 0px 2.55px; }
 #mixer b { font-family: 'input_mono_medium'; font-weight: normal;}
 
 #commander input { padding: 0px 5px 0px 18px; width: calc(100vw - 70px); background: transparent; color: white; }
