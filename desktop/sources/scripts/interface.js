@@ -139,7 +139,7 @@ function Interface (id, synth) {
 
   this.updateOct = function (data) {
     if (!data) { return }
-    setContent(this.oct_el, data ? data.string : '--')
+    setContent(this.oct_el, data && data.isNote ? data.string : '--')
   }
 
   // Parsers
@@ -149,8 +149,7 @@ function Interface (id, synth) {
     const val = msg.substr(3)
     if (cmd === 'osc') {
       return parseOsc(val)
-    }
-    if (cmd === 'env') {
+    } else if (cmd === 'env') {
       return parseEnv(val)
     }
     return parseNote(msg)
@@ -158,11 +157,13 @@ function Interface (id, synth) {
 
   function parseNote (msg) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
+
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
     const sharp = note.toLowerCase() === note ? '#' : ''
     const velocity = 1
     const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
+    console.log(msg, `${octave}${note}`)
     return { isNote: true, octave: octave, note: note, sharp: sharp, string: `${octave}${note}`, length: length }
   }
 
@@ -181,8 +182,8 @@ function Interface (id, synth) {
   }
 
   // Wave Codes
-  const wavCodes = ['si', 'tr', 'sq', 'sw', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
-  const wavNames = ['sine', 'triangle', 'square', 'sawtooth', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
+  const wavCodes = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
+  const wavNames = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
   function wavCode (n) {
     const name = n.toLowerCase()
