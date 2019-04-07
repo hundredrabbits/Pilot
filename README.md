@@ -13,6 +13,8 @@ npm install
 npm start
 ```
 
+<img src='https://raw.githubusercontent.com/hundredrabbits/Pilot/master/resources/preview.jpg' width="600"/>
+
 ## Commands
 
 Pilot has 16 voices, and 8 effects. Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
@@ -62,6 +64,8 @@ Just use ffmpeg.
 ```
 ~/Documents/ffmpeg -i last.{ogg,mp3}  
 ```
+
+<img src='https://raw.githubusercontent.com/hundredrabbits/Pilot/master/resources/device.jpg' width="600"/>
 
 ## TODOs
 
