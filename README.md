@@ -31,7 +31,7 @@ The Play commands allows you to play synth notes.
 
 #### Settings
 
-The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `sin`, `si4`, `si8`, `squ`, `sq4`, `sq8`, `tri`, `tr4` and `tr8`.
+The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `si`, `4i`, `8i`, `tr`, `4r`, `8r`, `sq`, `4q` and `8q`.
 
 | Command     | Channel | Name         | Info |
 | :-          | :-      | :-           | :-   |                    

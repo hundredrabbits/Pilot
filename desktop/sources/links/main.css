@@ -1,8 +1,11 @@
-body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms;}
+body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms; overflow: hidden;}
 
 #mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 2}
 #mixer span { color:white;padding: 0px 2.55px; }
-#mixer b { font-family: 'input_mono_medium'; font-weight: normal;}
+
+#mixer > div { position: relative; max-width: 135px}
+#mixer > div .cid { font-family: 'input_mono_medium'; font-weight: normal; }
+#mixer > div canvas { position: absolute; background:black; width:30px; height:15px; right:0px; top:0px; padding:0px 5px;}
 
 #commander input { padding: 0px 5px 0px 18px; width: calc(100vw - 70px); background: transparent; color: white; }
 #mixer.recording #recorder { color:var(--b_inv) !important; animation: blink 500ms linear infinite; }

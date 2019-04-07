@@ -128,29 +128,30 @@ function Mixer (pilot) {
     }))
 
     // Effects
-    // this.effects.distortion = new Tone.Distortion(0)
-    // this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
-    // this.effects.reverb = new Tone.JCReverb(0)
-    // this.effects.feedback = new Tone.FeedbackDelay(0.5)
-
-    // Turn off all effects
-    // for (const i in this.effects) {
-    //   this.effects[i].wet.value = 0
-    // }
-    // this.effects.distortion.connect(this.effects.chorus)
-    // this.effects.chorus.connect(this.effects.reverb)
-    // this.effects.reverb.connect(this.effects.feedback)
-    // this.effects.feedback.connect(this.masters.equalizer)
+    this.effects.distortion = new Tone.Distortion(0.05)
+    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
+    this.effects.reverb = new Tone.JCReverb(0.2)
+    this.effects.feedback = new Tone.FeedbackDelay(0.5)
 
     // Mastering
-    this.masters.equalizer = new Tone.EQ3(2, -2, 3)
-    this.masters.compressor = new Tone.Compressor(-30, 3)
+    this.masters.equalizer = new Tone.EQ3(20, -10, 20)
+    this.masters.compressor = new Tone.Compressor(-10, 75)
     this.masters.limiter = new Tone.Limiter(-12)
-    this.masters.volume = new Tone.Volume(-12)
+    this.masters.volume = new Tone.Volume(-10)
+
+    // Turn off all effects
+    for (const i in this.effects) {
+      this.effects[i].wet.value = 0
+    }
+
+    this.effects.distortion.connect(this.effects.chorus)
+    this.effects.chorus.connect(this.effects.reverb)
+    this.effects.reverb.connect(this.effects.feedback)
+    this.effects.feedback.connect(this.masters.equalizer)
 
     // Connect all instruments to master
     for (const id in this.channels) {
-      this.channels[id].synth.connect(this.masters.equalizer)
+      this.channels[id].connect(this.effects.distortion)
     }
 
     this.masters.equalizer.connect(this.masters.compressor)

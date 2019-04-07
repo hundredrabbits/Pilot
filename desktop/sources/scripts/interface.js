@@ -1,5 +1,7 @@
 'use strict'
 
+const Tone = require('tone')
+
 function Interface (id, synth) {
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
@@ -13,6 +15,21 @@ function Interface (id, synth) {
   this.oct_el = document.createElement('span')
   this.oct_el.className = `oct`
 
+  this.canvas = document.createElement('canvas')
+
+  const canvasWidth = 30 * 2
+  const canvasHeight = 15 * 2
+
+  this.canvas.width = canvasWidth
+  this.canvas.height = canvasHeight
+
+  this.canvas.style.width = (canvasWidth / 2) + 'px'
+  this.canvas.style.height = (canvasHeight / 2) + 'px'
+
+  const waveform = new Tone.Waveform(64)
+
+  let context = this.canvas.getContext('2d')
+
   this.synth = synth
 
   this.install = function (host) {
@@ -22,12 +39,38 @@ function Interface (id, synth) {
     this.el.appendChild(this.env_el)
     this.el.appendChild(this.osc_el)
     this.el.appendChild(this.oct_el)
+    this.el.appendChild(this.canvas)
 
+    this.synth.fan(waveform)
     host.appendChild(this.el)
   }
 
   this.start = function () {
+    this.update()
+    loop()
+  }
 
+  function drawWaveform (values) {
+    context.clearRect(0, 0, canvasWidth, canvasHeight)
+    context.beginPath()
+    context.lineJoin = 'round'
+    context.lineWidth = 2
+    context.strokeStyle = 'white'
+    context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
+    for (let i = 1, len = values.length; i < len; i++) {
+      context.lineTo(parseInt(canvasWidth * (i / len)), parseInt(((values[i] + 1) / 2) * canvasHeight))
+    }
+    context.stroke()
+  }
+
+  function loop () {
+    requestAnimationFrame(loop)
+    var waveformValues = waveform.getValue()
+    drawWaveform(waveformValues)
+  }
+
+  this.connect = function (node) {
+    this.synth.connect(node)
   }
 
   // Run
@@ -57,15 +100,15 @@ function Interface (id, synth) {
   this.playNote = function (data) {
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
     if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
-    this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, clamp(data.length, 0.01, 0.99))
+    this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, clamp(data.length, 0.1, 0.9))
     this.update(data)
   }
 
   this.setEnv = function (data) {
-    this.synth.envelope.attack = clamp(data.attack, 0.01, 0.9)
-    this.synth.envelope.decay = clamp(data.decay, 0.01, 0.9)
-    this.synth.envelope.sustain = clamp(data.sustain, 0.01, 0.9)
-    this.synth.envelope.release = clamp(data.release, 0.01, 0.9)
+    this.synth.envelope.attack = clamp(data.attack, 0.1, 0.9)
+    this.synth.envelope.decay = clamp(data.decay, 0.1, 0.9)
+    this.synth.envelope.sustain = clamp(data.sustain, 0.1, 0.9)
+    this.synth.envelope.release = clamp(data.release, 0.1, 0.9)
     this.update(data)
   }
 
@@ -82,7 +125,7 @@ function Interface (id, synth) {
   // Updates
 
   this.update = function (data) {
-    setClass(this.el, data && data.isNote ? 'channel note active' : data ? 'channel setting active' : 'channel')
+    setClass(this.el, data && data.isNote ? 'channel note active' : data && data.isEnv ? 'channel envelope active' : data && data.isOsc ? 'channel oscillator active' : 'channel')
     this.updateEnv(data)
     this.updateOsc(data)
     this.updateOct(data)
@@ -97,11 +140,8 @@ function Interface (id, synth) {
   }
 
   this.updateOct = function (data) {
-    let html = ''
-    for (let i = 0; i < 8; i++) {
-      html += (data && data.note && i === data.octave ? data.note : '.')
-    }
-    setContent(this.oct_el, html)
+    if (!data) { return }
+    setContent(this.oct_el, data.string)
   }
 
   // Parsers
