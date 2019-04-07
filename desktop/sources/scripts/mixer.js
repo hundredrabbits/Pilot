@@ -164,7 +164,7 @@ function Mixer (pilot) {
       this.effects[id].install(this.el)
     }
 
-    this.effects.distortion.setValue({ wet: 0.5, depth: 0.5 })
+    this.effects.distortion.setEffect({ wet: 0.5, depth: 0.5 })
 
     host.appendChild(this.el)
   }

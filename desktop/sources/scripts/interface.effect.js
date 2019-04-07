@@ -72,25 +72,27 @@ function EffectInterface (id, effect) {
   // Run
 
   this.run = function (msg) {
-    // console.log(id, msg)
+    if (!msg || msg.substr(0, 3).toLowerCase() !== id) { return }
+
+    this.operate(`${msg}`.substr(3))
   }
 
   this.operate = function (msg) {
     const data = parse(`${msg}`)
-    console.log(msg, data)
+    if (!data) { console.warn(`Unknown data`); return }
+    this.setEffect(data)
   }
 
-  this.setValue = function (data) {
-    console.log(id, data)
+  this.setEffect = function (data) {
     this.effect.wet.value = data.wet
 
-    if (data.id === 'reverb') {
+    if (data.code === 'rev') {
       this.effect.roomSize.value = data.value
-    } else if (data.id === 'distortion') {
+    } else if (data.code === 'dis') {
       this.effect.distortion = data.value
-    } else if (data.id === 'chorus') {
+    } else if (data.code === 'cho') {
       this.effect.depth = data.value
-    } else if (data.id === 'feedback') {
+    } else if (data.code === 'fee') {
       this.effect.delayTime.value = data.value
     }
 
@@ -100,33 +102,32 @@ function EffectInterface (id, effect) {
   // Updates
 
   this.update = function (data) {
-    setClass(this.el, data && data.isNote ? 'channel note active' : data && data.isEnv ? 'channel envelope active' : data && data.isOsc ? 'channel oscillator active' : 'channel')
-    this.updateValue(data)
+    setClass(this.el, data && data.isEffect ? 'effect active' : 'effect')
+    this.updateEffect(data)
   }
 
-  this.updateValue = function (data) {
-    setContent(this.env_el, '??')
+  this.updateEffect = function (data) {
+    if (!data) { return }
+    let value = 0
+    if (data.code === 'rev') {
+      value = this.effect.roomSize.value
+    } else if (data.code === 'dis') {
+      value = this.effect.distortion
+    } else if (data.code === 'cho') {
+      value = this.effect.depth
+    } else if (data.code === 'fee') {
+      value = this.effect.delayTime.value
+    }
+    setContent(this.env_el, `${to16(this.effect.wet.value)}${to16(value)}`)
   }
 
   // Parsers
 
   function parse (msg) {
-    const cmd = msg.substr(0, 3).toLowerCase()
-    const val = msg.substr(3)
-    if (cmd === 'osc') {
-      return parseOsc(val)
-    }
-    if (cmd === 'env') {
-      return parseEnv(val)
-    }
-    return parseNote(msg)
-  }
-
-  function parseEffect (name, msg) {
     if (msg.length !== 2) { console.warn(`Misformatted effect`, msg); return }
     const wet = int36(msg.substr(0, 1)) / 15
     const value = int36(msg.substr(1, 1)) / 15
-    return { isEffect: true, name: name, wet: wet, value: value }
+    return { isEffect: true, code: id, wet: wet, value: value }
   }
 
   // Wave Codes

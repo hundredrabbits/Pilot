@@ -72,7 +72,6 @@ Just use ffmpeg.
 
 ## TODOs
 
-- Implement the `wav` command.
 - Implement note velocity.
 - Improve ORCA example to demonstrate chords.
 - Design icon.
@@ -80,8 +79,6 @@ Just use ffmpeg.
 - Recycle Marabu into a UDP sequencer.
 - Implement masters.
 - Implement `clear` command.
-- Draw TTF graphics for channels.
-- Create synth interface class.
 - Add `saw` shapes.
 
 ## Extras
