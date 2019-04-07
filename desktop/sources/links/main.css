@@ -1,6 +1,6 @@
 body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms; overflow: hidden;}
 
-#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 2}
+#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 3}
 #mixer span { color:white;padding: 0px 2.55px; }
 
 #mixer > div { position: relative; max-width: 135px}

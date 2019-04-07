@@ -2,6 +2,7 @@
 
 const Tone = require('tone')
 const Interface = require('./interface')
+const EffectInterface = require('./interface.effect')
 
 function Mixer (pilot) {
   this.el = document.createElement('div')
@@ -127,32 +128,25 @@ function Mixer (pilot) {
       'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
-    // Effects
-    this.effects.distortion = new Tone.Distortion(0.05)
-    this.effects.chorus = new Tone.Chorus(4, 2.5, 0.5)
-    this.effects.reverb = new Tone.JCReverb(0.2)
-    this.effects.feedback = new Tone.FeedbackDelay(0.5)
+    this.effects.distortion = new EffectInterface('dis', new Tone.Distortion(0.05))
+    this.effects.chorus = new EffectInterface('cho', new Tone.Chorus(4, 2.5, 0.5))
+    this.effects.reverb = new EffectInterface('rev', new Tone.JCReverb(0.2))
+    this.effects.feedback = new EffectInterface('fee', new Tone.FeedbackDelay(0.5))
 
+    // Connect
+    for (const id in this.channels) {
+      this.channels[id].connect(this.effects.distortion.effect)
+    }
     // Mastering
     this.masters.equalizer = new Tone.EQ3(20, -10, 20)
     this.masters.compressor = new Tone.Compressor(-10, 75)
     this.masters.limiter = new Tone.Limiter(-12)
     this.masters.volume = new Tone.Volume(-10)
 
-    // Turn off all effects
-    for (const i in this.effects) {
-      this.effects[i].wet.value = 0
-    }
-
-    this.effects.distortion.connect(this.effects.chorus)
-    this.effects.chorus.connect(this.effects.reverb)
-    this.effects.reverb.connect(this.effects.feedback)
+    this.effects.distortion.connect(this.effects.chorus.effect)
+    this.effects.chorus.connect(this.effects.reverb.effect)
+    this.effects.reverb.connect(this.effects.feedback.effect)
     this.effects.feedback.connect(this.masters.equalizer)
-
-    // Connect all instruments to master
-    for (const id in this.channels) {
-      this.channels[id].connect(this.effects.distortion)
-    }
 
     this.masters.equalizer.connect(this.masters.compressor)
     this.masters.compressor.connect(this.masters.limiter)
@@ -162,6 +156,11 @@ function Mixer (pilot) {
     // Add all instruments to dom
     for (const id in this.channels) {
       this.channels[id].install(this.el)
+    }
+
+    // Add all effects to dom
+    for (const id in this.effects) {
+      this.effects[id].install(this.el)
     }
 
     host.appendChild(this.el)
