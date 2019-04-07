@@ -8,8 +8,8 @@ function EffectInterface (id, effect) {
 
   this.cid_el = document.createElement('span')
   this.cid_el.className = `cid`
-  this.env_el = document.createElement('span')
-  this.env_el.className = `env`
+  this.val_el = document.createElement('span')
+  this.val_el.className = `val`
 
   this.canvas = document.createElement('canvas')
 
@@ -32,7 +32,7 @@ function EffectInterface (id, effect) {
     this.cid_el.innerHTML = `${id}`
 
     this.el.appendChild(this.cid_el)
-    this.el.appendChild(this.env_el)
+    this.el.appendChild(this.val_el)
     this.el.appendChild(this.canvas)
 
     this.effect.wet.value = 0
@@ -74,7 +74,10 @@ function EffectInterface (id, effect) {
   this.run = function (msg) {
     if (!msg || msg.substr(0, 3).toLowerCase() !== id) { return }
 
-    this.operate(`${msg}`.substr(3))
+    if (msg.substr(0, 3).toLowerCase() === id) {
+      this.operate(`${msg}`.substr(3))
+      setTimeout(() => { this.update() }, 100)
+    }
   }
 
   this.operate = function (msg) {
@@ -118,7 +121,7 @@ function EffectInterface (id, effect) {
     } else if (data.code === 'fee') {
       value = this.effect.delayTime.value
     }
-    setContent(this.env_el, `${to16(this.effect.wet.value)}${to16(value)}`)
+    setContent(this.val_el, `${to16(this.effect.wet.value)}${to16(value)}`)
   }
 
   // Parsers

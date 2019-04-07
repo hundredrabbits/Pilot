@@ -181,8 +181,8 @@ function Interface (id, synth) {
   }
 
   // Wave Codes
-  const wavCodes = ['si', 'tr', 'sq', '4i', '4r', '4q', '8i', '8r', '8q']
-  const wavNames = ['sine', 'triangle', 'square', 'sine4', 'triangle4', 'square4', 'sine8', 'triangle8', 'square8']
+  const wavCodes = ['si', 'tr', 'sq', 'sw', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
+  const wavNames = ['sine', 'triangle', 'square', 'sawtooth', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
   function wavCode (n) {
     const name = n.toLowerCase()
