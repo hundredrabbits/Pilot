@@ -62,6 +62,10 @@ The Masters are applied at the end of the effects. The effect command format is 
 | `LIMf`      | All          | Limiter    | ..   | 
 | `VOLf`      | All          | Volume     | ..   | 
 
+## Record
+
+Press **cmd/ctrl+r** to record, and press it again to stop.
+
 ## Convert OGG to MP3
 
 Just use ffmpeg.

@@ -7,6 +7,7 @@ body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-h
 #mixer > div canvas { position: absolute; background:black; width:30px; height:15px; right:0px; top:0px; padding:0px 5px;}
 #mixer span { color:white;padding: 0px 2.55px; }
 
-#commander input { padding: 0px 5px 0px 18px; width: calc(100vw - 70px); background: transparent; color: white; }
-#mixer.recording #recorder { color:var(--b_inv) !important; animation: blink 500ms linear infinite; }
-#recorder { position: absolute; bottom: 0px;padding: 0px 5px;font-size: 16px;text-indent: -2px; color:#666;}
+#commander input { padding: 0px 5px 0px 2.5px; width: calc(100vw - 70px); background: transparent; color: white; }
+
+#pilot.recording #recorder { color:var(--b_inv) !important; animation: blink 500ms linear infinite; }
+#recorder {     position: absolute; bottom: 25px; padding: 0px 5px; font-size: 16px; text-indent: -2px; color: #333; right: 25px;}

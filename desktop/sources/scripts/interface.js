@@ -26,7 +26,7 @@ function Interface (id, synth) {
   this.canvas.style.width = (canvasWidth / 2) + 'px'
   this.canvas.style.height = (canvasHeight / 2) + 'px'
 
-  const waveform = new Tone.Waveform(64)
+  const waveform = new Tone.Waveform(512)
 
   let context = this.canvas.getContext('2d')
 
