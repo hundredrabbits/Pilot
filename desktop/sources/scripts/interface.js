@@ -36,7 +36,7 @@ function Interface (id, synth) {
     const channel = `${msg}`.substr(0, 1)
     if (int36(channel) === id) {
       this.operate(`${msg}`.substr(1))
-      setTimeout(() => { this.update() },50)
+      setTimeout(() => { this.update() }, 50)
     }
   }
 
@@ -57,15 +57,15 @@ function Interface (id, synth) {
   this.playNote = function (data) {
     if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
     if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
-    this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, data.length)
+    this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, clamp(data.length, 0.01, 0.99))
     this.update(data)
   }
 
   this.setEnv = function (data) {
-    this.synth.envelope.attack = data.attack
-    this.synth.envelope.decay = data.decay
-    this.synth.envelope.sustain = data.sustain
-    this.synth.envelope.release = data.release
+    this.synth.envelope.attack = clamp(data.attack, 0.01, 0.9)
+    this.synth.envelope.decay = clamp(data.decay, 0.01, 0.9)
+    this.synth.envelope.sustain = clamp(data.sustain, 0.01, 0.9)
+    this.synth.envelope.release = clamp(data.release, 0.01, 0.9)
     this.update(data)
   }
 
