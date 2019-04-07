@@ -67,11 +67,11 @@ function Interface (id, synth) {
   }
 
   this.setOsc = function (data) {
-    if (data.wav) {
+    if (data.wav && this.synth.oscillator) {
       this.synth.oscillator._oscillator.set('type', data.wav)
     }
-    if (data.mod) {
-      this.synth.oscillator._oscillator.set('type', data.mod)
+    if (data.mod && this.synth.modulation) {
+      this.synth.modulation._oscillator.set('type', data.mod)
     }
     this.update(data)
   }
