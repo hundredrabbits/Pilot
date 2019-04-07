@@ -16,16 +16,16 @@ function Recorder (pilot) {
   this.install = function (host) {
     console.log('Recorder', 'Installing..')
 
-    pilot.synthetiser.hook = Tone.context.createMediaStreamDestination()
-    pilot.synthetiser.recorder = new MediaRecorder(pilot.synthetiser.hook.stream)
-    pilot.synthetiser.masters.volume.connect(pilot.synthetiser.hook)
+    pilot.mixer.hook = Tone.context.createMediaStreamDestination()
+    pilot.mixer.recorder = new MediaRecorder(pilot.mixer.hook.stream)
+    pilot.mixer.masters.volume.connect(pilot.mixer.hook)
 
-    pilot.synthetiser.recorder.onstop = evt => {
+    pilot.mixer.recorder.onstop = evt => {
       const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
       pilot.recorder.save(blob)
     }
 
-    pilot.synthetiser.recorder.ondataavailable = evt => {
+    pilot.mixer.recorder.ondataavailable = evt => {
       chunks.push(evt.data)
     }
 
@@ -36,14 +36,14 @@ function Recorder (pilot) {
     console.log('Recorder', 'Starting..')
     this.isRecording = true
     chunks = []
-    pilot.synthetiser.recorder.start()
+    pilot.mixer.recorder.start()
     pilot.mixer.setMode('recording')
   }
 
   this.stop = function () {
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
-    pilot.synthetiser.recorder.stop()
+    pilot.mixer.recorder.stop()
     pilot.mixer.setMode()
   }
 
