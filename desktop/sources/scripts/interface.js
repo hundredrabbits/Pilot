@@ -10,10 +10,6 @@ function Interface (id, synth) {
   this.env_el.className = `env`
   this.osc_el = document.createElement('span')
   this.osc_el.className = `osc`
-  this.wav_el = document.createElement('span')
-  this.wav_el.className = `wav`
-  this.mod_el = document.createElement('span')
-  this.mod_el.className = `mod`
   this.oct_el = document.createElement('span')
   this.oct_el.className = `oct`
 
@@ -24,8 +20,6 @@ function Interface (id, synth) {
 
     this.el.appendChild(this.cid_el)
     this.el.appendChild(this.env_el)
-    this.osc_el.appendChild(this.wav_el)
-    this.osc_el.appendChild(this.mod_el)
     this.el.appendChild(this.osc_el)
     this.el.appendChild(this.oct_el)
 
@@ -48,10 +42,8 @@ function Interface (id, synth) {
     if (!data) { console.warn(`Unknown data`); return }
     if (data.isEnv) {
       this.setEnv(data)
-    } else if (data.isWav) {
-      this.setWav(data)
-    } else if (data.isMod) {
-      this.setMod(data)
+    } else if (data.isOsc) {
+      this.setOsc(data)
     } else if (data.isNote) {
       this.playNote(data)
     } else {
@@ -74,8 +66,13 @@ function Interface (id, synth) {
     this.update(data)
   }
 
-  this.setWav = function (data) {
-    this.synth.oscillator._oscillator.set('type', data.value)
+  this.setOsc = function (data) {
+    if (data.wav) {
+      this.synth.oscillator._oscillator.set('type', data.wav)
+    }
+    if (data.mod) {
+      this.synth.oscillator._oscillator.set('type', data.mod)
+    }
     this.update(data)
   }
 
@@ -93,8 +90,7 @@ function Interface (id, synth) {
   }
 
   this.updateOsc = function (data) {
-    setContent(this.wav_el, `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 3) : '---'}`)
-    setContent(this.mod_el, `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 3) : '---'}`)
+    setContent(this.osc_el, `${this.synth.oscillator ? wavCode(this.synth.oscillator._oscillator.type) : '--'}${this.synth.modulation ? wavCode(this.synth.modulation._oscillator.type) : '--'}`)
   }
 
   this.updateOct = function (data) {
@@ -110,8 +106,8 @@ function Interface (id, synth) {
   function parse (msg) {
     const cmd = msg.substr(0, 3).toLowerCase()
     const val = msg.substr(3)
-    if (cmd === 'wav') {
-      return parseWav(val)
+    if (cmd === 'osc') {
+      return parseOsc(val)
     }
     if (cmd === 'env') {
       return parseEnv(val)
@@ -135,33 +131,35 @@ function Interface (id, synth) {
     const decay = int36(msg.substr(1, 1)) / 15
     const sustain = int36(msg.substr(2, 1)) / 15
     const release = int36(msg.substr(3, 1)) / 15
-    return { isEnv: true, attack: attack, decay: decay, sustain: sustain, release: release, string: `env` }
+    return { isEnv: true, attack: attack, decay: decay, sustain: sustain, release: release, string: 'env' }
   }
 
-  function parseWav (msg) {
+  function parseOsc (msg) {
     if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-    const value = 'f'
-    return { isWav: true, value: value, string: `wav` }
+
+    return { isOsc: true, wav: (msg.length == 2 || msg.length == 4 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length == 4 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
   }
 
   // Wave Codes
-  function wavCode (name) {
-    if (code === 'sine') { return 'si' }
-    if (code === 'saw') { return 'sw' }
-    if (code === 'triangle') { return 'tr' }
-    if (code === 'square') { return 'sq' }
-    if (code === 'sine4') { return '4i' }
-    if (code === 'saw4') { return '4w' }
-    if (code === 'triangle4') { return '4r' }
-    if (code === 'square4') { return '4q' }
-    if (code === 'sine4') { return '8i' }
-    if (code === 'saw4') { return '8w' }
-    if (code === 'triangle4') { return '8r' }
-    if (code === 'square4') { return '8q' }
-    return 'sine'
+  function wavCode (n) {
+    const name = n.toLowerCase()
+    if (name === 'sine') { return 'si' }
+    if (name === 'saw') { return 'sw' }
+    if (name === 'triangle') { return 'tr' }
+    if (name === 'square') { return 'sq' }
+    if (name === 'sine4') { return '4i' }
+    if (name === 'saw4') { return '4w' }
+    if (name === 'triangle4') { return '4r' }
+    if (name === 'square4') { return '4q' }
+    if (name === 'sine8') { return '8i' }
+    if (name === 'saw8') { return '8w' }
+    if (name === 'triangle8') { return '8r' }
+    if (name === 'square8') { return '8q' }
+    return '??'
   }
 
-  function wavName (code) {
+  function wavName (c) {
+    const code = c.toLowerCase()
     if (code === 'si') { return 'sine' }
     if (code === 'sw') { return 'saw' }
     if (code === 'tr') { return 'triangle' }

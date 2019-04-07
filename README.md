@@ -33,11 +33,10 @@ The Play commands allows you to play synth notes.
 
 The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `sin`, `si4`, `si8`, `squ`, `sq4`, `sq8`, `tri`, `tr4` and `tr8`.
 
-| Command     | Channel | Name       | Info |
-| :-          | :-      | :-         | :-   |                    
-| `0ENV056f`  | 0       | Envelope   | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
-| `1WAVtri`  | 1        | Waveform   | Set **Waveform**:Triangle(TODO) |
-| `1MODsi8`  | 1        | Waveform   | Set **Waveform**:Sine8(TODO)    |
+| Command     | Channel | Name         | Info |
+| :-          | :-      | :-           | :-   |                    
+| `0ENV056f`  | 0       | Envelope     | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
+| `1OSCsisq`  | 1       | Oscilloscope | Set **Osc1**:Sine, **Osc2**:Square |
 
 ### Global
 
