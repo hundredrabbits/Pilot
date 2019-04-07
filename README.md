@@ -15,7 +15,7 @@ npm start
 
 ## Commands
 
-Pilot has 16 voices, 4 effects and 4 mastering filters. Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
+Pilot has 16 voices, and 8 effects. Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
 
 ### Channel
 
@@ -31,7 +31,7 @@ The Play commands allows you to play synth notes.
 
 #### Settings
 
-The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `si`, `4i`, `8i`, `tr`, `4r`, `8r`, `sq`, `4q` `8q`, `sw`, `4w` and `8w`.
+The Settings commands allow you to change the sound of the synth. The settings command format is a **channel** value between `0-G`, a 3 characters long **name**, followed by four values between `0-G`. The possible waveforms are `si`, `2i`, `4i`, `8i`, `tr`, `2r`, `4r`, `8r`, `sq`, `2q`, `4q` `8q`, `sw`, `2w`, `4w` and `8w`.
 
 | Command     | Channel | Name         | Info |
 | :-          | :-      | :-           | :-   |                    
@@ -51,17 +51,6 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 | `REVff`     | All     | Reverb     | ..   |
 | `FEEff`     | All     | Feedback   | ..   |
 
-#### Masters
-
-The Masters are applied at the end of the effects. The effect command format is a 3 characters long **name**, followed by one value between `0-G`.
-
-| Command     | Channel      | Operation  | Info |
-| :-          | :-           | :-         | :-   |
-| `EQUf`      | All          | Equalizer  | ..   | 
-| `COMf`      | All          | Compressor | ..   | 
-| `LIMf`      | All          | Limiter    | ..   | 
-| `VOLf`      | All          | Volume     | ..   | 
-
 ## Record
 
 Press **cmd/ctrl+r** to record, and press it again to stop.
@@ -76,12 +65,10 @@ Just use ffmpeg.
 
 ## TODOs
 
-- Implement note velocity.
 - Improve ORCA example to demonstrate chords.
 - Design icon.
 - Push builds to Itch.
 - Recycle Marabu into a UDP sequencer.
-- Implement `clear` command.
 
 ## Extras
 
