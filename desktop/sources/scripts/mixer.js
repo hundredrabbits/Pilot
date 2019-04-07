@@ -137,9 +137,10 @@ function Mixer (pilot) {
     for (const id in this.channels) {
       this.channels[id].connect(this.effects.distortion.effect)
     }
+
     // Mastering
     this.masters.equalizer = new Tone.EQ3(20, -10, 20)
-    this.masters.compressor = new Tone.Compressor(-10, 75)
+    this.masters.compressor = new Tone.Compressor(-10, 20)
     this.masters.limiter = new Tone.Limiter(-12)
     this.masters.volume = new Tone.Volume(-10)
 
@@ -163,6 +164,8 @@ function Mixer (pilot) {
       this.effects[id].install(this.el)
     }
 
+    this.effects.distortion.setValue({ wet: 0.5, depth: 0.5 })
+
     host.appendChild(this.el)
   }
 
@@ -170,6 +173,9 @@ function Mixer (pilot) {
     console.log('Synthetiser', 'Starting..')
     for (const id in this.channels) {
       this.channels[id].start()
+    }
+    for (const id in this.effects) {
+      this.effects[id].start()
     }
     this.run()
   }
@@ -186,6 +192,9 @@ function Mixer (pilot) {
     // Single
     for (const id in this.channels) {
       this.channels[id].run(msg)
+    }
+    for (const id in this.effects) {
+      this.effects[id].run(msg)
     }
   }
 }

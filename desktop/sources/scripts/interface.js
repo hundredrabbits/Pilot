@@ -92,13 +92,11 @@ function Interface (id, synth) {
       this.setOsc(data)
     } else if (data.isNote) {
       this.playNote(data)
-    } else {
-      console.warn('Unknown format', data)
     }
   }
 
   this.playNote = function (data) {
-    if (isNaN(data.octave)) { console.warn(`Unknown Octave`); return }
+    if (isNaN(data.octave)) { return }
     if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
     this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, clamp(data.length, 0.1, 0.9))
     this.update(data)

@@ -72,18 +72,28 @@ function EffectInterface (id, effect) {
   // Run
 
   this.run = function (msg) {
-
+    // console.log(id, msg)
   }
 
   this.operate = function (msg) {
     const data = parse(`${msg}`)
+    console.log(msg, data)
   }
 
-  this.setEnv = function (data) {
-    // this.synth.envelope.attack = clamp(data.attack, 0.1, 0.9)
-    // this.synth.envelope.decay = clamp(data.decay, 0.1, 0.9)
-    // this.synth.envelope.sustain = clamp(data.sustain, 0.1, 0.9)
-    // this.synth.envelope.release = clamp(data.release, 0.1, 0.9)
+  this.setValue = function (data) {
+    console.log(id, data)
+    this.effect.wet.value = data.wet
+
+    if (data.id === 'reverb') {
+      this.effect.roomSize.value = data.value
+    } else if (data.id === 'distortion') {
+      this.effect.distortion = data.value
+    } else if (data.id === 'chorus') {
+      this.effect.depth = data.value
+    } else if (data.id === 'feedback') {
+      this.effect.delayTime.value = data.value
+    }
+
     this.update(data)
   }
 
@@ -91,11 +101,11 @@ function EffectInterface (id, effect) {
 
   this.update = function (data) {
     setClass(this.el, data && data.isNote ? 'channel note active' : data && data.isEnv ? 'channel envelope active' : data && data.isOsc ? 'channel oscillator active' : 'channel')
-    this.updateEnv(data)
+    this.updateValue(data)
   }
 
-  this.updateEnv = function (data) {
-    // setContent(this.env_el, `${to16(this.synth.envelope.attack)}${to16(this.synth.envelope.decay)}${to16(this.synth.envelope.sustain)}${to16(this.synth.envelope.release)}`)
+  this.updateValue = function (data) {
+    setContent(this.env_el, '??')
   }
 
   // Parsers
@@ -112,29 +122,27 @@ function EffectInterface (id, effect) {
     return parseNote(msg)
   }
 
-  function parseEnv (msg) {
-    if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-    const attack = int36(msg.substr(0, 1)) / 15
-    const decay = int36(msg.substr(1, 1)) / 15
-    const sustain = int36(msg.substr(2, 1)) / 15
-    const release = int36(msg.substr(3, 1)) / 15
-    return { isEnv: true, attack: attack, decay: decay, sustain: sustain, release: release, string: 'env' }
+  function parseEffect (name, msg) {
+    if (msg.length !== 2) { console.warn(`Misformatted effect`, msg); return }
+    const wet = int36(msg.substr(0, 1)) / 15
+    const value = int36(msg.substr(1, 1)) / 15
+    return { isEffect: true, name: name, wet: wet, value: value }
   }
 
   // Wave Codes
-  const wavCodes = ['si', 'tr', 'sq', '4i', '4r', '4q', '8i', '8r', '8q']
-  const wavNames = ['sine', 'triangle', 'square', 'sine4', 'triangle4', 'square4', 'sine8', 'triangle8', 'square8']
+  const sfxCodes = ['dis', 'cho', 'rev', 'fee']
+  const sfxNames = ['distortion', 'chorus', 'reverb', 'feedback']
 
-  function wavCode (n) {
+  function sfxCode (n) {
     const name = n.toLowerCase()
     const index = wavNames.indexOf(name)
     return index > -1 ? wavCodes[index] : '??'
   }
 
-  function wavName (c) {
+  function sfxName (c) {
     const code = c.toLowerCase()
     const index = wavCodes.indexOf(code)
-    return index > -1 ? wavNames[index] : 'sine'
+    return index > -1 ? wavNames[index] : '??'
   }
 
   // Helpers
