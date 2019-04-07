@@ -36,8 +36,8 @@ The Settings commands allow you to change the sound of the synth. The settings c
 | Command     | Channel | Name       | Info |
 | :-          | :-      | :-         | :-   |                    
 | `0ENV056f`  | 0       | Envelope   | Set **Attack**:0.00, **Decay**:0.33, **Sustain**:0.40 and **Release**:1.00 |
-| `1WAVtri`  | 1        | Waveform   | Set **Waveform**:Triangle(TODO)  |
-| `1MODsi8`  | 1        | Waveform   | Set **Waveform**:Sine8(TODO)     |
+| `1WAVtri`  | 1        | Waveform   | Set **Waveform**:Triangle(TODO) |
+| `1MODsi8`  | 1        | Waveform   | Set **Waveform**:Sine8(TODO)    |
 
 ### Global
 

@@ -67,15 +67,15 @@ function Interface (id, synth) {
   }
 
   this.setEnv = function (data) {
-    this.channels[data.channel].envelope.attack = data.attack
-    this.channels[data.channel].envelope.decay = data.decay
-    this.channels[data.channel].envelope.sustain = data.sustain
-    this.channels[data.channel].envelope.release = data.release
+    this.synth.envelope.attack = data.attack
+    this.synth.envelope.decay = data.decay
+    this.synth.envelope.sustain = data.sustain
+    this.synth.envelope.release = data.release
     this.update(data)
   }
 
   this.setWav = function (data) {
-    this.channels[data.channel].oscillator._oscillator.set('type', data.value)
+    this.synth.oscillator._oscillator.set('type', data.value)
     this.update(data)
   }
 
@@ -93,8 +93,8 @@ function Interface (id, synth) {
   }
 
   this.updateOsc = function (data) {
-    setContent(this.wav_el, `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 2) : '--'}`)
-    setContent(this.mod_el, `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 2) : '--'}`)
+    setContent(this.wav_el, `${this.synth.oscillator ? this.synth.oscillator._oscillator.type.substr(0, 3) : '---'}`)
+    setContent(this.mod_el, `${this.synth.modulation ? this.synth.modulation._oscillator.type.substr(0, 3) : '---'}`)
   }
 
   this.updateOct = function (data) {
@@ -142,6 +142,39 @@ function Interface (id, synth) {
     if (msg.length !== 4) { console.warn(`Misformatted env`); return }
     const value = 'f'
     return { isWav: true, value: value, string: `wav` }
+  }
+
+  // Wave Codes
+  function wavCode (name) {
+    if (code === 'sine') { return 'si' }
+    if (code === 'saw') { return 'sw' }
+    if (code === 'triangle') { return 'tr' }
+    if (code === 'square') { return 'sq' }
+    if (code === 'sine4') { return '4i' }
+    if (code === 'saw4') { return '4w' }
+    if (code === 'triangle4') { return '4r' }
+    if (code === 'square4') { return '4q' }
+    if (code === 'sine4') { return '8i' }
+    if (code === 'saw4') { return '8w' }
+    if (code === 'triangle4') { return '8r' }
+    if (code === 'square4') { return '8q' }
+    return 'sine'
+  }
+
+  function wavName (code) {
+    if (code === 'si') { return 'sine' }
+    if (code === 'sw') { return 'saw' }
+    if (code === 'tr') { return 'triangle' }
+    if (code === 'sq') { return 'square' }
+    if (code === '4i') { return 'sine4' }
+    if (code === '4w') { return 'saw4' }
+    if (code === '4r') { return 'triangle4' }
+    if (code === '4q') { return 'square4' }
+    if (code === '8i') { return 'sine4' }
+    if (code === '8w') { return 'saw4' }
+    if (code === '8r') { return 'triangle4' }
+    if (code === '8q') { return 'square4' }
+    return 'sine'
   }
 
   // Helpers
