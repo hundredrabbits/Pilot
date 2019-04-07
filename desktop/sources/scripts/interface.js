@@ -100,7 +100,7 @@ function Interface (id, synth) {
   this.playNote = function (data) {
     if (isNaN(data.octave)) { return }
     if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
-    this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, clamp(data.length, 0.1, 0.9))
+    this.synth.triggerAttackRelease(`${data.note}${data.sharp}${data.octave}`, clamp(data.length, 0.1, 0.9), '+0', data.velocity)
     this.update(data)
   }
 
@@ -163,9 +163,9 @@ function Interface (id, synth) {
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
     const sharp = note.toLowerCase() === note ? '#' : ''
-    const velocity = 1
+    const velocity = msg.length >= 3 ? from16(msg.substr(2, 1)) : 0.66
     const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
-    return { isNote: true, octave: octave, note: note, sharp: sharp, string: `${octave}${note}`, length: length }
+    return { isNote: true, octave: octave, note: note, sharp: sharp, string: `${octave}${note}`, length: length, velocity: velocity }
   }
 
   function parseEnv (msg) {
