@@ -54,7 +54,9 @@ function EffectInterface (id, effect) {
     context.strokeStyle = 'white'
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
     for (let i = 1, len = values.length; i < len; i++) {
-      context.lineTo(parseInt(canvasWidth * (i / len)), parseInt(((values[i] + 1) / 2) * canvasHeight))
+      const x = parseInt(canvasWidth * (i / len))
+      const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
+      context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))
     }
     context.stroke()
   }
@@ -93,10 +95,18 @@ function EffectInterface (id, effect) {
       this.effect.roomSize.value = data.value
     } else if (data.code === 'dis') {
       this.effect.distortion = data.value
+    } else if (data.code === 'bit') {
+      this.effect.bits = clamp(parseInt(data.value * 8), 1, 8)
     } else if (data.code === 'cho') {
       this.effect.depth = data.value
     } else if (data.code === 'fee') {
       this.effect.delayTime.value = data.value
+    } else if (data.code === 'tre') {
+      this.effect.depth.value = data.value
+    } else if (data.code === 'vib') {
+      this.effect.depth.value = data.value
+    } else if (data.code === 'aut') {
+      this.effect.depth.value = data.value
     }
 
     this.update(data)
@@ -118,9 +128,18 @@ function EffectInterface (id, effect) {
       value = this.effect.distortion
     } else if (data.code === 'cho') {
       value = this.effect.depth
+    } else if (data.code === 'bit') {
+      value = this.effect.bits / 8
     } else if (data.code === 'fee') {
       value = this.effect.delayTime.value
+    } else if (data.code === 'tre') {
+      value = this.effect.depth.value
+    } else if (data.code === 'vib') {
+      value = this.effect.depth.value
+    } else if (data.code === 'aut') {
+      value = this.effect.depth.value
     }
+
     setContent(this.val_el, `${to16(this.effect.wet.value)}${to16(value)}`)
   }
 
@@ -131,22 +150,6 @@ function EffectInterface (id, effect) {
     const wet = int36(msg.substr(0, 1)) / 15
     const value = int36(msg.substr(1, 1)) / 15
     return { isEffect: true, code: id, wet: wet, value: value }
-  }
-
-  // Wave Codes
-  const sfxCodes = ['dis', 'cho', 'rev', 'fee']
-  const sfxNames = ['distortion', 'chorus', 'reverb', 'feedback']
-
-  function sfxCode (n) {
-    const name = n.toLowerCase()
-    const index = wavNames.indexOf(name)
-    return index > -1 ? wavCodes[index] : '??'
-  }
-
-  function sfxName (c) {
-    const code = c.toLowerCase()
-    const index = wavCodes.indexOf(code)
-    return index > -1 ? wavNames[index] : '??'
   }
 
   // Helpers

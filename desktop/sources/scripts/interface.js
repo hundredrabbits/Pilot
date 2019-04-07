@@ -58,7 +58,9 @@ function Interface (id, synth) {
     context.strokeStyle = 'white'
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
     for (let i = 1, len = values.length; i < len; i++) {
-      context.lineTo(parseInt(canvasWidth * (i / len)), parseInt(((values[i] + 1) / 2) * canvasHeight))
+      const x = parseInt(canvasWidth * (i / len))
+      const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
+      context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))
     }
     context.stroke()
   }
@@ -163,7 +165,6 @@ function Interface (id, synth) {
     const sharp = note.toLowerCase() === note ? '#' : ''
     const velocity = 1
     const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
-    console.log(msg, `${octave}${note}`)
     return { isNote: true, octave: octave, note: note, sharp: sharp, string: `${octave}${note}`, length: length }
   }
 

@@ -128,14 +128,18 @@ function Mixer (pilot) {
       'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
+    this.effects.bitcrusher = new EffectInterface('bit', new Tone.BitCrusher(4))
     this.effects.distortion = new EffectInterface('dis', new Tone.Distortion(0.05))
+    this.effects.autofilter = new EffectInterface('aut', new Tone.AutoFilter())
     this.effects.chorus = new EffectInterface('cho', new Tone.Chorus(4, 2.5, 0.5))
+    this.effects.tremolo = new EffectInterface('tre', new Tone.Tremolo())
+    this.effects.vibrato = new EffectInterface('vib', new Tone.Vibrato())
     this.effects.reverb = new EffectInterface('rev', new Tone.JCReverb(0.2))
     this.effects.feedback = new EffectInterface('fee', new Tone.FeedbackDelay(0.5))
 
     // Connect
     for (const id in this.channels) {
-      this.channels[id].connect(this.effects.distortion.effect)
+      this.channels[id].connect(this.effects.bitcrusher.effect)
     }
 
     // Mastering
@@ -144,8 +148,12 @@ function Mixer (pilot) {
     this.masters.limiter = new Tone.Limiter(-12)
     this.masters.volume = new Tone.Volume(-10)
 
-    this.effects.distortion.connect(this.effects.chorus.effect)
-    this.effects.chorus.connect(this.effects.reverb.effect)
+    this.effects.bitcrusher.connect(this.effects.distortion.effect)
+    this.effects.distortion.connect(this.effects.autofilter.effect)
+    this.effects.autofilter.connect(this.effects.chorus.effect)
+    this.effects.chorus.connect(this.effects.tremolo.effect)
+    this.effects.tremolo.connect(this.effects.vibrato.effect)
+    this.effects.vibrato.connect(this.effects.reverb.effect)
     this.effects.reverb.connect(this.effects.feedback.effect)
     this.effects.feedback.connect(this.masters.equalizer)
 
@@ -163,8 +171,6 @@ function Mixer (pilot) {
     for (const id in this.effects) {
       this.effects[id].install(this.el)
     }
-
-    this.effects.distortion.setEffect({ wet: 0.5, depth: 0.5 })
 
     host.appendChild(this.el)
   }

@@ -37,14 +37,14 @@ function Recorder (pilot) {
     this.isRecording = true
     chunks = []
     pilot.mixer.recorder.start()
-    pilot.mixer.setMode('recording')
+    pilot.mixer.className = 'recording'
   }
 
   this.stop = function () {
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
     pilot.mixer.recorder.stop()
-    pilot.mixer.setMode()
+    pilot.mixer.className = ''
   }
 
   this.toggle = function () {
