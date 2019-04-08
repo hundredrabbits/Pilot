@@ -130,7 +130,6 @@ function ChannelInterface (id, node) {
 
   function parseNote (msg) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
-
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
     const sharp = note.toLowerCase() === note ? '#' : ''
@@ -149,8 +148,8 @@ function ChannelInterface (id, node) {
   }
 
   function parseOsc (msg) {
-    if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-    return { isOsc: true, wav: (msg.length === 2 || msg.length === 4 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length === 4 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
+    if (msg.length < 2) { console.warn(`Misformatted osc`); return }
+    return { isOsc: true, wav: (msg.length > 1 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length > 3 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
   }
 
   // Wave Codes
