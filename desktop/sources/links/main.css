@@ -1,4 +1,4 @@
-body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms; overflow: hidden;}
+body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms; overflow: hidden;}
 
 /* Mixer */
 
