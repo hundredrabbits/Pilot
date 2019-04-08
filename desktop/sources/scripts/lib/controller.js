@@ -16,7 +16,6 @@ function Controller () {
     if (!this.menu[mode]) { this.menu[mode] = {} }
     if (!this.menu[mode][cat]) { this.menu[mode][cat] = {} }
     this.menu[mode][cat][label] = { fn: fn, accelerator: accelerator }
-    console.log(`${mode}/${cat}/${label} ${accelerator ? '<' + accelerator + '>' : ''}`)
   }
 
   this.addRole = function (mode, cat, label) {
