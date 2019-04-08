@@ -66,10 +66,10 @@ function ChannelInterface (id, node) {
 
   this.setEnv = function (data) {
     if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
-    this.node.envelope.attack = clamp(data.attack, 0.01, 0.9)
-    this.node.envelope.decay = clamp(data.decay, 0.01, 0.9)
-    this.node.envelope.sustain = clamp(data.sustain, 0.01, 0.9)
-    this.node.envelope.release = clamp(data.release, 0.01, 0.9)
+    if (data.attack) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
+    if (data.decay) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
+    if (data.sustain) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
+    if (data.release) { this.node.envelope.release = clamp(data.release, 0.01, 1.0) }
     this.lastEnv = performance.now()
     this.updateEnv(data)
   }
@@ -140,11 +140,11 @@ function ChannelInterface (id, node) {
   }
 
   function parseEnv (msg) {
-    if (msg.length !== 4) { console.warn(`Misformatted env`); return }
+    if (msg.length < 1) { console.warn(`Misformatted env`); return }
     const attack = int36(msg.substr(0, 1)) / 15
-    const decay = int36(msg.substr(1, 1)) / 15
-    const sustain = int36(msg.substr(2, 1)) / 15
-    const release = int36(msg.substr(3, 1)) / 15
+    const decay = msg.length > 1 ? int36(msg.substr(1, 1)) / 15 : null
+    const sustain = msg.length > 2 ? int36(msg.substr(2, 1)) / 15 : null
+    const release = msg.length > 3 ? int36(msg.substr(3, 1)) / 15 : null
     return { isEnv: true, attack: attack, decay: decay, sustain: sustain, release: release, string: 'env' }
   }
 
