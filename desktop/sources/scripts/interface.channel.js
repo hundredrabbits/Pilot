@@ -56,27 +56,33 @@ function ChannelInterface (id, node) {
   this.playNote = function (data) {
     if (isNaN(data.octave)) { return }
     if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
+    if (this.lastNote && performance.now() - this.lastNote < 100) { return }
     const name = `${data.note}${data.sharp}${data.octave}`
     const length = clamp(data.length, 0.1, 0.9)
     this.node.triggerAttackRelease(name, length, '+0', data.velocity)
+    this.lastNote = performance.now()
     this.update(data)
   }
 
   this.setEnv = function (data) {
+    if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
     this.node.envelope.attack = clamp(data.attack, 0.01, 0.9)
     this.node.envelope.decay = clamp(data.decay, 0.01, 0.9)
     this.node.envelope.sustain = clamp(data.sustain, 0.01, 0.9)
     this.node.envelope.release = clamp(data.release, 0.01, 0.9)
+    this.lastEnv = performance.now()
     this.update(data)
   }
 
   this.setOsc = function (data) {
+    if (this.lastOsc && performance.now() - this.lastOsc < 100) { return }
     if (data.wav && this.node.oscillator) {
       this.node.oscillator._oscillator.set('type', data.wav)
     }
     if (data.mod && this.node.modulation) {
       this.node.modulation._oscillator.set('type', data.mod)
     }
+    this.lastOsc = performance.now()
     this.update(data)
   }
 

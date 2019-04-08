@@ -39,6 +39,8 @@ function EffectInterface (id, node) {
   }
 
   this.setEffect = function (data) {
+    if (this.lastEffect && performance.now() - this.lastEffect < 100) { return }
+
     this.node.wet.value = data.wet
 
     if (data.value) {
@@ -60,7 +62,7 @@ function EffectInterface (id, node) {
         this.node.depth.value = data.value
       }
     }
-
+    this.lastEffect = performance.now()
     this.update(data)
   }
 
