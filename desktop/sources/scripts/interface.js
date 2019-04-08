@@ -179,7 +179,7 @@ function Interface (id, synth) {
 
   function parseOsc (msg) {
     if (msg.length !== 4) { console.warn(`Misformatted env`); return }
-    return { isOsc: true, wav: (msg.length == 2 || msg.length == 4 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length == 4 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
+    return { isOsc: true, wav: (msg.length === 2 || msg.length === 4 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length === 4 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
   }
 
   // Wave Codes

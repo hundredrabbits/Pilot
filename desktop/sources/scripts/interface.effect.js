@@ -91,22 +91,24 @@ function EffectInterface (id, effect) {
   this.setEffect = function (data) {
     this.effect.wet.value = data.wet
 
-    if (data.code === 'rev') {
-      this.effect.roomSize.value = data.value
-    } else if (data.code === 'dis') {
-      this.effect.distortion = data.value
-    } else if (data.code === 'bit') {
-      this.effect.bits = clamp(parseInt(data.value * 8), 1, 8)
-    } else if (data.code === 'cho') {
-      this.effect.depth = data.value
-    } else if (data.code === 'fee') {
-      this.effect.delayTime.value = data.value
-    } else if (data.code === 'tre') {
-      this.effect.depth.value = data.value
-    } else if (data.code === 'vib') {
-      this.effect.depth.value = data.value
-    } else if (data.code === 'aut') {
-      this.effect.depth.value = data.value
+    if (data.value) {
+      if (data.code === 'rev') {
+        this.effect.roomSize.value = data.value
+      } else if (data.code === 'dis') {
+        this.effect.distortion = data.value
+      } else if (data.code === 'bit') {
+        this.effect.bits = clamp(parseInt(data.value * 8), 1, 8)
+      } else if (data.code === 'cho') {
+        this.effect.depth = data.value
+      } else if (data.code === 'fee') {
+        this.effect.delayTime.value = data.value
+      } else if (data.code === 'tre') {
+        this.effect.depth.value = data.value
+      } else if (data.code === 'vib') {
+        this.effect.depth.value = data.value
+      } else if (data.code === 'aut') {
+        this.effect.depth.value = data.value
+      }
     }
 
     this.update(data)
@@ -145,7 +147,7 @@ function EffectInterface (id, effect) {
   // Parsers
 
   function parse (msg) {
-    if (msg.length !== 2) { console.warn(`Misformatted effect`, msg); return }
+    if (msg.length !== 2 && msg.length !== 1) { console.warn(`Misformatted effect`, msg); return }
     const wet = int36(msg.substr(0, 1)) / 15
     const value = int36(msg.substr(1, 1)) / 15
     return { isEffect: true, code: id, wet: wet, value: value }
