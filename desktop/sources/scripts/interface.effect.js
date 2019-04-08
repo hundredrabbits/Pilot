@@ -51,7 +51,7 @@ function EffectInterface (id, effect) {
     context.beginPath()
     context.lineJoin = 'round'
     context.lineWidth = 2
-    context.strokeStyle = context.strokeStyle = pilot.theme.active.f_low
+    context.strokeStyle = pilot.theme.active.b_inv
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
     for (let i = 1, len = values.length; i < len; i++) {
       const x = parseInt(canvasWidth * (i / len))

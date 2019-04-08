@@ -1,7 +1,7 @@
 body { background:var(--background) !important; color:var(--f_high) !important; }
 
 #mixer span { color:var(--f_high) !important; }
-#mixer span.cid { color:var(--f_med) !important; }
+#mixer span.cid { color:var(--f_low) !important; }
 #mixer > .channel .oct { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
 #mixer > .channel .envelope { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
 #mixer > .channel .oscillator { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
