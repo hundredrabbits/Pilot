@@ -40,6 +40,10 @@
       controller.addRole('default', 'Edit', 'delete')
       controller.addRole('default', 'Edit', 'selectall')
 
+      controller.add("default","Theme","Open Theme",() => { pilot.theme.open() },"CmdOrCtrl+Shift+O")
+      controller.add("default","Theme","Reset Theme",() => { pilot.theme.reset() },"CmdOrCtrl+Shift+Backspace")
+      controller.add("default","Theme","Download Themes..",() => { require('electron').shell.openExternal('https://github.com/hundredrabbits/Themes') })
+
       controller.commit()
 
       pilot.install(document.body)
