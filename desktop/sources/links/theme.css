@@ -1,16 +1,16 @@
 body { background:var(--background) !important; color:var(--f_high) !important; }
 
-#mixer span { color:var(--f_high) !important; }
-#mixer span.cid { color:var(--f_low) !important; }
-#mixer > .channel .oct { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
-#mixer > .channel .envelope { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
-#mixer > .channel .oscillator { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
-#mixer > .effect .val { background-color: var(--background) !important; -webkit-transition: background-color 100ms linear; }
+#mixer > div span { color:var(--f_high) !important; }
+#mixer > div span.cid { color:var(--f_low) !important; }
+#mixer > div .oct { background-color: var(--background) !important; -webkit-transition: background-color 250ms linear; }
+#mixer > div .env { background-color: var(--background) !important; -webkit-transition: background-color 250ms linear; }
+#mixer > div .osc { background-color: var(--background) !important; -webkit-transition: background-color 250ms linear; }
+#mixer > div .val { background-color: var(--background) !important; -webkit-transition: background-color 250ms linear; }
 
-#mixer > .effect.active .val { background-color: var(--b_inv) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
-#mixer > .channel.note.active .oct { background-color: var(--b_med) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
-#mixer > .channel.envelope.active .env { background-color: var(--b_inv) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
-#mixer > .channel.oscillator.active .osc { background-color: var(--b_inv) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
+#mixer > div .oct.active { background-color: var(--b_med) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
+#mixer > div .env.active { background-color: var(--b_inv) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
+#mixer > div .osc.active { background-color: var(--b_inv) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
+#mixer > div .val.active { background-color: var(--b_inv) !important; -webkit-transition: background-color 1ms linear; color:var(--background) !important; }
 
 #commander input { color:var(--f_high) !important; }
 

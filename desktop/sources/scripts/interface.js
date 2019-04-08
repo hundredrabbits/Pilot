@@ -27,7 +27,7 @@ function Interface (id, node) {
   }
 
   this.start = function () {
-    this.update()
+    this.updateAll({}, true)
     loop()
   }
 

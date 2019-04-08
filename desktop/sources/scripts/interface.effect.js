@@ -11,6 +11,7 @@ function EffectInterface (id, node) {
 
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
+  this.el.className = 'effect'
   this.cid_el = document.createElement('span')
   this.cid_el.className = `cid`
   this.val_el = document.createElement('span')
@@ -28,7 +29,6 @@ function EffectInterface (id, node) {
 
     if (msg.substr(0, 3).toLowerCase() === id) {
       this.operate(`${msg}`.substr(3))
-      setTimeout(() => { this.update() }, 100)
     }
   }
 
@@ -63,17 +63,18 @@ function EffectInterface (id, node) {
       }
     }
     this.lastEffect = performance.now()
-    this.update(data)
+    this.updateEffect(data, true)
   }
 
   // Updates
 
-  this.update = function (data) {
-    setClass(this.el, data && data.isEffect ? 'effect active' : 'effect')
-    this.updateEffect(data)
+  this.updateAll = function (data, force = false) {
+    this.updateEffect(data, force)
   }
 
-  this.updateEffect = function (data) {
+  this.updateEffect = function (data, force = false) {
+    if (force !== true && (!data || !data.isEffect)) { return }
+
     let value = 0
     if (id === 'rev') {
       value = this.node.roomSize.value
@@ -94,6 +95,8 @@ function EffectInterface (id, node) {
     }
 
     setContent(this.val_el, `${to16(this.node.wet.value)}${to16(value)}`)
+    setClass(this.val_el, 'val active')
+    setTimeout(() => { setClass(this.val_el, 'val') }, 50)
   }
 
   // Parsers
