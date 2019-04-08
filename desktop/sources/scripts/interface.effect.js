@@ -11,12 +11,13 @@ function EffectInterface (id, node) {
 
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
-
   this.cid_el = document.createElement('span')
   this.cid_el.className = `cid`
   this.val_el = document.createElement('span')
   this.val_el.className = `val`
+
   this.cid_el.innerHTML = `${id}`
+
   this.el.appendChild(this.cid_el)
   this.el.appendChild(this.val_el)
 

@@ -43,7 +43,7 @@ function Interface (id, node) {
     context.strokeStyle = pilot.theme.active.b_inv
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
     for (let i = 1, len = values.length; i < len; i++) {
-      if(i % 17 !== 0){ continue }
+      if (i % 17 !== 0) { continue }
       const x = parseInt(canvasWidth * (i / len))
       const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
       context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))

@@ -7,9 +7,13 @@ function ChannelInterface (id, node) {
   Interface.call(this, id, node)
 
   this.node = node
+  this.node.envelope.attack = 0.001
+  this.node.envelope.decay = clamp(((8 - (id % 8)) / 8), 0.01, 0.9)
+  this.node.envelope.sustain = clamp(((id % 4) / 4), 0.01, 0.9)
+  this.node.envelope.release = clamp(((id % 6) / 6), 0.01, 0.9)
+
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
-
   this.cid_el = document.createElement('span')
   this.cid_el.className = `cid`
   this.env_el = document.createElement('span')
@@ -59,10 +63,10 @@ function ChannelInterface (id, node) {
   }
 
   this.setEnv = function (data) {
-    this.node.envelope.attack = clamp(data.attack, 0.1, 0.9)
-    this.node.envelope.decay = clamp(data.decay, 0.1, 0.9)
-    this.node.envelope.sustain = clamp(data.sustain, 0.1, 0.9)
-    this.node.envelope.release = clamp(data.release, 0.1, 0.9)
+    this.node.envelope.attack = clamp(data.attack, 0.01, 0.9)
+    this.node.envelope.decay = clamp(data.decay, 0.01, 0.9)
+    this.node.envelope.sustain = clamp(data.sustain, 0.01, 0.9)
+    this.node.envelope.release = clamp(data.release, 0.01, 0.9)
     this.update(data)
   }
 
