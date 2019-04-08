@@ -1,8 +1,11 @@
 'use strict'
 
 const Tone = require('tone')
+const Interface = require('./interface')
 
-function EffectInterface (id, effect) {
+function EffectInterface (id, node) {
+  Interface.call(this, id, node)
+
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
 
@@ -11,22 +14,7 @@ function EffectInterface (id, effect) {
   this.val_el = document.createElement('span')
   this.val_el.className = `val`
 
-  this.canvas = document.createElement('canvas')
-
-  const canvasWidth = 30 * 2
-  const canvasHeight = 15 * 2
-
-  this.canvas.width = canvasWidth
-  this.canvas.height = canvasHeight
-
-  this.canvas.style.width = (canvasWidth / 2) + 'px'
-  this.canvas.style.height = (canvasHeight / 2) + 'px'
-
-  const waveform = new Tone.Waveform(512)
-
-  let context = this.canvas.getContext('2d')
-
-  this.effect = effect
+  this.node = node
 
   this.install = function (host) {
     this.cid_el.innerHTML = `${id}`
@@ -35,40 +23,10 @@ function EffectInterface (id, effect) {
     this.el.appendChild(this.val_el)
     this.el.appendChild(this.canvas)
 
-    this.effect.wet.value = 0
+    this.node.wet.value = 0
 
-    this.effect.fan(waveform)
+    this.node.fan(this.waveform)
     host.appendChild(this.el)
-  }
-
-  this.start = function () {
-    this.update()
-    loop()
-  }
-
-  function drawWaveform (values) {
-    context.clearRect(0, 0, canvasWidth, canvasHeight)
-    context.beginPath()
-    context.lineJoin = 'round'
-    context.lineWidth = 2
-    context.strokeStyle = pilot.theme.active.b_inv
-    context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
-    for (let i = 1, len = values.length; i < len; i++) {
-      const x = parseInt(canvasWidth * (i / len))
-      const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
-      context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))
-    }
-    context.stroke()
-  }
-
-  function loop () {
-    requestAnimationFrame(loop)
-    var waveformValues = waveform.getValue()
-    drawWaveform(waveformValues)
-  }
-
-  this.connect = function (node) {
-    this.effect.connect(node)
   }
 
   // Run
@@ -89,25 +47,25 @@ function EffectInterface (id, effect) {
   }
 
   this.setEffect = function (data) {
-    this.effect.wet.value = data.wet
+    this.node.wet.value = data.wet
 
     if (data.value) {
       if (data.code === 'rev') {
-        this.effect.roomSize.value = data.value
+        this.node.roomSize.value = data.value
       } else if (data.code === 'dis') {
-        this.effect.distortion = data.value
+        this.node.distortion = data.value
       } else if (data.code === 'bit') {
-        this.effect.bits = clamp(parseInt(data.value * 8), 1, 8)
+        this.node.bits = clamp(parseInt(data.value * 8), 1, 8)
       } else if (data.code === 'cho') {
-        this.effect.depth = data.value
+        this.node.depth = data.value
       } else if (data.code === 'fee') {
-        this.effect.delayTime.value = data.value
+        this.node.delayTime.value = data.value
       } else if (data.code === 'tre') {
-        this.effect.depth.value = data.value
+        this.node.depth.value = data.value
       } else if (data.code === 'vib') {
-        this.effect.depth.value = data.value
+        this.node.depth.value = data.value
       } else if (data.code === 'aut') {
-        this.effect.depth.value = data.value
+        this.node.depth.value = data.value
       }
     }
 
@@ -124,24 +82,24 @@ function EffectInterface (id, effect) {
   this.updateEffect = function (data) {
     let value = 0
     if (id === 'rev') {
-      value = this.effect.roomSize.value
+      value = this.node.roomSize.value
     } else if (id === 'dis') {
-      value = this.effect.distortion
+      value = this.node.distortion
     } else if (id === 'cho') {
-      value = this.effect.depth
+      value = this.node.depth
     } else if (id === 'bit') {
-      value = this.effect.bits / 8
+      value = this.node.bits / 8
     } else if (id === 'fee') {
-      value = this.effect.delayTime.value
+      value = this.node.delayTime.value
     } else if (id === 'tre') {
-      value = this.effect.depth.value
+      value = this.node.depth.value
     } else if (id === 'vib') {
-      value = this.effect.depth.value
+      value = this.node.depth.value
     } else if (id === 'aut') {
-      value = this.effect.depth.value
+      value = this.node.depth.value
     }
 
-    setContent(this.val_el, `${to16(this.effect.wet.value)}${to16(value)}`)
+    setContent(this.val_el, `${to16(this.node.wet.value)}${to16(value)}`)
   }
 
   // Parsers
