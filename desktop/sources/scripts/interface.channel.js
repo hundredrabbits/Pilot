@@ -19,18 +19,13 @@ function ChannelInterface (id, node) {
   this.oct_el = document.createElement('span')
   this.oct_el.className = `oct`
 
-  this.install = function (host) {
-    this.cid_el.innerHTML = `${str36(id)}`
+  this.cid_el.innerHTML = `${str36(id)}`
 
-    this.el.appendChild(this.cid_el)
-    this.el.appendChild(this.env_el)
-    this.el.appendChild(this.osc_el)
-    this.el.appendChild(this.oct_el)
-    this.el.appendChild(this.canvas)
-
-    this.node.fan(this.waveform)
-    host.appendChild(this.el)
-  }
+  this.el.appendChild(this.cid_el)
+  this.el.appendChild(this.env_el)
+  this.el.appendChild(this.osc_el)
+  this.el.appendChild(this.oct_el)
+  this.el.appendChild(this.canvas)
 
   // Run
 

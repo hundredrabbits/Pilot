@@ -6,6 +6,9 @@ const Interface = require('./interface')
 function EffectInterface (id, node) {
   Interface.call(this, id, node)
 
+  this.node = node
+  this.node.wet.value = 0
+
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
 
@@ -13,21 +16,9 @@ function EffectInterface (id, node) {
   this.cid_el.className = `cid`
   this.val_el = document.createElement('span')
   this.val_el.className = `val`
-
-  this.node = node
-
-  this.install = function (host) {
-    this.cid_el.innerHTML = `${id}`
-
-    this.el.appendChild(this.cid_el)
-    this.el.appendChild(this.val_el)
-    this.el.appendChild(this.canvas)
-
-    this.node.wet.value = 0
-
-    this.node.fan(this.waveform)
-    host.appendChild(this.el)
-  }
+  this.cid_el.innerHTML = `${id}`
+  this.el.appendChild(this.cid_el)
+  this.el.appendChild(this.val_el)
 
   // Run
 
