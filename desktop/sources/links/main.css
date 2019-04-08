@@ -1,5 +1,7 @@
 body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-height: 15px; -webkit-app-region: drag; transition: background-color 500ms; overflow: hidden;}
 
+/* Mixer */
+
 #mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 3; min-width: 420px}
 #mixer > div { position: relative; max-width: 135px}
 #mixer > div.effect { max-width: 85px }
@@ -7,7 +9,16 @@ body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-h
 #mixer > div canvas { position: absolute; background:black; width:30px; height:15px; right:0px; top:0px; padding:0px 5px;}
 #mixer span { color:white;padding: 0px 2.55px; }
 
+/* Commander */
+
 #commander input { padding: 0px 5px 0px 2.5px; width: calc(100vw - 70px); background: transparent; color: white; }
 
+/* Recorder */
+
 #pilot.recording #recorder { color:var(--b_inv) !important; animation: blink 500ms linear infinite; }
-#recorder {     position: absolute; bottom: 25px; padding: 0px 5px; font-size: 16px; text-indent: -2px; color: #333; right: 25px;}
+#recorder { position: absolute; bottom: 25px; padding: 0px 5px; font-size: 16px; text-indent: -2px; color: #333; right: 25px;}
+
+@media (max-width: 400px) {
+  #pilot #mixer { columns:1 !important; min-width: 0px }
+  #pilot #mixer > div { max-width: 100%}
+}

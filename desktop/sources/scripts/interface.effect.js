@@ -120,23 +120,22 @@ function EffectInterface (id, effect) {
   }
 
   this.updateEffect = function (data) {
-    if (!data) { return }
     let value = 0
-    if (data.code === 'rev') {
+    if (id === 'rev') {
       value = this.effect.roomSize.value
-    } else if (data.code === 'dis') {
+    } else if (id === 'dis') {
       value = this.effect.distortion
-    } else if (data.code === 'cho') {
+    } else if (id === 'cho') {
       value = this.effect.depth
-    } else if (data.code === 'bit') {
+    } else if (id === 'bit') {
       value = this.effect.bits / 8
-    } else if (data.code === 'fee') {
+    } else if (id === 'fee') {
       value = this.effect.delayTime.value
-    } else if (data.code === 'tre') {
+    } else if (id === 'tre') {
       value = this.effect.depth.value
-    } else if (data.code === 'vib') {
+    } else if (id === 'vib') {
       value = this.effect.depth.value
-    } else if (data.code === 'aut') {
+    } else if (id === 'aut') {
       value = this.effect.depth.value
     }
 

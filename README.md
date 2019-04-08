@@ -71,7 +71,6 @@ Just use ffmpeg.
 
 - Improve ORCA example to demonstrate chords.
 - Design icon.
-- Push builds to Itch.
 - Recycle Marabu into a UDP sequencer.
 
 ## Extras
