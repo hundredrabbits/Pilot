@@ -16,6 +16,8 @@ function Pilot () {
   this.el = document.createElement('div')
   this.el.id = 'pilot'
 
+  this.animate = true
+
   this.install = function (host) {
     console.info('Pilot is installing..')
 
@@ -37,6 +39,17 @@ function Pilot () {
     this.mixer.start()
     this.commander.start()
     this.theme.start()
+  }
+
+  this.toggleAnimations = function (mod, set = false) {
+    this.animate = this.animate !== true
+    this.resize(true)
+  }
+
+  this.modZoom = function (mod = 0, set = false) {
+    const { webFrame } = require('electron')
+    const currentZoomFactor = webFrame.getZoomFactor()
+    webFrame.setZoomFactor(set ? mod : currentZoomFactor + mod)
   }
 }
 

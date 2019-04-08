@@ -2,7 +2,7 @@
 
 const Tone = require('tone')
 
-function Interface (id, node) {
+function Interface (pilot, id, node) {
   this.node = node
   this.waveform = new Tone.Waveform(512)
 
@@ -36,6 +36,7 @@ function Interface (id, node) {
   }
 
   function draw (values) {
+    if (pilot.animate !== true) { return }
     context.clearRect(0, 0, canvasWidth, canvasHeight)
     context.beginPath()
     context.lineJoin = 'round'

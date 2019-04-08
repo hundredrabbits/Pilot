@@ -3,8 +3,8 @@
 const Tone = require('tone')
 const Interface = require('./interface')
 
-function ChannelInterface (id, node) {
-  Interface.call(this, id, node)
+function ChannelInterface (pilot, id, node) {
+  Interface.call(this, pilot, id, node)
 
   this.node = node
   this.node.envelope.attack = 0.001
@@ -95,6 +95,7 @@ function ChannelInterface (id, node) {
   }
 
   this.updateEnv = function (data, force = false) {
+    if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isEnv)) { return }
     setContent(this.env_el, `${to16(this.node.envelope.attack)}${to16(this.node.envelope.decay)}${to16(this.node.envelope.sustain)}${to16(this.node.envelope.release)}`)
     setClass(this.env_el, 'env active')
@@ -102,6 +103,7 @@ function ChannelInterface (id, node) {
   }
 
   this.updateOsc = function (data, force = false) {
+    if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isOsc)) { return }
     setContent(this.osc_el, `${this.node.oscillator ? wavCode(this.node.oscillator._oscillator.type) : '--'}${this.node.modulation ? wavCode(this.node.modulation._oscillator.type) : '--'}`)
     setClass(this.osc_el, 'osc active')
@@ -109,6 +111,7 @@ function ChannelInterface (id, node) {
   }
 
   this.updateOct = function (data, force = false) {
+    if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isNote)) { return }
     setContent(this.oct_el, data && data.isNote ? data.string : '--')
     setClass(this.oct_el, 'oct active')

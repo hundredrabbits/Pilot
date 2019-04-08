@@ -3,8 +3,8 @@
 const Tone = require('tone')
 const Interface = require('./interface')
 
-function EffectInterface (id, node) {
-  Interface.call(this, id, node)
+function EffectInterface (pilot, id, node) {
+  Interface.call(this, pilot, id, node)
 
   this.node = node
   this.node.wet.value = 0
