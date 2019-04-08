@@ -6,16 +6,16 @@ body { padding: 30px; font-family: 'input_mono_regular'; font-size: 11px; line-h
 #mixer > div { position: relative; max-width: 135px}
 #mixer > div.effect { max-width: 85px }
 #mixer > div .cid { font-family: 'input_mono_medium'; font-weight: normal; }
-#mixer > div canvas { position: absolute; background:black; width:30px; height:15px; right:0px; top:0px; padding:0px 5px;}
-#mixer span { color:white;padding: 0px 2.55px; }
+#mixer > div canvas { position: absolute; width:30px; height:15px; right:0px; top:0px; padding:0px 5px;}
+#mixer span { padding: 0px 2.55px; }
 
 /* Commander */
 
-#commander input { padding: 0px 5px 0px 2.5px; width: calc(100vw - 70px); background: transparent; color: white; }
+#commander input { padding: 0px 5px 0px 2.5px; width: calc(100vw - 70px); background: transparent; }
 
 /* Recorder */
 
-#pilot.recording #recorder { color:var(--b_inv) !important; animation: blink 500ms linear infinite; }
+#pilot.recording #recorder { animation: blink 500ms linear infinite; }
 #recorder { position: absolute; bottom: 25px; padding: 0px 5px; font-size: 16px; text-indent: -2px; color: #333; right: 25px;}
 
 @media (max-width: 400px) {

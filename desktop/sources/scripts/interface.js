@@ -55,7 +55,7 @@ function Interface (id, synth) {
     context.beginPath()
     context.lineJoin = 'round'
     context.lineWidth = 2
-    context.strokeStyle = 'white'
+    context.strokeStyle = pilot.theme.active.f_low
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
     for (let i = 1, len = values.length; i < len; i++) {
       const x = parseInt(canvasWidth * (i / len))
