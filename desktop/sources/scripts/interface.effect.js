@@ -43,7 +43,7 @@ function EffectInterface (pilot, id, node) {
 
     this.node.wet.value = data.wet
 
-    if (data.value) {
+    if (!isNaN(data.value)) {
       if (data.code === 'rev') {
         this.node.roomSize.value = data.value
       } else if (data.code === 'dis') {

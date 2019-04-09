@@ -66,10 +66,10 @@ function ChannelInterface (pilot, id, node) {
 
   this.setEnv = function (data) {
     if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
-    if (data.attack) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
-    if (data.decay) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
-    if (data.sustain) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
-    if (data.release) { this.node.envelope.release = clamp(data.release, 0.01, 1.0) }
+    if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
+    if (!isNaN(data.decay)) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
+    if (!isNaN(data.sustain)) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
+    if (!isNaN(data.release)) { this.node.envelope.release = clamp(data.release, 0.01, 1.0) }
     this.lastEnv = performance.now()
     this.updateEnv(data)
   }
