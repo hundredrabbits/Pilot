@@ -67,12 +67,6 @@ Just use ffmpeg.
 
 <img src='https://raw.githubusercontent.com/hundredrabbits/Pilot/master/resources/device.jpg' width="600"/>
 
-## TODOs
-
-- Improve ORCA example to demonstrate chords.
-- Design icon.
-- Recycle Marabu into a UDP sequencer.
-
 ## Extras
 
 - This application supports the [Ecosystem Theme](https://github.com/hundredrabbits/Themes).

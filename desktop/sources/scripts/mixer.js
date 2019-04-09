@@ -22,27 +22,27 @@ function Mixer (pilot) {
     this.channels[0] = new ChannelInterface(pilot, 0, new Tone.AMSynth({
       'harmonicity': 1.25,
       'oscillator': { 'type': 'sine8' },
-      'modulation': { 'type': 'square8' },
+      'modulation': { 'type': 'sine' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[1] = new ChannelInterface(pilot, 1, new Tone.AMSynth({
       'harmonicity': 1.5,
-      'oscillator': { 'type': 'square8' },
-      'modulation': { 'type': 'triangle8' },
+      'oscillator': { 'type': 'triangle8' },
+      'modulation': { 'type': 'sawtooth' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[2] = new ChannelInterface(pilot, 2, new Tone.AMSynth({
       'harmonicity': 1.75,
-      'oscillator': { 'type': 'triangle8' },
-      'modulation': { 'type': 'square8' },
+      'oscillator': { 'type': 'sawtooth8' },
+      'modulation': { 'type': 'triangle' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
     this.channels[3] = new ChannelInterface(pilot, 3, new Tone.AMSynth({
       'harmonicity': 2,
       'oscillator': { 'type': 'square8' },
-      'modulation': { 'type': 'sine8' },
+      'modulation': { 'type': 'square' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
@@ -50,60 +50,61 @@ function Mixer (pilot) {
     this.channels[4] = new ChannelInterface(pilot, 4, new Tone.AMSynth({
       'modulationIndex': 0,
       'oscillator': { 'type': 'sine4' },
-      'modulation': { 'type': 'square4' },
+      'modulation': { 'type': 'square8' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[5] = new ChannelInterface(pilot, 5, new Tone.AMSynth({
       'modulationIndex': 10,
-      'oscillator': { 'type': 'square4' },
-      'modulation': { 'type': 'triangle4' },
+      'oscillator': { 'type': 'triangle4' },
+      'modulation': { 'type': 'sawtooth8' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[6] = new ChannelInterface(pilot, 6, new Tone.AMSynth({
       'modulationIndex': 20,
-      'oscillator': { 'type': 'triangle4' },
-      'modulation': { 'type': 'square4' },
+      'oscillator': { 'type': 'sawtooth4' },
+      'modulation': { 'type': 'triangle8' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[7] = new ChannelInterface(pilot, 7, new Tone.AMSynth({
       'modulationIndex': 40,
       'oscillator': { 'type': 'square4' },
-      'modulation': { 'type': 'sine4' },
+      'modulation': { 'type': 'sine8' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
-    // AM
+    // FM
     this.channels[8] = new ChannelInterface(pilot, 8, new Tone.FMSynth({
       'modulationIndex': 0,
-      'oscillator': { 'type': 'sine4' },
-      'modulation': { 'type': 'square4' },
+      'oscillator': { 'type': 'sine' },
+      'modulation': { 'type': 'sawtooth4' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[9] = new ChannelInterface(pilot, 9, new Tone.FMSynth({
       'modulationIndex': 10,
-      'oscillator': { 'type': 'square4' },
-      'modulation': { 'type': 'triangle4' },
+      'oscillator': { 'type': 'sine' },
+      'modulation': { 'type': 'triangle8' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[10] = new ChannelInterface(pilot, 10, new Tone.FMSynth({
       'modulationIndex': 20,
-      'oscillator': { 'type': 'triangle4' },
-      'modulation': { 'type': 'square4' },
+      'oscillator': { 'type': 'sawtooth' },
+      'modulation': { 'type': 'triangle4' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[11] = new ChannelInterface(pilot, 11, new Tone.FMSynth({
       'modulationIndex': 40,
-      'oscillator': { 'type': 'square4' },
-      'modulation': { 'type': 'sine4' },
+      'oscillator': { 'type': 'sawtooth' },
+      'modulation': { 'type': 'square8' },
       'envelope': { 'attack': 0, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
+    // Membrane
     this.channels[12] = new ChannelInterface(pilot, 12, new Tone.MembraneSynth({
       'octaves': 5,
       'oscillator': { 'type': 'sine' },
@@ -112,19 +113,19 @@ function Mixer (pilot) {
 
     this.channels[13] = new ChannelInterface(pilot, 13, new Tone.MembraneSynth({
       'octaves': 10,
-      'oscillator': { 'type': 'sine8' },
+      'oscillator': { 'type': 'sawtooth' },
       'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[14] = new ChannelInterface(pilot, 14, new Tone.MembraneSynth({
       'octaves': 15,
-      'oscillator': { 'type': 'triangle8' },
+      'oscillator': { 'type': 'triangle' },
       'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[15] = new ChannelInterface(pilot, 15, new Tone.MembraneSynth({
       'octaves': 20,
-      'oscillator': { 'type': 'square8' },
+      'oscillator': { 'type': 'square' },
       'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
     }))
 
