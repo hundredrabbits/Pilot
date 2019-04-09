@@ -73,6 +73,7 @@ function EffectInterface (pilot, id, node) {
   }
 
   this.updateEffect = function (data, force = false) {
+    if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isEffect)) { return }
 
     let value = 0
