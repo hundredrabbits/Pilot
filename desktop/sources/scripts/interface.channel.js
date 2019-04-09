@@ -7,10 +7,6 @@ function ChannelInterface (pilot, id, node) {
   Interface.call(this, pilot, id, node)
 
   this.node = node
-  this.node.envelope.attack = 0.001
-  this.node.envelope.decay = clamp(((8 - (id % 8)) / 8), 0.01, 0.9)
-  this.node.envelope.sustain = clamp(((id % 4) / 4), 0.01, 0.9)
-  this.node.envelope.release = clamp(((id % 6) / 6), 0.01, 0.9)
 
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
@@ -66,7 +62,8 @@ function ChannelInterface (pilot, id, node) {
 
   this.setEnv = function (data) {
     if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
-    if(id > 11){ return }
+    if (!this.node.envelope) { return }
+    if (id > 11) { return }
     if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
     if (!isNaN(data.decay)) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
     if (!isNaN(data.sustain)) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
@@ -98,6 +95,7 @@ function ChannelInterface (pilot, id, node) {
   this.updateEnv = function (data, force = false) {
     if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isEnv)) { return }
+    if (!this.node.envelope) { return }
     setContent(this.env_el, `${to16(this.node.envelope.attack)}${to16(this.node.envelope.decay)}${to16(this.node.envelope.sustain)}${to16(this.node.envelope.release)}`)
     setClass(this.env_el, 'env active')
     setTimeout(() => { setClass(this.env_el, 'env') }, 50)
