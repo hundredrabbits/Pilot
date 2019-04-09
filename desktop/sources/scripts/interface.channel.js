@@ -66,6 +66,7 @@ function ChannelInterface (pilot, id, node) {
 
   this.setEnv = function (data) {
     if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
+    if(id > 11){ return }
     if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
     if (!isNaN(data.decay)) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
     if (!isNaN(data.sustain)) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }

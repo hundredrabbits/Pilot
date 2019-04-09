@@ -108,25 +108,25 @@ function Mixer (pilot) {
     this.channels[12] = new ChannelInterface(pilot, 12, new Tone.MembraneSynth({
       'octaves': 5,
       'oscillator': { 'type': 'sine' },
-      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+      'envelope': { 'attack': 0.1, 'decay': 0.1, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[13] = new ChannelInterface(pilot, 13, new Tone.MembraneSynth({
       'octaves': 10,
       'oscillator': { 'type': 'sawtooth' },
-      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+      'envelope': { 'attack': 0.1, 'decay': 0.1, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[14] = new ChannelInterface(pilot, 14, new Tone.MembraneSynth({
       'octaves': 15,
       'oscillator': { 'type': 'triangle' },
-      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+      'envelope': { 'attack': 0.1, 'decay': 0.1, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.channels[15] = new ChannelInterface(pilot, 15, new Tone.MembraneSynth({
       'octaves': 20,
       'oscillator': { 'type': 'square' },
-      'envelope': { 'attack': 0.1, 'decay': 0, 'sustain': 0.5, 'release': 1.0 }
+      'envelope': { 'attack': 0.1, 'decay': 0.1, 'sustain': 0.5, 'release': 1.0 }
     }))
 
     this.effects.bitcrusher = new EffectInterface(pilot, 'bit', new Tone.BitCrusher(4))
