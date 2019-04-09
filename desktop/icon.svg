@@ -1,12 +1,1 @@
-<svg class="vector" width="300px" height="300px" xmlns="http://www.w3.org/2000/svg" baseProfile="full" version="1.1" style="width: 300px; height: 300px; stroke: rgb(0, 0, 0); stroke-width: 0; fill: none; stroke-linecap: round;">
-  <rect width="300" height="300" style="fill:rgb(0,0,0)" />
-  <circle cx="60"  cy="60"  r="7.5" fill="white"/>
-  <circle cx="150" cy="60"  r="7.5" fill="white"/>
-  <circle cx="240" cy="60"  r="7.5" fill="white"/>
-  <circle cx="60"  cy="150" r="7.5" fill="white"/>
-  <circle cx="150" cy="150" r="7.5" fill="white"/>
-  <circle cx="240" cy="150" r="7.5" fill="white"/>
-  <circle cx="60"  cy="240" r="7.5" fill="white"/>
-  <circle cx="150" cy="240" r="7.5" fill="white"/>
-  <circle cx="240" cy="240" r="7.5" fill="white"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="full" version="1.1" width="330px" height="330px" style="fill: none; width: 330px; height: 330px;"><path d="" style="stroke-width: 23; stroke-linecap: round; stroke-linejoin: round; stroke: rgb(90, 105, 112); fill: none;"/><path d="M165,75 A30,30 0 0,0 195,105 L225,105 A30,30 0 0,1 255,135 A30,30 0 0,1 225,165 L105,165 A30,30 0 0,0 75,195 A30,30 0 0,0 105,225 L135,225 A30,30 0 0,1 165,255 " style="stroke-width: 13; stroke-linecap: round; stroke-linejoin: round; stroke: rgb(255, 255, 255); fill: none;"/><path d="" style="stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke: rgb(255, 255, 255); fill: none;"/></svg>
