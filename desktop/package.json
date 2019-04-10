@@ -24,6 +24,7 @@
     "electron-rebuild": "^1.8.2"
   },
   "dependencies": {
-    "tone": "^13.4.9"
+    "tone": "^13.4.9",
+    "wave-recorder": "^2.3.0"
   }
 }
