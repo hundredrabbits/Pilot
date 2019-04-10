@@ -3,6 +3,8 @@
 const { dialog, app } = require('electron').remote
 const Tone = require('tone')
 const fs = require('fs')
+const os = require('os')
+const WaveRecorder = require('wave-recorder')
 
 function Recorder (pilot) {
   this.el = document.createElement('div')
@@ -10,40 +12,44 @@ function Recorder (pilot) {
   this.el.className = 'blink'
   this.el.textContent = '•'
   this.isRecording = false
+  this.recorder = null
+  this.filePath = null
 
-  let chunks = []
 
   this.install = function (host) {
     console.log('Recorder', 'Installing..')
-
-    pilot.mixer.hook = Tone.context.createMediaStreamDestination()
-    pilot.mixer.recorder = new MediaRecorder(pilot.mixer.hook.stream)
-    pilot.mixer.masters.volume.connect(pilot.mixer.hook)
-
-    pilot.mixer.recorder.onstop = evt => {
-      const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
-      pilot.recorder.save(blob)
-    }
-
-    pilot.mixer.recorder.ondataavailable = evt => {
-      chunks.push(evt.data)
-    }
-
     host.appendChild(this.el)
   }
 
   this.start = function () {
-    console.log('Recorder', 'Starting..')
+    this.filePath =  os.tmpdir() + '/' + Date.now() + '.wav'
+    console.log('Recorder', 'Starting..', this.filePath)
     this.isRecording = true
-    chunks = []
-    pilot.mixer.recorder.start()
     pilot.el.className = 'recording'
+
+    this.recorder = WaveRecorder(Tone.context, {
+      channels: 2,
+      bitDepth: 32
+    })
+    pilot.mixer.masters.volume.connect(this.recorder.input)
+
+    this.tempStream = fs.createWriteStream(this.filePath)
+    this.recorder.pipe(this.tempStream)
+    this.recorder.on('header', header => {
+      let headerStream = fs.createWriteStream(this.filePath, {
+        start: 0,
+        flags: 'r+'
+      })
+      headerStream.write(header)
+      headerStream.end()
+      this.save()
+    })
   }
 
   this.stop = function () {
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
-    pilot.mixer.recorder.stop()
+    this.recorder.end()
     pilot.el.className = ''
   }
 
@@ -55,24 +61,17 @@ function Recorder (pilot) {
     }
   }
 
-  this.save = function (blob) {
-    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['ogg'] }] }, (path) => {
+  this.save = function () {
+    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['wav'] }] }, (path) => {
       if (path === undefined) { return }
-      pilot.recorder.write(path, blob)
-    })
-  }
-
-  this.write = function (path, blob) {
-    var reader = new FileReader()
-
-    reader.onload = function () {
-      var buffer = new Buffer.from(reader.result)
-      fs.writeFile(path, buffer, {}, (err, res) => {
+      // move the file
+      fs.rename(this.filePath, path, (err) =>{
         if (err) { console.error(err); return }
         console.log('Recorder', 'Export complete.')
+        this.filePath = null
+        this.recorder = null
       })
-    }
-    reader.readAsArrayBuffer(blob)
+    })
   }
 }
 
