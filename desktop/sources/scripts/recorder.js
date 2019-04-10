@@ -63,10 +63,9 @@ function Recorder (pilot) {
   }
 
   this.write = function (path, blob) {
-    var reader = new FileReader()
-
+    const reader = new FileReader()
     reader.onload = function () {
-      var buffer = new Buffer.from(reader.result)
+      const buffer = new Buffer.from(reader.result)
       fs.writeFile(path, buffer, {}, (err, res) => {
         if (err) { console.error(err); return }
         console.log('Recorder', 'Export complete.')

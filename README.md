@@ -53,6 +53,14 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 | `REVff`     | All     | Reverb     | ..   |
 | `FEEff`     | All     | Feedback   | ..   |
 
+#### Masters
+
+`TODO` Add the ability to change the mastering effects lile compressor and volume. Coming soon!
+
+#### Special
+
+You can set the BPM with the `bpm` command, like `bpm140`. This command is designed to apply to effects like feedback.
+
 ## Record
 
 Press **cmd/ctrl+r** to record, and press it again to stop.
