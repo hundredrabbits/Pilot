@@ -124,7 +124,7 @@ function Mixer (pilot) {
     }
 
     // Mastering
-    this.masters.equalizer = new Tone.EQ3(20, -10, 20)
+    this.masters.equalizer = new Tone.EQ3(20, 0, 20)
     this.masters.compressor = new Tone.Compressor(-10, 20)
     this.masters.limiter = new Tone.Limiter(-10)
     this.masters.volume = new Tone.Volume(-6)
