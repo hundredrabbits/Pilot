@@ -41,7 +41,7 @@ function Interface (pilot, id, node) {
     context.beginPath()
     context.lineJoin = 'round'
     context.lineWidth = 2
-    context.strokeStyle = pilot.theme.active.b_inv
+    context.strokeStyle = pilot.theme.active.f_med
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
     for (let i = 1, len = values.length; i < len; i++) {
       if (i % 17 !== 0) { continue }
