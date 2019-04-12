@@ -9,7 +9,7 @@ function Commander (pilot) {
   this.history = []
 
   // Index of history command to show in input.
-  this.historyIdx
+  this.historyIndex = 0
 
   // Holds whether the user is browsing the history or not.
   this.isBrowsingHistory = false
@@ -36,26 +36,26 @@ function Commander (pilot) {
       }
 
       if (this.history.length) {
-        if (this.historyIdx === this.history.length - 1) {
+        if (this.historyIndex === this.history.length - 1) {
           this.isBrowsingHistory = false
           this.input.value = ''
           return
         }
 
-        this.historyIdx += 1
-        this.input.value = this.history[this.historyIdx]
+        this.historyIndex += 1
+        this.input.value = this.history[this.historyIndex]
       }
       break
     case 38: // Up
       e.preventDefault()
       if (!this.isBrowsingHistory) {
-        this.historyIdx = this.history.length
+        this.historyIndex = this.history.length
       }
 
       this.isBrowsingHistory = true
-      if (this.history.length && this.historyIdx > 0) {
-        this.historyIdx -= 1
-        this.input.value = this.history[this.historyIdx]
+      if (this.history.length && this.historyIndex > 0) {
+        this.historyIndex -= 1
+        this.input.value = this.history[this.historyIndex]
       }
 
       break
