@@ -9,7 +9,7 @@ function Commander (pilot) {
   this.history = []
 
   // Index of history command to show in input.
-  this.historyIdx
+  this.historyIdx = 0
 
   // Holds whether the user is browsing the history or not.
   this.isBrowsingHistory = false
