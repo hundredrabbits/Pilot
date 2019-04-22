@@ -29,36 +29,36 @@ function Commander (pilot) {
 
   this.input.onkeydown = (e) => {
     switch (e.keyCode) {
-    case 40: // Down
-      e.preventDefault()
-      if (!this.isBrowsingHistory) {
-        return
-      }
-
-      if (this.history.length) {
-        if (this.historyIndex === this.history.length - 1) {
-          this.isBrowsingHistory = false
-          this.input.value = ''
+      case 40: // Down
+        e.preventDefault()
+        if (!this.isBrowsingHistory) {
           return
         }
 
-        this.historyIndex += 1
-        this.input.value = this.history[this.historyIndex]
-      }
-      break
-    case 38: // Up
-      e.preventDefault()
-      if (!this.isBrowsingHistory) {
-        this.historyIndex = this.history.length
-      }
+        if (this.history.length) {
+          if (this.historyIndex === this.history.length - 1) {
+            this.isBrowsingHistory = false
+            this.input.value = ''
+            return
+          }
 
-      this.isBrowsingHistory = true
-      if (this.history.length && this.historyIndex > 0) {
-        this.historyIndex -= 1
-        this.input.value = this.history[this.historyIndex]
-      }
+          this.historyIndex += 1
+          this.input.value = this.history[this.historyIndex]
+        }
+        break
+      case 38: // Up
+        e.preventDefault()
+        if (!this.isBrowsingHistory) {
+          this.historyIndex = this.history.length
+        }
 
-      break
+        this.isBrowsingHistory = true
+        if (this.history.length && this.historyIndex > 0) {
+          this.historyIndex -= 1
+          this.input.value = this.history[this.historyIndex]
+        }
+
+        break
     }
   }
 
