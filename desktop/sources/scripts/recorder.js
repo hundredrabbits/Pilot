@@ -41,7 +41,7 @@ function Recorder (pilot) {
   }
 
   this.stop = function () {
-    if(!this.isRecording) { return }
+    if (!this.isRecording) { return }
 
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
