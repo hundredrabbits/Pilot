@@ -41,6 +41,8 @@ function Recorder (pilot) {
   }
 
   this.stop = function () {
+    if(!this.isRecording) { return }
+
     console.log('Recorder', 'Stopping..')
     this.isRecording = false
     pilot.mixer.recorder.stop()
