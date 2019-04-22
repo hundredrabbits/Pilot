@@ -3,6 +3,12 @@
 const Tone = require('tone')
 const Interface = require('./interface')
 
+const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B']
+const MAJOR = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
+const MINOR = ['c', 'd', 'F', 'f', 'g', 'a', 'C']
+const WAVCODES = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
+const WAVNAMES = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
+
 function ChannelInterface (pilot, id, node) {
   Interface.call(this, pilot, id, node)
 
@@ -51,7 +57,7 @@ function ChannelInterface (pilot, id, node) {
 
   this.playNote = function (data) {
     if (isNaN(data.octave)) { return }
-    if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
+    if (OCTAVE.indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
     if (this.lastNote && performance.now() - this.lastNote < 100) { return }
     const name = `${data.note}${data.sharp}${data.octave}`
     const length = clamp(data.length, 0.1, 0.9)
@@ -134,10 +140,12 @@ function ChannelInterface (pilot, id, node) {
     if (msg.length < 2) { console.warn(`Misformatted note`); return }
     const octave = clamp(parseInt(msg.substr(0, 1)), 0, 8)
     const note = msg.substr(1, 1)
-    const sharp = note.toLowerCase() === note ? '#' : ''
     const velocity = msg.length >= 3 ? from16(msg.substr(2, 1)) : 0.66
     const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
-    return { isNote: true, octave: octave, note: note, sharp: sharp, string: `${octave}${note}`, length: length, velocity: velocity }
+    const transposed = transpose(octave, note)
+
+    console.log(note, transposed)
+    return { isNote: true, octave: transposed.octave, note: transposed.note, sharp: isUpperCase(transposed.note) === false ? '#' : '', string: `${octave}${note}`, length: length, velocity: velocity }
   }
 
   function parseEnv (msg) {
@@ -154,23 +162,34 @@ function ChannelInterface (pilot, id, node) {
     return { isOsc: true, wav: (msg.length > 1 ? wavName(msg.substr(0, 2)) : null), mod: (msg.length > 3 ? wavName(msg.substr(2, 2)) : null), string: 'osc' }
   }
 
+  // Tools
+
+  function transpose (octave, note) {
+    if (OCTAVE.indexOf(note) > -1) { return { octave, note } }
+    const noteArray = isUpperCase(note) === true ? MAJOR : MINOR
+    const noteIndex = letterValue(note) - 7
+    const noteMod = noteArray[noteIndex % noteArray.length]
+    const octaveMod = Math.floor(noteIndex / noteArray.length) + 1
+    return { octave: octave + octaveMod, note: noteMod === 'e' ? 'F' : noteMod === 'b' ? 'C' : noteMod }
+  }
+
   // Wave Codes
-  const wavCodes = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
-  const wavNames = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
   function wavCode (n) {
     const name = n.toLowerCase()
-    const index = wavNames.indexOf(name)
-    return index > -1 ? wavCodes[index] : '??'
+    const index = WAVNAMES.indexOf(name)
+    return index > -1 ? WAVCODES[index] : '??'
   }
 
   function wavName (c) {
     const code = c.toLowerCase()
-    const index = wavCodes.indexOf(code)
-    return index > -1 ? wavNames[index] : 'sine'
+    const index = WAVCODES.indexOf(code)
+    return index > -1 ? WAVNAMES[index] : 'sine'
   }
 
   // Helpers
+  function letterValue (c) { return c.toLowerCase().charCodeAt(0) - 97 }
+  function isUpperCase (s) { return `${s}`.toUpperCase() === `${s}` }
   function from16 (str) { return (int36(str) / 15) }
   function to16 (float) { return str36(Math.floor(float * 15)) }
   function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }

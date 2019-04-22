@@ -11,6 +11,7 @@ app.on('ready', () => {
     height: 190,
     minWidth: 200,
     minHeight: 190,
+    backgroundColor: '#000',
     icon: __dirname + '/' + { darwin: 'icon.icns', linux: 'icon.png', win32: 'icon.ico' }[process.platform] || 'icon.ico',
     resizable: true,
     frame: process.platform !== 'darwin',
@@ -21,7 +22,7 @@ app.on('ready', () => {
   })
 
   app.win.loadURL(`file://${__dirname}/sources/index.html`)
-  // app.inspect()
+  app.inspect()
 
   app.win.on('closed', () => {
     win = null
