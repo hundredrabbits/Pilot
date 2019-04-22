@@ -50,6 +50,15 @@
       controller.add("default","Theme","Download Themes..",() => { require('electron').shell.openExternal('https://github.com/hundredrabbits/Themes') })
 
       controller.commit()
+     
+      document.body.addEventListener('keydown', e => {
+        switch(e.keyCode) {
+          case 27: // Esc
+            e.preventDefault()
+            pilot.recorder.stop()
+            break
+        }
+      })
 
       pilot.install(document.body)
       pilot.start()
