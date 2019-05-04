@@ -2,7 +2,7 @@
 
 const Tone = require('tone')
 
-function Interface (pilot, id, node) {
+function Interface (pilot, id, node, meter = true) {
   this.node = node
   this.waveform = new Tone.Waveform(512)
 
@@ -21,6 +21,10 @@ function Interface (pilot, id, node) {
     this.canvas.style.width = (canvasWidth / 2) + 'px'
     this.canvas.style.height = (canvasHeight / 2) + 'px'
 
+    context.lineJoin = 'round'
+    context.lineWidth = 2
+    context.strokeStyle = pilot.theme.active.f_med
+
     this.node.fan(this.waveform)
     this.el.appendChild(this.canvas)
     host.appendChild(this.el)
@@ -37,18 +41,25 @@ function Interface (pilot, id, node) {
 
   function draw (values) {
     if (pilot.animate !== true) { return }
+    if (meter !== true) { return }
+
+    const value = values.reduce((sum,num) => { return sum + num })
+
     context.clearRect(0, 0, canvasWidth, canvasHeight)
+
     context.beginPath()
-    context.lineJoin = 'round'
-    context.lineWidth = 2
-    context.strokeStyle = pilot.theme.active.f_med
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
-    for (let i = 1, len = values.length; i < len; i++) {
-      if (i % 17 !== 0) { continue }
-      const x = parseInt(canvasWidth * (i / len))
-      const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
-      context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))
+
+    if(Math.abs(value) > 0){
+      for (let i = 1, len = values.length; i < len; i++) {
+        if (i % 17 !== 0) { continue }
+        const x = parseInt(canvasWidth * (i / len))
+        const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
+        context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))
+      }
     }
+
+    context.lineTo(canvasWidth, parseInt(((values[0] + 1) / 2) * canvasHeight))
     context.stroke()
   }
 

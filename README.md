@@ -59,7 +59,10 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 
 #### Special
 
-You can set the BPM with the `bpm` command, like `bpm140`. This command is designed to apply to effects like feedback.
+- `bpm140`, sets the BPM to `140`. This command is designed to apply to effects like feedback.
+- `renv`, randomizes enveloppes.
+- `rosc`, randomizes oscillators.
+- `refx`, randomizes effects.
 
 ## Record
 

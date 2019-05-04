@@ -21,7 +21,7 @@ function Recorder (pilot) {
     pilot.mixer.masters.volume.connect(pilot.mixer.hook)
 
     pilot.mixer.recorder.onstop = evt => {
-      const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
+      const blob = new Blob(chunks, { type: 'audio/wav; codecs=opus' })
       pilot.recorder.save(blob)
     }
 
@@ -58,7 +58,7 @@ function Recorder (pilot) {
   }
 
   this.save = function (blob) {
-    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['ogg'] }] }, (path) => {
+    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['wav'] }] }, (path) => {
       if (path === undefined) { return }
       pilot.recorder.write(path, blob)
     })

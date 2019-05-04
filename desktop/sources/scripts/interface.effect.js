@@ -4,7 +4,7 @@ const Tone = require('tone')
 const Interface = require('./interface')
 
 function EffectInterface (pilot, id, node) {
-  Interface.call(this, pilot, id, node)
+  Interface.call(this, pilot, id, node, false)
 
   this.node = node
   this.node.wet.value = 0
@@ -64,6 +64,10 @@ function EffectInterface (pilot, id, node) {
     }
     this.lastEffect = performance.now()
     this.updateEffect(data, true)
+  }
+
+  this.rand = function(){
+    this.operate(`${to16(Math.random() * 1)}${to16(Math.random() * 1)}`)
   }
 
   // Updates

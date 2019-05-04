@@ -10,7 +10,7 @@ const WAVCODES = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4
 const WAVNAMES = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
 function ChannelInterface (pilot, id, node) {
-  Interface.call(this, pilot, id, node)
+  Interface.call(this, pilot, id, node, true)
 
   this.node = node
 
@@ -70,7 +70,7 @@ function ChannelInterface (pilot, id, node) {
     if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
     if (!this.node.envelope) { return }
     if (id > 11) { return }
-    if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
+    if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0); }
     if (!isNaN(data.decay)) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
     if (!isNaN(data.sustain)) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
     if (!isNaN(data.release)) { this.node.envelope.release = clamp(data.release, 0.01, 1.0) }
@@ -123,6 +123,20 @@ function ChannelInterface (pilot, id, node) {
     setTimeout(() => { setClass(this.oct_el, 'oct') }, 50)
   }
 
+  this.randEnv = function(){
+    const a = to16(Math.random() * 1)
+    const s = to16(Math.random() * 1)
+    const d = to16(Math.random() * 1)
+    const r = to16(Math.random() * 1)
+    this.operate(`env${a}${s}${d}${r}`)
+  }
+
+  this.randOsc = function(){
+    const a = WAVCODES[parseInt(Math.random() * WAVCODES.length)]
+    const b = WAVCODES[parseInt(Math.random() * WAVCODES.length)]
+    this.operate(`osc${a}${b}`)
+  }
+
   // Parsers
 
   function parse (msg) {
@@ -132,6 +146,12 @@ function ChannelInterface (pilot, id, node) {
       return parseOsc(val)
     } else if (cmd === 'env') {
       return parseEnv(val)
+    }
+    else if (cmd === 'ren') {
+      return {isRen:true}
+    }
+    else if (cmd === 'ros') {
+      return {isRos:true}
     }
     return parseNote(msg)
   }

@@ -7,7 +7,7 @@ let isShown = true
 
 app.on('ready', () => {
   app.win = new BrowserWindow({
-    width: 430,
+    width: 390,
     height: 190,
     minWidth: 200,
     minHeight: 190,
@@ -21,7 +21,6 @@ app.on('ready', () => {
   })
 
   app.win.loadURL(`file://${__dirname}/sources/index.html`)
-  app.inspect()
 
   app.win.on('closed', () => {
     win = null

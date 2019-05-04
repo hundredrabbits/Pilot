@@ -131,6 +131,23 @@ function Mixer (pilot) {
         Tone.Transport.bpm.rampTo(bpm, 4)
         console.log(`Changed BPM to ${bpm}.`)
       }
+      pilot.recorder.el.innerHTML = `${bpm}`
+    }
+    // Special
+    if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'renv') {
+      for (const id in this.channels) {
+        this.channels[id].randEnv()
+      }
+    }
+    if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'rosc') {
+      for (const id in this.channels) {
+        this.channels[id].randOsc()
+      }
+    }
+    if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'refx') {
+      for (const id in this.effects) {
+        this.effects[id].rand(msg)
+      }
     }
   }
 

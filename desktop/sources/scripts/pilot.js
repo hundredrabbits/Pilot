@@ -11,7 +11,7 @@ function Pilot () {
   this.recorder = null
   this.commander = null
   this.controller = new Controller()
-  this.theme = new Theme({ background: '#000000', f_high: '#ffffff', f_med: '#777777', f_low: '#444444', f_inv: '#000000', b_high: '#eeeeee', b_med: '#72dec2', b_low: '#444444', b_inv: '#ffb545' })
+  this.theme = new Theme({ background: '#000000', f_high: '#ffffff', f_med: '#777777', f_low: '#444444', f_inv: '#000000', b_high: '#eeeeee', b_med: '#333', b_low: '#444444', b_inv: '#fff' })
 
   this.el = document.createElement('div')
   this.el.id = 'pilot'
@@ -43,7 +43,6 @@ function Pilot () {
 
   this.toggleAnimations = function (mod, set = false) {
     this.animate = this.animate !== true
-    this.resize(true)
   }
 
   this.modZoom = function (mod = 0, set = false) {
