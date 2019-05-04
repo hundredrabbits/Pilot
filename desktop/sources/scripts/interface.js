@@ -43,14 +43,14 @@ function Interface (pilot, id, node, meter = true) {
     if (pilot.animate !== true) { return }
     if (meter !== true) { return }
 
-    const value = values.reduce((sum,num) => { return sum + num })
+    const value = values.reduce((sum, num) => { return sum + num })
 
     context.clearRect(0, 0, canvasWidth, canvasHeight)
 
     context.beginPath()
     context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
 
-    if(Math.abs(value) > 0){
+    if (Math.abs(value) > 0) {
       for (let i = 1, len = values.length; i < len; i++) {
         if (i % 17 !== 0) { continue }
         const x = parseInt(canvasWidth * (i / len))

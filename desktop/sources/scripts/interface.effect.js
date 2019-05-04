@@ -66,8 +66,8 @@ function EffectInterface (pilot, id, node) {
     this.updateEffect(data, true)
   }
 
-  this.rand = function(){
-    this.operate(`${to16(Math.random() * 1)}${to16(Math.random() * 1)}`)
+  this.rand = function () {
+    this.operate(`${to16(Math.random() * 0.5)}${to16(Math.random() * 1)}`)
   }
 
   // Updates
