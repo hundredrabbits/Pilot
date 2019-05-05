@@ -7,8 +7,8 @@ let isShown = true
 
 app.on('ready', () => {
   app.win = new BrowserWindow({
-    width: 390,
-    height: 190,
+    width: 425,
+    height: 210,
     minWidth: 200,
     minHeight: 190,
     backgroundColor: '#000',

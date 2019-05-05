@@ -4,16 +4,17 @@ const Tone = require('tone')
 
 function Interface (pilot, id, node, meter = true) {
   this.node = node
-  this.waveform = new Tone.Waveform(512)
+  this.waveform = new Tone.Meter(0.95)
 
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
   this.canvas = document.createElement('canvas')
 
   const waveform = this.waveform
-  const canvasWidth = 30 * 2
-  const canvasHeight = 15 * 2
+  const canvasWidth = 13 * 2
+  const canvasHeight = 13 * 2
   const context = this.canvas.getContext('2d')
+  let lastUpdate = null
 
   this.install = function (host) {
     this.canvas.width = canvasWidth
@@ -22,10 +23,10 @@ function Interface (pilot, id, node, meter = true) {
     this.canvas.style.height = (canvasHeight / 2) + 'px'
 
     context.lineJoin = 'round'
-    context.lineWidth = 2
-    context.strokeStyle = pilot.theme.active.f_med
+    context.lineWidth = 30
+    context.strokeStyle = pilot.theme.active.f_high
 
-    this.node.fan(this.waveform)
+    this.node.connect(this.waveform)
     this.el.appendChild(this.canvas)
     host.appendChild(this.el)
   }
@@ -39,33 +40,29 @@ function Interface (pilot, id, node, meter = true) {
     this.node.connect(node)
   }
 
-  function draw (values) {
+  function draw (level) {
     if (pilot.animate !== true) { return }
     if (meter !== true) { return }
+    if (lastUpdate && performance.now() - lastUpdate < 30) { return }
 
-    const value = values.reduce((sum, num) => { return sum + num })
+    const gain = Tone.dbToGain(level)
+
+    if (gain < 0.01) { return }
+
+    const x = ((gain * canvasWidth))
+    const y = parseInt(canvasWidth / 2)
 
     context.clearRect(0, 0, canvasWidth, canvasHeight)
-
     context.beginPath()
-    context.moveTo(0, parseInt(((values[0] + 1) / 2) * canvasHeight))
-
-    if (Math.abs(value) > 0) {
-      for (let i = 1, len = values.length; i < len; i++) {
-        if (i % 17 !== 0) { continue }
-        const x = parseInt(canvasWidth * (i / len))
-        const y = parseInt(((values[i] + 1) / 2) * canvasHeight)
-        context.lineTo(clamp(x, 2, canvasWidth - 2), clamp(y, 2, canvasHeight - 2))
-      }
-    }
-
-    context.lineTo(canvasWidth, parseInt(((values[0] + 1) / 2) * canvasHeight))
+    context.moveTo(0, y)
+    context.lineTo(x, y)
     context.stroke()
+    lastUpdate = performance.now()
   }
 
   function loop () {
     requestAnimationFrame(loop)
-    draw(waveform.getValue())
+    draw(waveform.getLevel())
   }
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }

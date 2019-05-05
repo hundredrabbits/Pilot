@@ -2,13 +2,49 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 
 /* Mixer */
 
-#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; columns: 3; min-width: 420px}
-#mixer > div { position: relative; max-width: 135px}
-#mixer > div.effect { max-width: 45px }
-#mixer > div.effect canvas { display: none }
+#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; min-width: 420px}
+#mixer > div { position: absolute; width: 90px}
+#mixer > div.channel { position: absolute; }
+#mixer > div.effect { width:55px; }
 #mixer > div .cid { font-family: 'input_mono_medium'; font-weight: normal; }
-#mixer > div canvas { position: absolute; width:30px; height:15px; right:0px; top:0px; padding:0px 5px;}
+#mixer > div canvas { position: absolute;width: 13px;height: 4px !important;right: -10px;top: 4px;border-radius: 3px;border: 1px solid white;}
 #mixer span { padding: 0px 2.55px; }
+
+#mixer #ch0 { top:calc(0 * 15px); left:0px; }
+#mixer #ch1 { top:calc(1 * 15px); left:0px; }
+#mixer #ch2 { top:calc(2 * 15px); left:0px; }
+#mixer #ch3 { top:calc(3 * 15px); left:0px; }
+#mixer #ch4 { top:calc(4 * 15px); left:0px; }
+#mixer #ch5 { top:calc(5 * 15px); left:0px; }
+#mixer #ch6 { top:calc(6 * 15px); left:0px; }
+#mixer #ch7 { top:calc(7 * 15px); left:0px; }
+
+#mixer #ch8 { top:calc(0 * 15px); left:calc(1 * 110px); }
+#mixer #ch9 { top:calc(1 * 15px); left:calc(1 * 110px); }
+#mixer #cha { top:calc(2 * 15px); left:calc(1 * 110px); }
+#mixer #chb { top:calc(3 * 15px); left:calc(1 * 110px); }
+#mixer #chc { top:calc(4 * 15px); left:calc(1 * 110px); }
+#mixer #chd { top:calc(5 * 15px); left:calc(1 * 110px); }
+#mixer #che { top:calc(6 * 15px); left:calc(1 * 110px); }
+#mixer #chf { top:calc(7 * 15px); left:calc(1 * 110px); }
+
+#mixer #chbit { top:calc(0 * 15px); left:calc(2 * 110px); }
+#mixer #chdis { top:calc(1 * 15px); left:calc(2 * 110px); }
+#mixer #chwah { top:calc(2 * 15px); left:calc(2 * 110px); }
+#mixer #chche { top:calc(3 * 15px); left:calc(2 * 110px); }
+#mixer #chfee { top:calc(4 * 15px); left:calc(2 * 110px); }
+#mixer #chdel { top:calc(5 * 15px); left:calc(2 * 110px); }
+#mixer #chtre { top:calc(6 * 15px); left:calc(2 * 110px); }
+#mixer #chrev { top:calc(7 * 15px); left:calc(2 * 110px); }
+
+#mixer #chpha { top:calc(0 * 15px); left:calc(2 * 147px); }
+#mixer #chvib { top:calc(1 * 15px); left:calc(2 * 147px); }
+#mixer #chcho { top:calc(2 * 15px); left:calc(2 * 147px); }
+#mixer #chste { top:calc(3 * 15px); left:calc(2 * 147px); }
+#mixer #chequ { top:calc(4 * 15px); left:calc(2 * 147px); }
+#mixer #chcom { top:calc(5 * 15px); left:calc(2 * 147px); }
+#mixer #chvol { top:calc(6 * 15px); left:calc(2 * 147px); }
+#mixer #chlim { top:calc(7 * 15px); left:calc(2 * 147px); }
 
 /* Commander */
 
@@ -17,7 +53,9 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 /* Recorder */
 
 #pilot.recording #recorder { animation: blink 500ms linear infinite; }
-#recorder { position: absolute; bottom: 25px; padding: 0px 5px; color: #333; right: 25px;}
+#recorder { position: absolute; top: calc(11 * 15px); color: #333; left: 30px; font-family: 'input_mono_medium'; font-weight: normal;}
+
+#commander { top: calc(11 * 15px); left: 55px; position: absolute; line-height: 11px;  }
 
 @media (max-width: 380px) {
   #pilot #mixer { columns:1 !important; min-width: 0px }

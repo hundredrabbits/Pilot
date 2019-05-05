@@ -3,7 +3,9 @@
 function Commander (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'commander'
+
   this.input = document.createElement('input')
+  this.input.setAttribute('placeholder', 'cmd')
 
   // History of commands entered.
   this.history = []
@@ -20,7 +22,7 @@ function Commander (pilot) {
   }
 
   this.start = function () {
-
+    this.input.focus()
   }
 
   this.input.oninput = (e) => {

@@ -4,10 +4,12 @@ const Tone = require('tone')
 const Interface = require('./interface')
 
 function EffectInterface (pilot, id, node) {
-  Interface.call(this, pilot, id, node, false)
+  Interface.call(this, pilot, id, node, true)
 
   this.node = node
-  this.node.wet.value = 0
+  if (this.node.wet) {
+    this.node.wet.value = 0
+  }
 
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
@@ -41,7 +43,9 @@ function EffectInterface (pilot, id, node) {
   this.setEffect = function (data) {
     if (this.lastEffect && performance.now() - this.lastEffect < 100) { return }
 
-    this.node.wet.value = data.wet
+    if (this.node.wet) {
+      this.node.wet.value = data.wet
+    }
 
     if (!isNaN(data.value)) {
       if (data.code === 'rev') {
@@ -99,7 +103,10 @@ function EffectInterface (pilot, id, node) {
       value = this.node.depth.value
     }
 
-    setContent(this.val_el, `${to16(this.node.wet.value)}${to16(value)}`)
+    if (this.node.wet) {
+      setContent(this.val_el, `${to16(this.node.wet.value)}${to16(value)}`)
+    }
+
     setClass(this.val_el, 'val active')
     setTimeout(() => { setClass(this.val_el, 'val') }, 50)
   }

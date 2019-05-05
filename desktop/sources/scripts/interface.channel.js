@@ -15,7 +15,7 @@ function ChannelInterface (pilot, id, node) {
   this.node = node
 
   this.el = document.createElement('div')
-  this.el.id = `ch${id}`
+  this.el.id = `ch${id.toString(16)}`
   this.el.className = 'channel'
   this.cid_el = document.createElement('span')
   this.cid_el.className = `cid`
@@ -23,15 +23,12 @@ function ChannelInterface (pilot, id, node) {
   this.env_el.className = `env`
   this.osc_el = document.createElement('span')
   this.osc_el.className = `osc`
-  this.oct_el = document.createElement('span')
-  this.oct_el.className = `oct`
 
   this.cid_el.innerHTML = `${str36(id)}`
 
   this.el.appendChild(this.cid_el)
   this.el.appendChild(this.env_el)
   this.el.appendChild(this.osc_el)
-  this.el.appendChild(this.oct_el)
   this.el.appendChild(this.canvas)
 
   // Run
@@ -67,7 +64,6 @@ function ChannelInterface (pilot, id, node) {
     const length = clamp(data.length, 0.1, 0.9)
     this.node.triggerAttackRelease(name, length, '+0', data.velocity)
     this.lastNote = performance.now()
-    this.updateOct(data)
   }
 
   this.setEnv = function (data) {
@@ -99,7 +95,6 @@ function ChannelInterface (pilot, id, node) {
   this.updateAll = function (data, force = false) {
     this.updateEnv(data, force)
     this.updateOsc(data, force)
-    this.updateOct(data, force)
   }
 
   this.updateEnv = function (data, force = false) {
@@ -117,14 +112,6 @@ function ChannelInterface (pilot, id, node) {
     setContent(this.osc_el, `${this.node.oscillator ? wavCode(this.node.oscillator._oscillator.type) : '--'}${this.node.modulation ? wavCode(this.node.modulation._oscillator.type) : '--'}`)
     setClass(this.osc_el, 'osc active')
     setTimeout(() => { setClass(this.osc_el, 'osc') }, 50)
-  }
-
-  this.updateOct = function (data, force = false) {
-    if (pilot.animate !== true) { return }
-    if (force !== true && (!data || !data.isNote)) { return }
-    setContent(this.oct_el, data && data.isNote ? data.string : '--')
-    setClass(this.oct_el, 'oct active')
-    setTimeout(() => { setClass(this.oct_el, 'oct') }, 50)
   }
 
   this.randEnv = function () {

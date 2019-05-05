@@ -9,8 +9,7 @@ function Mixer (pilot) {
   this.el.id = 'mixer'
 
   this.channels = []
-  this.effects = { }
-  this.masters = {}
+  this.effects = {}
 
   this.install = function (host) {
     console.log('Mixer', 'Installing..')
@@ -39,39 +38,51 @@ function Mixer (pilot) {
     this.channels[14] = new ChannelInterface(pilot, 14, new Tone.MembraneSynth({ 'octaves': 15, 'oscillator': { 'type': 'triangle' } }))
     this.channels[15] = new ChannelInterface(pilot, 15, new Tone.MembraneSynth({ 'octaves': 20, 'oscillator': { 'type': 'square' } }))
 
+    // I
     this.effects.bitcrusher = new EffectInterface(pilot, 'bit', new Tone.BitCrusher(4))
     this.effects.distortion = new EffectInterface(pilot, 'dis', new Tone.Distortion(0.05))
-    this.effects.autofilter = new EffectInterface(pilot, 'aut', new Tone.AutoFilter())
-    this.effects.chorus = new EffectInterface(pilot, 'cho', new Tone.Chorus(4, 2.5, 0.5))
-    this.effects.tremolo = new EffectInterface(pilot, 'tre', new Tone.Tremolo())
-    this.effects.vibrato = new EffectInterface(pilot, 'vib', new Tone.Vibrato())
-    this.effects.reverb = new EffectInterface(pilot, 'rev', new Tone.JCReverb(0))
+    this.effects.autowah = new EffectInterface(pilot, 'wah', new Tone.AutoWah(100, 6, 0))
+    this.effects.chebyshev = new EffectInterface(pilot, 'che', new Tone.Chebyshev(50))
+    // II
     this.effects.feedback = new EffectInterface(pilot, 'fee', new Tone.FeedbackDelay(0))
+    this.effects.delay = new EffectInterface(pilot, 'del', new Tone.PingPongDelay('4n', 0.2))
+    this.effects.tremolo = new EffectInterface(pilot, 'tre', new Tone.Tremolo())
+    this.effects.reverb = new EffectInterface(pilot, 'rev', new Tone.JCReverb(0))
+    // III
+    this.effects.phaser = new EffectInterface(pilot, 'pha', new Tone.Phaser(0.5, 3, 350))
+    this.effects.vibrato = new EffectInterface(pilot, 'vib', new Tone.Vibrato())
+    this.effects.chorus = new EffectInterface(pilot, 'cho', new Tone.Chorus(4, 2.5, 0.5))
+    this.effects.widener = new EffectInterface(pilot, 'ste', new Tone.StereoWidener(0.5, 3, 350))
+    // Mastering
+    this.effects.equalizer = new EffectInterface(pilot, 'equ', new Tone.EQ3(15, 0, 15))
+    this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6, 4))
+    this.effects.volume = new EffectInterface(pilot, 'vol', new Tone.Volume(3))
+    this.effects.limiter = new EffectInterface(pilot, 'lim', new Tone.Limiter(-1))
 
     // Connect
     for (const id in this.channels) {
       this.channels[id].connect(this.effects.bitcrusher.node)
     }
 
-    // Mastering
-    this.masters.equalizer = new Tone.EQ3(20, 0, 20)
-    this.masters.compressor = new Tone.Compressor(-10, 20)
-    this.masters.limiter = new Tone.Limiter(-10)
-    this.masters.volume = new Tone.Volume(-6)
-
     this.effects.bitcrusher.connect(this.effects.distortion.node)
-    this.effects.distortion.connect(this.effects.autofilter.node)
-    this.effects.autofilter.connect(this.effects.chorus.node)
-    this.effects.chorus.connect(this.effects.tremolo.node)
-    this.effects.tremolo.connect(this.effects.vibrato.node)
-    this.effects.vibrato.connect(this.effects.reverb.node)
-    this.effects.reverb.connect(this.effects.feedback.node)
-    this.effects.feedback.connect(this.masters.equalizer)
+    this.effects.distortion.connect(this.effects.autowah.node)
+    this.effects.autowah.connect(this.effects.chebyshev.node)
+    this.effects.chebyshev.connect(this.effects.feedback.node)
 
-    this.masters.equalizer.connect(this.masters.compressor)
-    this.masters.compressor.connect(this.masters.limiter)
-    this.masters.limiter.connect(this.masters.volume)
-    this.masters.volume.toMaster()
+    this.effects.feedback.connect(this.effects.delay.node)
+    this.effects.delay.connect(this.effects.tremolo.node)
+    this.effects.tremolo.connect(this.effects.reverb.node)
+    this.effects.reverb.connect(this.effects.phaser.node)
+
+    this.effects.phaser.connect(this.effects.vibrato.node)
+    this.effects.vibrato.connect(this.effects.chorus.node)
+    this.effects.chorus.connect(this.effects.widener.node)
+    this.effects.widener.connect(this.effects.equalizer.node)
+
+    this.effects.equalizer.connect(this.effects.compressor.node)
+    this.effects.compressor.connect(this.effects.volume.node)
+    this.effects.volume.connect(this.effects.limiter.node)
+    this.effects.limiter.node.toMaster()
 
     // Add all instruments to dom
     for (const id in this.channels) {
@@ -105,6 +116,8 @@ function Mixer (pilot) {
       })
     }
 
+    this.setSpeed(120)
+
     this.run()
   }
 
@@ -126,12 +139,7 @@ function Mixer (pilot) {
     }
     // Special
     if (msg && `${msg}`.substr(0, 3).toLowerCase() === 'bpm') {
-      const bpm = parseInt(msg.substr(3))
-      if (!isNaN(bpm)) {
-        Tone.Transport.bpm.rampTo(bpm, 4)
-        console.log(`Changed BPM to ${bpm}.`)
-      }
-      pilot.recorder.el.innerHTML = `${bpm}`
+      this.setSpeed(msg.substr(3))
     }
     // Special
     if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'renv') {
@@ -149,6 +157,13 @@ function Mixer (pilot) {
         this.effects[id].rand(msg)
       }
     }
+  }
+
+  this.setSpeed = function (bpm) {
+    if (parseInt(bpm) < 30) { return }
+    Tone.Transport.bpm.rampTo(parseInt(bpm), 4)
+    console.log(`Changed BPM to ${bpm}.`)
+    pilot.recorder.el.innerHTML = `${bpm}`
   }
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
