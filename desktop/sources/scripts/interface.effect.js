@@ -64,6 +64,14 @@ function EffectInterface (pilot, id, node) {
         this.node.depth.value = data.value
       } else if (data.code === 'aut') {
         this.node.depth.value = data.value
+      } else if (data.code === 'pha') {
+        this.node.octaves = clamp(parseInt(data.value * 3), 0, 8)
+      } else if (data.code === 'wah') {
+        this.node.octaves = clamp(parseInt(data.value * 6), 0, 8)
+      } else if (data.code === 'che') {
+        this.node.order = clamp(parseInt(data.value * 100), 0, 8)
+      } else {
+        console.warn('Unknown value', this.node)
       }
     }
     this.lastEffect = performance.now()
@@ -101,6 +109,12 @@ function EffectInterface (pilot, id, node) {
       value = this.node.depth.value
     } else if (id === 'aut') {
       value = this.node.depth.value
+    } else if (id === 'pha') {
+      value = this.node.octaves / 3
+    } else if (id === 'wah') {
+      value = this.node.octaves / 6
+    } else if (id === 'che') {
+      value = this.node.order / 100
     }
 
     if (this.node.wet) {

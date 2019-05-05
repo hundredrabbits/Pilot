@@ -5,7 +5,6 @@ function Commander (pilot) {
   this.el.id = 'commander'
 
   this.input = document.createElement('input')
-  this.input.setAttribute('placeholder', 'cmd')
 
   // History of commands entered.
   this.history = []
