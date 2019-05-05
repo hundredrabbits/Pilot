@@ -44,7 +44,7 @@ The Settings commands allow you to change the sound of the synth. The settings c
 
 #### Effects
 
-The Effects are applied to all channels. The effect command format is a 3 characters long **name**, followed by one values between `0-G` for **wet** and **depth**.
+The Effects are applied to all channels. The effect command format is a 3 characters long **name**, followed by one value between `0-G` for **wet** and **depth**.
 
 | Command     | Channel | Operation  | Info |
 | :-          | :-      | :-         | :-   |
@@ -55,12 +55,12 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 
 #### Masters
 
-`TODO` Add the ability to change the mastering effects lile compressor and volume. Coming soon!
+`TODO` Add the ability to change the mastering effects like compressor and volume. Coming soon!
 
 #### Special
 
 - `bpm140`, sets the BPM to `140`. This command is designed to apply to effects like feedback.
-- `renv`, randomizes enveloppes.
+- `renv`, randomizes envelopes.
 - `rosc`, randomizes oscillators.
 - `refx`, randomizes effects.
 
