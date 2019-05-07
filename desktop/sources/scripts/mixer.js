@@ -54,10 +54,10 @@ function Mixer (pilot) {
     this.effects.chorus = new EffectInterface(pilot, 'cho', new Tone.Chorus(4, 2.5, 0.5))
     this.effects.widener = new EffectInterface(pilot, 'ste', new Tone.StereoWidener(0.5, 3, 350))
     // Mastering
-    this.effects.equalizer = new EffectInterface(pilot, 'equ', new Tone.EQ3(15, 0, 15))
-    this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6, 4))
-    this.effects.volume = new EffectInterface(pilot, 'vol', new Tone.Volume(3))
-    this.effects.limiter = new EffectInterface(pilot, 'lim', new Tone.Limiter(-1))
+    this.effects.equalizer = new EffectInterface(pilot, 'equ', new Tone.EQ3(5, 0, 5))
+    this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6,4))
+    this.effects.volume = new EffectInterface(pilot, 'vol', new Tone.Volume(6))
+    this.effects.limiter = new EffectInterface(pilot, 'lim', new Tone.Limiter(-2))
 
     // Connect
     for (const id in this.channels) {
