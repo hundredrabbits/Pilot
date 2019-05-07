@@ -102,16 +102,12 @@ function ChannelInterface (pilot, id, node) {
     if (force !== true && (!data || !data.isEnv)) { return }
     if (!this.node.envelope) { return }
     setContent(this.env_el, `${to16(this.node.envelope.attack)}${to16(this.node.envelope.decay)}${to16(this.node.envelope.sustain)}${to16(this.node.envelope.release)}`)
-    setClass(this.env_el, 'env active')
-    setTimeout(() => { setClass(this.env_el, 'env') }, 50)
   }
 
   this.updateOsc = function (data, force = false) {
     if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isOsc)) { return }
     setContent(this.osc_el, `${this.node.oscillator ? wavCode(this.node.oscillator._oscillator.type) : '--'}${this.node.modulation ? wavCode(this.node.modulation._oscillator.type) : '--'}`)
-    setClass(this.osc_el, 'osc active')
-    setTimeout(() => { setClass(this.osc_el, 'osc') }, 50)
   }
 
   this.randEnv = function () {
