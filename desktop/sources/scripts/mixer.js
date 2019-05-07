@@ -55,7 +55,7 @@ function Mixer (pilot) {
     this.effects.widener = new EffectInterface(pilot, 'ste', new Tone.StereoWidener(0.5, 3, 350))
     // Mastering
     this.effects.equalizer = new EffectInterface(pilot, 'equ', new Tone.EQ3(5, 0, 5))
-    this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6,4))
+    this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6, 4))
     this.effects.volume = new EffectInterface(pilot, 'vol', new Tone.Volume(6))
     this.effects.limiter = new EffectInterface(pilot, 'lim', new Tone.Limiter(-2))
 
@@ -82,7 +82,6 @@ function Mixer (pilot) {
     this.effects.equalizer.connect(this.effects.compressor.node)
     this.effects.compressor.connect(this.effects.volume.node)
     this.effects.volume.connect(this.effects.limiter.node)
-    this.effects.limiter.node.toMaster()
 
     // Add all instruments to dom
     for (const id in this.channels) {
@@ -117,7 +116,7 @@ function Mixer (pilot) {
     }
 
     this.setSpeed(120)
-
+    setTimeout(() => { this.effects.limiter.node.toMaster() },2000)
     this.run()
   }
 

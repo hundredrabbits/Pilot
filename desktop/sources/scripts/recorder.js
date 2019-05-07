@@ -18,10 +18,10 @@ function Recorder (pilot) {
 
     pilot.mixer.hook = Tone.context.createMediaStreamDestination()
     pilot.mixer.recorder = new MediaRecorder(pilot.mixer.hook.stream)
-    pilot.mixer.effects.volume.connect(pilot.mixer.hook)
+    pilot.mixer.effects.limiter.connect(pilot.mixer.hook)
 
     pilot.mixer.recorder.onstop = evt => {
-      const blob = new Blob(chunks, { type: 'audio/wav; codecs=opus' })
+      const blob = new Blob(chunks, { type: 'audio/opus; codecs=opus' })
       pilot.recorder.save(blob)
     }
 
@@ -58,7 +58,7 @@ function Recorder (pilot) {
   }
 
   this.save = function (blob) {
-    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['wav'] }] }, (path) => {
+    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['opus'] }] }, (path) => {
       if (path === undefined) { return }
       pilot.recorder.write(path, blob)
     })

@@ -120,9 +120,6 @@ function EffectInterface (pilot, id, node) {
     if (this.node.wet) {
       setContent(this.val_el, `${to16(this.node.wet.value)}${to16(value)}`)
     }
-
-    setClass(this.val_el, 'val active')
-    setTimeout(() => { setClass(this.val_el, 'val') }, 50)
   }
 
   // Parsers
@@ -142,7 +139,6 @@ function EffectInterface (pilot, id, node) {
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 
   // Dom Tools
-  function setClass (el, cl) { if (el.className !== cl) { el.className = cl } }
   function setContent (el, ct) { if (el.innerHTML !== ct) { el.innerHTML = ct } }
 }
 
