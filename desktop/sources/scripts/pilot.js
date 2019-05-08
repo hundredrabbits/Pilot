@@ -4,6 +4,8 @@ const Listener = require('./listener')
 const Mixer = require('./mixer')
 const Recorder = require('./recorder')
 const Commander = require('./commander')
+const Theme = require('./lib/theme')
+const Controller = require('./lib/controller')
 
 function Pilot () {
   this.listener = null

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="../desktop/sources/links/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="../desktop/sources/links/fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="../desktop/sources/links/main.css"/>
+    <link rel="stylesheet" type="text/css" href="../desktop/sources/links/theme.css"/>
+    <title>Pilot</title>
+  </head>
+  <body>
+	<script src="../desktop/node_modules/tone/build/Tone.js"></script>
+    <script src="mock/require.js"></script>
+    <script src="bundle.js"></script>
+    <script>
+      'use strict'
+      const pilot = new Pilot()
+      pilot.install(document.body)
+      window.addEventListener('load', () => { pilot.start() })
+    </script>
+  </body>
+</html>

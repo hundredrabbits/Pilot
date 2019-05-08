@@ -126,3 +126,4 @@ function Theme (_default) {
     try { new DOMParser().parseFromString(text, 'text/xml'); return true } catch (error) { return false }
   }
 }
+module.exports = Theme
