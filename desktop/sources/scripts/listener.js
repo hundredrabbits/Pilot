@@ -1,8 +1,6 @@
-'use strict'
-
 const dgram = require('dgram')
 
-function Listener (pilot) {
+export default function Listener (pilot) {
   this.server = dgram.createSocket('udp4')
 
   this.server.on('message', (msg, rinfo) => {
@@ -21,5 +19,3 @@ function Listener (pilot) {
 
   this.server.bind(49161) // TODO - make this configurable
 }
-
-module.exports = Listener

@@ -1,16 +1,14 @@
-'use strict'
+import Listener from './listener.js'
+import Mixer from './mixer.js'
+import Recorder from './recorder.js'
+import Commander from './commander.js'
+import Theme from './lib/theme.js'
 
-const Listener = require('./listener')
-const Mixer = require('./mixer')
-const Recorder = require('./recorder')
-const Commander = require('./commander')
-
-function Pilot () {
+export default function Pilot () {
   this.listener = null
   this.mixer = null
   this.recorder = null
   this.commander = null
-  this.controller = new Controller()
   this.theme = new Theme({ background: '#000000', f_high: '#ffffff', f_med: '#777777', f_low: '#444444', f_inv: '#000000', b_high: '#eeeeee', b_med: '#333', b_low: '#444444', b_inv: '#fff' })
 
   this.el = document.createElement('div')
@@ -51,5 +49,3 @@ function Pilot () {
     webFrame.setZoomFactor(set ? mod : currentZoomFactor + mod)
   }
 }
-
-module.exports = Pilot

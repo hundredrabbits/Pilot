@@ -1,10 +1,9 @@
-'use strict'
-
 const Tone = require('tone')
-const ChannelInterface = require('./interface.channel')
-const EffectInterface = require('./interface.effect')
 
-function Mixer (pilot) {
+import ChannelInterface from './interface.channel.js'
+import EffectInterface from './interface.effect.js'
+
+export default function Mixer (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'mixer'
 
@@ -167,5 +166,3 @@ function Mixer (pilot) {
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
-
-module.exports = Mixer

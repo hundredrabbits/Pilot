@@ -1,8 +1,6 @@
-'use strict'
-
 const Tone = require('tone')
 
-function Interface (pilot, id, node) {
+export default function Interface (pilot, id, node) {
   this.node = node
   this.meter = new Tone.Meter(0.95)
   this.waveform = new Tone.Waveform(256)
@@ -102,5 +100,3 @@ function Interface (pilot, id, node) {
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
-
-module.exports = Interface

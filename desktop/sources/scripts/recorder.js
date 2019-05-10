@@ -1,10 +1,8 @@
-'use strict'
-
 const { dialog, app } = require('electron').remote
 const Tone = require('tone')
 const fs = require('fs')
 
-function Recorder (pilot) {
+export default function Recorder (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'recorder'
   this.el.className = 'blink'
@@ -76,5 +74,3 @@ function Recorder (pilot) {
     reader.readAsArrayBuffer(blob)
   }
 }
-
-module.exports = Recorder
