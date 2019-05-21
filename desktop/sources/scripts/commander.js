@@ -1,6 +1,4 @@
-'use strict'
-
-function Commander (pilot) {
+export default function Commander (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'commander'
 
@@ -72,5 +70,3 @@ function Commander (pilot) {
     this.input.value = ''
   }
 }
-
-module.exports = Commander

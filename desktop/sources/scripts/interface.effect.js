@@ -1,9 +1,7 @@
-'use strict'
-
 const Tone = require('tone')
-const Interface = require('./interface')
+import Interface from './interface.js'
 
-function EffectInterface (pilot, id, node) {
+export default function EffectInterface (pilot, id, node) {
   Interface.call(this, pilot, id, node, true)
 
   this.node = node
@@ -141,5 +139,3 @@ function EffectInterface (pilot, id, node) {
   // Dom Tools
   function setContent (el, ct) { if (el.innerHTML !== ct) { el.innerHTML = ct } }
 }
-
-module.exports = EffectInterface

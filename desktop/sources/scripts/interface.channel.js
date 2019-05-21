@@ -1,7 +1,7 @@
 'use strict'
 
 const Tone = require('tone')
-const Interface = require('./interface')
+import Interface from './interface.js'
 
 const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B']
 const MAJOR = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
@@ -9,7 +9,7 @@ const MINOR = ['c', 'd', 'F', 'f', 'g', 'a', 'C']
 const WAVCODES = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
 const WAVNAMES = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
-function ChannelInterface (pilot, id, node) {
+export default function ChannelInterface (pilot, id, node) {
   Interface.call(this, pilot, id, node, true)
 
   this.node = node
@@ -203,5 +203,3 @@ function ChannelInterface (pilot, id, node) {
   function setClass (el, cl) { if (el.className !== cl) { el.className = cl } }
   function setContent (el, ct) { if (el.innerHTML !== ct) { el.innerHTML = ct } }
 }
-
-module.exports = ChannelInterface
