@@ -5,6 +5,7 @@ export default function Interface (pilot, id, node) {
   this.meter = new Tone.Meter(0.95)
   this.waveform = new Tone.Waveform(256)
 
+  this.effectId = id
   this.el = document.createElement('div')
   this.el.id = `ch${id}`
   this.canvas = document.createElement('canvas')
@@ -35,14 +36,28 @@ export default function Interface (pilot, id, node) {
     host.appendChild(this.el)
   }
 
+  this.uninstall = function () {
+    this.el.remove()
+  }
+
   this.start = function () {
     this.updateAll({}, true)
-    loop()
+    this.loop()
+  }
+
+  this.stop = function () {
+    cancelAnimationFrame(this.loopId)
   }
 
   this.connect = function (node) {
     this.node.connect(node)
   }
+
+  this.disconnect = function (node) {
+    this.node.disconnect()
+    this.node.dispose()
+  }
+
 
   function draw (level) {
     if (pilot.animate !== true) { return }
@@ -93,8 +108,8 @@ export default function Interface (pilot, id, node) {
     context.closePath()
   }
 
-  function loop () {
-    requestAnimationFrame(loop)
+  this.loop = function() {
+    this.loopId = requestAnimationFrame(this.loop.bind(this))
     draw()
   }
 

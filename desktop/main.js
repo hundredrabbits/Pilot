@@ -23,7 +23,7 @@ app.on('ready', () => {
   require('electron').protocol.registerBufferProtocol('js', protocolHandler)
 
   app.win = new BrowserWindow({
-    width: 445,
+    width: 607,
     height: 210,
     minWidth: 200,
     minHeight: 190,

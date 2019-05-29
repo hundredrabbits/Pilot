@@ -2,12 +2,57 @@ const Tone = require('tone')
 
 import ChannelInterface from './interface.channel.js'
 import EffectInterface from './interface.effect.js'
+import ChannelEffectInterface from './interface.channel.effect.js'
+
+const EFFECTS = ['bit', 'dis', 'wah', 'che', 'fee', 'del', 'tre', 'rev', 'pha', 'vib', 'cho', 'ste', 'equ', 'com', 'vol', 'lim']
+
+const getEffect = function(type) {
+  switch(type) {
+    case 'bit':
+      return new Tone.BitCrusher(4)
+    case 'dis':
+      return new Tone.Distortion(0.05)
+    case 'wah':
+      return new Tone.AutoWah(100, 6, 0)
+    case 'che':
+      return new Tone.Chebyshev(50)
+    case 'fee':
+      return new Tone.FeedbackDelay(0)
+    case 'del':
+      return new Tone.PingPongDelay('4n', 0.2)
+    case 'tre':
+      return new Tone.Tremolo()
+    case 'rev':
+      return new Tone.JCReverb(0)
+    case 'pha':
+      return new Tone.Phaser(0.5, 3, 350)
+    case 'vib':
+      return new Tone.Vibrato()
+    case 'cho':
+      return new Tone.Chorus(4, 2.5, 0.5)
+    case 'ste':
+      return new Tone.StereoWidener(0.5, 3, 350)
+    case 'equ':
+      return new Tone.EQ3(5, 0, 5)
+    case 'com':
+      return new Tone.Compressor(-6, 4)
+    case 'vol':
+      return new Tone.Volume(6)
+    case 'lim':
+      return new Tone.Limiter(-2)
+  }
+
+  console.warn('Unknown effect', type)
+
+  return null
+}
 
 export default function Mixer (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'mixer'
 
   this.channels = []
+  this.channelsEffects = []
   this.effects = {}
 
   this.install = function (host) {
@@ -37,30 +82,37 @@ export default function Mixer (pilot) {
     this.channels[14] = new ChannelInterface(pilot, 14, new Tone.MembraneSynth({ 'octaves': 15, 'oscillator': { 'type': 'triangle' } }))
     this.channels[15] = new ChannelInterface(pilot, 15, new Tone.MembraneSynth({ 'octaves': 20, 'oscillator': { 'type': 'square' } }))
 
+    // One FX slot (default rev) for each channel
+    for (const id in this.channels) {
+      this.channelsEffects[id] = new ChannelEffectInterface(pilot, id, 'rev', getEffect('rev'))
+    }
+
     // I
-    this.effects.bitcrusher = new EffectInterface(pilot, 'bit', new Tone.BitCrusher(4))
-    this.effects.distortion = new EffectInterface(pilot, 'dis', new Tone.Distortion(0.05))
-    this.effects.autowah = new EffectInterface(pilot, 'wah', new Tone.AutoWah(100, 6, 0))
-    this.effects.chebyshev = new EffectInterface(pilot, 'che', new Tone.Chebyshev(50))
+    this.effects.bitcrusher = new EffectInterface(pilot, 'bit', getEffect('bit'))
+    this.effects.distortion = new EffectInterface(pilot, 'dis', getEffect('dis'))
+    this.effects.autowah    = new EffectInterface(pilot, 'wah', getEffect('wah'))
+    this.effects.chebyshev  = new EffectInterface(pilot, 'che', getEffect('che'))
     // II
-    this.effects.feedback = new EffectInterface(pilot, 'fee', new Tone.FeedbackDelay(0))
-    this.effects.delay = new EffectInterface(pilot, 'del', new Tone.PingPongDelay('4n', 0.2))
-    this.effects.tremolo = new EffectInterface(pilot, 'tre', new Tone.Tremolo())
-    this.effects.reverb = new EffectInterface(pilot, 'rev', new Tone.JCReverb(0))
+    this.effects.feedback   = new EffectInterface(pilot, 'fee', getEffect('fee'))
+    this.effects.delay      = new EffectInterface(pilot, 'del', getEffect('del'))
+    this.effects.tremolo    = new EffectInterface(pilot, 'tre', getEffect('tre'))
+    this.effects.reverb     = new EffectInterface(pilot, 'rev', getEffect('rev'))
     // III
-    this.effects.phaser = new EffectInterface(pilot, 'pha', new Tone.Phaser(0.5, 3, 350))
-    this.effects.vibrato = new EffectInterface(pilot, 'vib', new Tone.Vibrato())
-    this.effects.chorus = new EffectInterface(pilot, 'cho', new Tone.Chorus(4, 2.5, 0.5))
-    this.effects.widener = new EffectInterface(pilot, 'ste', new Tone.StereoWidener(0.5, 3, 350))
+    this.effects.phaser     = new EffectInterface(pilot, 'pha', getEffect('pha'))
+    this.effects.vibrato    = new EffectInterface(pilot, 'vib', getEffect('vib'))
+    this.effects.chorus     = new EffectInterface(pilot, 'cho', getEffect('cho'))
+    this.effects.widener    = new EffectInterface(pilot, 'ste', getEffect('ste'))
     // Mastering
-    this.effects.equalizer = new EffectInterface(pilot, 'equ', new Tone.EQ3(5, 0, 5))
-    this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6, 4))
-    this.effects.volume = new EffectInterface(pilot, 'vol', new Tone.Volume(6))
-    this.effects.limiter = new EffectInterface(pilot, 'lim', new Tone.Limiter(-2))
+    this.effects.equalizer  = new EffectInterface(pilot, 'equ', getEffect('equ'))
+    this.effects.compressor = new EffectInterface(pilot, 'com', getEffect('com'))
+    this.effects.volume     = new EffectInterface(pilot, 'vol', getEffect('vol'))
+    this.effects.limiter    = new EffectInterface(pilot, 'lim', getEffect('lim'))
 
     // Connect
     for (const id in this.channels) {
-      this.channels[id].connect(this.effects.bitcrusher.node)
+      this.channels[id].connect(this.channelsEffects[id].node)
+
+      this.channelsEffects[id].node.connect(this.effects.bitcrusher.node)
     }
 
     this.effects.bitcrusher.connect(this.effects.distortion.node)
@@ -85,6 +137,8 @@ export default function Mixer (pilot) {
     // Add all instruments to dom
     for (const id in this.channels) {
       this.channels[id].install(this.el)
+
+      this.channelsEffects[id].install(this.el)
     }
 
     // Add all effects to dom
@@ -99,6 +153,7 @@ export default function Mixer (pilot) {
     console.log('Synthetiser', 'Starting..')
     for (const id in this.channels) {
       this.channels[id].start()
+      this.channelsEffects[id].start()
     }
     for (const id in this.effects) {
       this.effects[id].start()
@@ -131,6 +186,35 @@ export default function Mixer (pilot) {
     // Single
     for (const id in this.channels) {
       this.channels[id].run(msg)
+
+      // Channel effect might have changed
+      if (msg && `${msg}`.substr(0, 1).toLowerCase() === id.toString(16)) {
+        let effect = `${msg}`.substr(1, 3).toLowerCase()
+        let channel = this.channels[id]
+        let channelEffect = this.channelsEffects[id]
+
+        if (EFFECTS.indexOf(effect) > -1 && effect !== channelEffect.effectId) {
+          let newEffect = getEffect(effect)
+
+          if (newEffect) {
+            // Remove current effect
+            this.channelsEffects[id].stop()
+            this.channelsEffects[id].uninstall()
+            this.channelsEffects[id].disconnect()  
+
+            // Install new one
+            this.channelsEffects[id] = new ChannelEffectInterface(pilot, id, effect, newEffect)
+            this.channelsEffects[id].install(this.el)
+            this.channelsEffects[id].start()
+
+            // Put back in circuit
+            this.channels[id].connect(this.channelsEffects[id].node)
+            this.channelsEffects[id].node.connect(this.effects.bitcrusher.node)
+          }
+        }
+      } 
+
+      this.channelsEffects[id].run(msg)
     }
     for (const id in this.effects) {
       this.effects[id].run(msg)
