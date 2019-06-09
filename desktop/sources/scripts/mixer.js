@@ -148,6 +148,9 @@ export default function Mixer (pilot) {
         this.effects[id].rand(msg)
       }
     }
+    if (msg && `${msg}`.substr(0, 5).toLowerCase() === 'reset') {
+      this.reset();
+    }
   }
 
   this.setSpeed = function (bpm) {
