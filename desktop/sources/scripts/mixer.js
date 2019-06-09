@@ -105,14 +105,7 @@ export default function Mixer (pilot) {
     }
 
     // Create Env Presets
-    for (const id in this.channels) {
-      this.channels[id].setEnv({ isEnv: true,
-        attack: 0.001,
-        decay: clamp(((8 - (id % 8)) / 8), 0.01, 0.9),
-        sustain: clamp(((id % 4) / 4), 0.01, 0.9),
-        release: clamp(((id % 6) / 6), 0.01, 0.9)
-      })
-    }
+    this.reset();
 
     this.setSpeed(120)
     setTimeout(() => { this.effects.limiter.node.toMaster() },2000)
@@ -163,6 +156,18 @@ export default function Mixer (pilot) {
     console.log(`Changed BPM to ${bpm}.`)
     pilot.recorder.el.innerHTML = `${bpm}`
   }
+
+  this.reset = function () {
+    // Return to Env Presets
+    for (const id in this.channels) {
+      this.channels[id].setEnv({ isEnv: true,
+        attack: 0.001,
+        decay: clamp(((8 - (id % 8)) / 8), 0.01, 0.9),
+        sustain: clamp(((id % 4) / 4), 0.01, 0.9),
+        release: clamp(((id % 6) / 6), 0.01, 0.9)
+      });
+    }
+  };
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
