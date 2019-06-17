@@ -104,15 +104,8 @@ export default function Mixer (pilot) {
       this.effects[id].start()
     }
 
-    // Create Env Presets
-    for (const id in this.channels) {
-      this.channels[id].setEnv({ isEnv: true,
-        attack: 0.001,
-        decay: clamp(((8 - (id % 8)) / 8), 0.01, 0.9),
-        sustain: clamp(((id % 4) / 4), 0.01, 0.9),
-        release: clamp(((id % 6) / 6), 0.01, 0.9)
-      })
-    }
+    // Set to Presets
+    this.reset();
 
     this.setSpeed(120)
     setTimeout(() => { this.effects.limiter.node.toMaster() },2000)
@@ -155,6 +148,9 @@ export default function Mixer (pilot) {
         this.effects[id].rand(msg)
       }
     }
+    if (msg && `${msg}`.substr(0, 5).toLowerCase() === 'reset') {
+      this.reset();
+    }
   }
 
   this.setSpeed = function (bpm) {
@@ -163,6 +159,22 @@ export default function Mixer (pilot) {
     console.log(`Changed BPM to ${bpm}.`)
     pilot.recorder.el.innerHTML = `${bpm}`
   }
+
+  this.reset = function () {
+    // Return to Env Presets
+    for (const id in this.channels) {
+      this.channels[id].setEnv({ isEnv: true,
+        attack: 0.001,
+        decay: clamp(((8 - (id % 8)) / 8), 0.01, 0.9),
+        sustain: clamp(((id % 4) / 4), 0.01, 0.9),
+        release: clamp(((id % 6) / 6), 0.01, 0.9)
+      });
+    }
+    // Return to Osc Presets
+    this.run("0OSC8ISI;1OSC8RSW;2OSC8WTR;3OSC8QSQ;4OSC4I8Q;5OSC4R8W;6OSCTR8R;7OSCTR8I;8OSCTR4W;9OSCTR8R;AOSC4W--;BOSC4I--;COSCSI--;DOSCSW--;EOSCTR--;FOSCSQ--");
+    // Return to Effects Presets
+    this.run("BIT07;DIS00;WAH0F;CHE07;FEE00;TRE07;REV00;PHA0F;VIB01;CHO07");
+  };
 
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
