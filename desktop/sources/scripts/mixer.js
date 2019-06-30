@@ -1,7 +1,7 @@
-const Tone = require('tone')
-
 import ChannelInterface from './interface.channel.js'
 import EffectInterface from './interface.effect.js'
+
+const Tone = require('tone')
 
 export default function Mixer (pilot) {
   this.el = document.createElement('div')
@@ -108,7 +108,7 @@ export default function Mixer (pilot) {
     this.reset();
 
     this.setSpeed(120)
-    setTimeout(() => { this.effects.limiter.node.toMaster() },2000)
+    setTimeout(() => { this.effects.limiter.node.toMaster() }, 2000)
     this.run()
   }
 

@@ -1,7 +1,8 @@
+import Interface from './interface.js'
+import transposeTable from './transpose.js'
 'use strict'
 
 const Tone = require('tone')
-import Interface from './interface.js'
 
 const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B']
 const MAJOR = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
@@ -147,7 +148,8 @@ export default function ChannelInterface (pilot, id, node) {
     const note = msg.substr(1, 1)
     const velocity = msg.length >= 3 ? from16(msg.substr(2, 1)) : 0.66
     const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
-    const transposed = transpose(octave, note)
+    const transposed = transpose(note, octave)
+    console.log(transposed)
     return { isNote: true, octave: transposed.octave, note: transposed.note, sharp: isUpperCase(transposed.note) === false ? '#' : '', string: `${octave}${note}`, length: length, velocity: velocity }
   }
 
@@ -167,13 +169,13 @@ export default function ChannelInterface (pilot, id, node) {
 
   // Tools
 
-  function transpose (octave, note) {
-    if (OCTAVE.indexOf(note) > -1) { return { octave, note } }
-    const noteArray = isUpperCase(note) === true ? MAJOR : MINOR
-    const noteIndex = letterValue(note) - 7
-    const noteMod = noteArray[noteIndex % noteArray.length]
-    const octaveMod = Math.floor(noteIndex / noteArray.length) + 1
-    return { octave: octave + octaveMod, note: noteMod === 'e' ? 'F' : noteMod === 'b' ? 'C' : noteMod }
+  function transpose (n, o = 3) {
+    if (!transposeTable[n]) { console.log('Unknown transpose: ', n); return null }
+    const octave = clamp(parseInt(o) + parseInt(transposeTable[n].charAt(1)), 0, 8)
+    const note = transposeTable[n].charAt(0)
+    const value = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B'].indexOf(note)
+    const id = clamp((octave * 12) + value + 24, 0, 127)
+    return { id, value, note, octave }
   }
 
   // Wave Codes

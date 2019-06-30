@@ -1,5 +1,5 @@
-const Tone = require('tone')
 import Interface from './interface.js'
+const Tone = require('tone')
 
 export default function EffectInterface (pilot, id, node) {
   Interface.call(this, pilot, id, node, true)
