@@ -91,6 +91,13 @@ export default function ChannelInterface (pilot, id, node) {
     this.updateOsc(data)
   }
 
+  this.toString = function () {
+    const osc = 'osc' + (this.node.oscillator ? wavCode(this.node.oscillator.type) : '') + (this.node.modulation ? wavCode(this.node.modulation.type) : '')
+    const env = 'env' + to16(this.node.envelope.attack) + to16(this.node.envelope.decay) + to16(this.node.envelope.sustain) + to16(this.node.envelope.release)
+    const idStr = str36(id)
+    return idStr + osc + ';' + idStr + env  + ';'
+  }
+
   // Updates
 
   this.updateAll = function (data, force = false) {

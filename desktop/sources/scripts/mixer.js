@@ -176,5 +176,16 @@ export default function Mixer (pilot) {
     this.run('BIT07;DIS00;WAH0F;CHE07;FEE00;TRE07;REV00;PHA0F;VIB01;CHO07')
   }
 
+  this.state = function () {
+    let state = ''
+    for (const channel of this.channels) {
+      state += channel.toString()
+    }
+    for (const key in this.effects) {
+      state += this.effects[key].toString()
+    }
+    return state
+  }
+
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
