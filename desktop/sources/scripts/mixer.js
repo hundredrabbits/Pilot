@@ -21,12 +21,14 @@ export default function Mixer (pilot) {
     this.channels[1] = new ChannelInterface(pilot, 1, new Tone.AMSynth({ 'harmonicity': 1.5, 'oscillator': { 'type': 'triangle8' }, 'modulation': { 'type': 'sawtooth' } }))
     this.channels[2] = new ChannelInterface(pilot, 2, new Tone.AMSynth({ 'harmonicity': 1.75, 'oscillator': { 'type': 'sawtooth8' }, 'modulation': { 'type': 'triangle' } }))
     this.channels[3] = new ChannelInterface(pilot, 3, new Tone.AMSynth({ 'harmonicity': 2, 'oscillator': { 'type': 'square8' }, 'modulation': { 'type': 'square' } }))
-    // AM
-    this.channels[4] = new ChannelInterface(pilot, 4, new Tone.AMSynth({ 'harmonicity': 1.25, 'oscillator': { 'type': 'sine4' }, 'modulation': { 'type': 'square8' } }))
-    this.channels[5] = new ChannelInterface(pilot, 5, new Tone.AMSynth({ 'harmonicity': 1.5, 'oscillator': { 'type': 'triangle4' }, 'modulation': { 'type': 'sawtooth8' } }))
+
+    // Noise
+    this.channels[4] = new ChannelInterface(pilot, 4, new Tone.NoiseSynth({ 'type': 'white'}))
+    this.channels[5] = new ChannelInterface(pilot, 5, new Tone.NoiseSynth({ 'type': 'brown' }))
+
+    // FM
     this.channels[6] = new ChannelInterface(pilot, 6, new Tone.FMSynth({ 'harmonicity': 1.75, 'modulationIndex': 10, 'oscillator': { 'type': 'sawtooth4' }, 'modulation': { 'type': 'triangle8' } }))
     this.channels[7] = new ChannelInterface(pilot, 7, new Tone.FMSynth({ 'harmonicity': 2, 'modulationIndex': 20, 'oscillator': { 'type': 'square4' }, 'modulation': { 'type': 'sine8' } }))
-    // FM
     this.channels[8] = new ChannelInterface(pilot, 8, new Tone.FMSynth({ 'harmonicity': 0.5, 'modulationIndex': 30, 'oscillator': { 'type': 'sine' }, 'modulation': { 'type': 'sawtooth4' } }))
     this.channels[9] = new ChannelInterface(pilot, 9, new Tone.FMSynth({ 'harmonicity': 2.5, 'modulationIndex': 40, 'oscillator': { 'type': 'sine' }, 'modulation': { 'type': 'triangle8' } }))
     this.channels[10] = new ChannelInterface(pilot, 10, new Tone.MonoSynth({ 'volume': -20, oscillator: { 'type': 'sawtooth4' } }))
@@ -171,7 +173,7 @@ export default function Mixer (pilot) {
       })
     }
     // Return to Osc Presets
-    this.run('0OSC8ISI;1OSC8RSW;2OSC8WTR;3OSC8QSQ;4OSC4I8Q;5OSC4R8W;6OSCTR8R;7OSCTR8I;8OSCTR4W;9OSCTR8R;AOSC4W--;BOSC4I--;COSCSI--;DOSCSW--;EOSCTR--;FOSCSQ--')
+    this.run('0OSC8ISI;1OSC8RSW;2OSC8WTR;3OSC8QSQ;4OSCWH--;5OSCBR--;6OSCTR8R;7OSCTR8I;8OSCTR4W;9OSCTR8R;AOSC4W--;BOSC4I--;COSCSI--;DOSCSW--;EOSCTR--;FOSCSQ--')
     // Return to Effects Presets
     this.run('BIT07;DIS00;WAH0F;CHE07;FEE00;TRE07;REV00;PHA0F;VIB01;CHO07')
   }

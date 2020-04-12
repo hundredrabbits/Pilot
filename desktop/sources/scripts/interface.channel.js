@@ -7,8 +7,8 @@ const Tone = require('tone')
 const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B']
 const MAJOR = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const MINOR = ['c', 'd', 'F', 'f', 'g', 'a', 'C']
-const WAVCODES = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
-const WAVNAMES = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
+const WAVCODES = ['br', 'pi', 'wh', 'si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w']
+const WAVNAMES = ['brown', 'pink', 'white', 'sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
 export default function ChannelInterface (pilot, id, node) {
   Interface.call(this, pilot, id, node, true)
@@ -63,7 +63,11 @@ export default function ChannelInterface (pilot, id, node) {
     if (this.lastNote && performance.now() - this.lastNote < 100) { return }
     const name = `${data.note}${data.sharp}${data.octave}`
     const length = clamp(data.length, 0.1, 0.9)
-    this.node.triggerAttackRelease(name, length, '+0', data.velocity)
+    if (this.node.noise) {
+        this.node.triggerAttackRelease(length, '+0', data.velocity)
+    } else { 
+        this.node.triggerAttackRelease(name, length, '+0', data.velocity)
+    }
     this.lastNote = performance.now()
   }
 
@@ -87,6 +91,9 @@ export default function ChannelInterface (pilot, id, node) {
     if (data.mod && this.node.modulation) {
       this.node.modulation._oscillator.set('type', data.mod)
     }
+    if (data.wav && this.node.noise && data.wav != 'sine')  {
+      this.node.set('noise.type', data.wav)
+    }
     this.lastOsc = performance.now()
     this.updateOsc(data)
   }
@@ -108,7 +115,8 @@ export default function ChannelInterface (pilot, id, node) {
   this.updateOsc = function (data, force = false) {
     if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isOsc)) { return }
-    setContent(this.osc_el, `${this.node.oscillator ? wavCode(this.node.oscillator._oscillator.type) : '--'}${this.node.modulation ? wavCode(this.node.modulation._oscillator.type) : '--'}`)
+    const oscCode = this.node.noise ? wavCode(this.node.noise._type) : (this.node.oscillator ? wavCode(this.node.oscillator._oscillator.type) : '--')
+    setContent(this.osc_el, `${oscCode}${this.node.modulation ? wavCode(this.node.modulation._oscillator.type) : '--'}`)
   }
 
   this.randEnv = function () {
@@ -149,7 +157,6 @@ export default function ChannelInterface (pilot, id, node) {
     const velocity = msg.length >= 3 ? from16(msg.substr(2, 1)) : 0.66
     const length = msg.length === 4 ? from16(msg.substr(3, 1)) : 0.1
     const transposed = transpose(note, octave)
-    console.log(transposed)
     return { isNote: true, octave: transposed.octave, note: transposed.note, sharp: isUpperCase(transposed.note) === false ? '#' : '', string: `${octave}${note}`, length: length, velocity: velocity }
   }
 
