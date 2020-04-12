@@ -203,5 +203,5 @@ export default function ChannelInterface (pilot, id, node) {
 
   // Dom Tools
   function setClass (el, cl) { if (el.className !== cl) { el.className = cl } }
-  function setContent (el, ct) { if (el.innerHTML !== ct) { el.innerHTML = ct } }
+  function setContent (el, ct) { if (el.innerHTML !== ct) { window.ipc.send("channel", { id: id, col: el.className, text: ct }); el.innerHTML = ct } }
 }
