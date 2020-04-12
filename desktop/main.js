@@ -1,7 +1,6 @@
 const { app, BrowserWindow, webFrame, Menu, dialog } = require('electron')
 const path = require('path')
 const url = require('url')
-const shell = require('electron').shell
 
 let isShown = true
 
