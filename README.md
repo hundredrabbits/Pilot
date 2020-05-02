@@ -1,6 +1,6 @@
 # Pilot
 
-[Pilot](http://wiki.xxiivv.com/Pilot) is a **UDP synthetiser** designed to be controlled externally. It was created as a companion application to the livecoding environment [ORCA](https://hundredrabbits.itch.io/orca). 
+[Pilot](http://wiki.xxiivv.com/Pilot) is a **UDP synthesizer** designed to be controlled externally. It was created as a companion application to the livecoding environment [ORCA](https://hundredrabbits.itch.io/orca). 
 
 ## Install & Run
 
