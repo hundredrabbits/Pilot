@@ -4,6 +4,8 @@ import Recorder from './recorder.js'
 import Commander from './commander.js'
 import Theme from './lib/theme.js'
 
+const { webFrame } = require('electron')
+
 export default function Pilot () {
   this.listener = null
   this.mixer = null
@@ -37,6 +39,9 @@ export default function Pilot () {
     this.mixer.start()
     this.commander.start()
     this.theme.start()
+
+    const zoomFactor = Number(localStorage.getItem('zoomFactor'))
+    webFrame.setZoomFactor(zoomFactor)
   }
 
   this.toggleAnimations = function (mod, set = false) {
@@ -44,8 +49,9 @@ export default function Pilot () {
   }
 
   this.modZoom = function (mod = 0, set = false) {
-    const { webFrame } = require('electron')
     const currentZoomFactor = webFrame.getZoomFactor()
-    webFrame.setZoomFactor(set ? mod : currentZoomFactor + mod)
+    const newZoomFactor = set ? mod : currentZoomFactor + mod
+    webFrame.setZoomFactor(newZoomFactor)
+    localStorage.setItem('zoomFactor', newZoomFactor)
   }
 }
