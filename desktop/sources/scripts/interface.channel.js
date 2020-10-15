@@ -91,6 +91,13 @@ export default function ChannelInterface (pilot, id, node) {
     this.updateOsc(data)
   }
 
+  this.toString = function () {
+    const osc = 'osc' + (this.node.oscillator ? wavCode(this.node.oscillator.type) : '') + (this.node.modulation ? wavCode(this.node.modulation.type) : '')
+    const env = 'env' + to16(this.node.envelope.attack) + to16(this.node.envelope.decay) + to16(this.node.envelope.sustain) + to16(this.node.envelope.release)
+    const idStr = str36(id)
+    return idStr + osc + ';' + idStr + env  + ';'
+  }
+
   // Updates
 
   this.updateAll = function (data, force = false) {
@@ -193,7 +200,6 @@ export default function ChannelInterface (pilot, id, node) {
   }
 
   // Helpers
-  function letterValue (c) { return c.toLowerCase().charCodeAt(0) - 97 }
   function isUpperCase (s) { return `${s}`.toUpperCase() === `${s}` }
   function from16 (str) { return (int36(str) / 15) }
   function to16 (float) { return str36(Math.floor(float * 15)) }
