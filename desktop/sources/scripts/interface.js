@@ -91,6 +91,8 @@ export default function Interface (pilot, id, node) {
     context.fillStyle = `rgba(255,255,255,${(1 - (elapsed / max))})`
     context.fill()
     context.closePath()
+
+    window.ipc.send("activity", { id: id, activity: elapsed / max })
   }
 
   function loop () {

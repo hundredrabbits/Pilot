@@ -9,6 +9,8 @@
   </head>
   <body>
     <script type="module">
+      window.ipc = require('electron').ipcRenderer;
+
       import Pilot from "js:./sources/scripts/pilot.js"
       import Controller from "js:./sources/scripts/lib/controller.js"
 

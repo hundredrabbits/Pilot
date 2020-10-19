@@ -137,5 +137,5 @@ export default function EffectInterface (pilot, id, node) {
   function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 
   // Dom Tools
-  function setContent (el, ct) { if (el.innerHTML !== ct) { el.innerHTML = ct } }
+  function setContent (el, ct) { if (el.innerHTML !== ct) { window.ipc.send("effect", {id: id, text: ct}); el.innerHTML = ct } }
 }
