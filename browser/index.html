@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../desktop/sources/links/style.css"/>
+    <title>Pilot — Web</title>
+  </head>
+  <body>
+  	<script src="https://unpkg.com/tone@13/build/Tone.js"></script>
+  	<script type="module" src="mock/require.js"></script>
+    <script type="module">
+      import Pilot from "../desktop/sources/scripts/pilot.js"
+      const pilot = new Pilot()
+
+      pilot.install(document.body)
+      pilot.start();
+    </script>
+  </body>
+</html>
