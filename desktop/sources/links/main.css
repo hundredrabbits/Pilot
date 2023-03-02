@@ -18,15 +18,17 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 #mixer #ch5 { top:calc(5 * 15px); left:0px; }
 #mixer #ch6 { top:calc(6 * 15px); left:0px; }
 #mixer #ch7 { top:calc(7 * 15px); left:0px; }
+#mixer #ch8 { top:calc(8 * 15px); left:0px; }
 
-#mixer #ch8 { top:calc(0 * 15px); left:calc(1 * 110px); }
-#mixer #ch9 { top:calc(1 * 15px); left:calc(1 * 110px); }
-#mixer #cha { top:calc(2 * 15px); left:calc(1 * 110px); }
-#mixer #chb { top:calc(3 * 15px); left:calc(1 * 110px); }
-#mixer #chc { top:calc(4 * 15px); left:calc(1 * 110px); }
-#mixer #chd { top:calc(5 * 15px); left:calc(1 * 110px); }
-#mixer #che { top:calc(6 * 15px); left:calc(1 * 110px); }
-#mixer #chf { top:calc(7 * 15px); left:calc(1 * 110px); }
+#mixer #ch9 { top:calc(0 * 15px); left:calc(1 * 110px); }
+#mixer #cha { top:calc(1 * 15px); left:calc(1 * 110px); }
+#mixer #chb { top:calc(2 * 15px); left:calc(1 * 110px); }
+#mixer #chc { top:calc(3 * 15px); left:calc(1 * 110px); }
+#mixer #chd { top:calc(4 * 15px); left:calc(1 * 110px); }
+#mixer #che { top:calc(5 * 15px); left:calc(1 * 110px); }
+#mixer #chf { top:calc(6 * 15px); left:calc(1 * 110px); }
+#mixer #chg { top:calc(7 * 15px); left:calc(1 * 110px); }
+
 
 #mixer #chbit { top:calc(0 * 15px); left:calc(2 * 110px); }
 #mixer #chdis { top:calc(1 * 15px); left:calc(2 * 110px); }
@@ -77,6 +79,7 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
   #mixer #chd { top:calc(13 * 15px); left:0px; }
   #mixer #che { top:calc(14 * 15px); left:0px; }
   #mixer #chf { top:calc(15 * 15px); left:0px; }
+  #mixer #chg { top:calc(16 * 15px); left:0px; }
 
   #mixer #chbit { top:calc(0 * 15px); left:calc(1 * 110px) }
   #mixer #chdis { top:calc(1 * 15px); left:calc(1 * 110px) }
@@ -95,6 +98,6 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
   #mixer #chvol { top:calc(14 * 15px); left:calc(1 * 110px) }
   #mixer #chlim { top:calc(15 * 15px); left:calc(1 * 110px) }
 
-  #commander {top:calc(17 * 16px); } 
-  #recorder {top:calc(17 * 16px); } 
+  #commander {top:calc(18 * 16px); } 
+  #recorder {top:calc(18 * 16px); } 
 }

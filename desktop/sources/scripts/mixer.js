@@ -37,6 +37,9 @@ export default function Mixer (pilot) {
     this.channels[14] = new ChannelInterface(pilot, 14, new Tone.MembraneSynth({ 'octaves': 15, 'oscillator': { 'type': 'triangle' } }))
     this.channels[15] = new ChannelInterface(pilot, 15, new Tone.MembraneSynth({ 'octaves': 20, 'oscillator': { 'type': 'square' } }))
 
+    // Poly
+    this.channels[16] = new ChannelInterface(pilot, 16, new Tone.PolySynth())
+
     // I
     this.effects.bitcrusher = new EffectInterface(pilot, 'bit', new Tone.BitCrusher(4))
     this.effects.distortion = new EffectInterface(pilot, 'dis', new Tone.Distortion(0.05))
@@ -171,7 +174,7 @@ export default function Mixer (pilot) {
       })
     }
     // Return to Osc Presets
-    this.run('0OSC8ISI;1OSC8RSW;2OSC8WTR;3OSC8QSQ;4OSC4I8Q;5OSC4R8W;6OSCTR8R;7OSCTR8I;8OSCTR4W;9OSCTR8R;AOSC4W--;BOSC4I--;COSCSI--;DOSCSW--;EOSCTR--;FOSCSQ--')
+    this.run('0OSC8ISI;1OSC8RSW;2OSC8WTR;3OSC8QSQ;4OSC4I8Q;5OSC4R8W;6OSCTR8R;7OSCTR8I;8OSCTR4W;9OSCTR8R;AOSC4W--;BOSC4I--;COSCSI--;DOSCSW--;EOSCTR--;FOSCSQ--;GOSC8ISI')
     // Return to Effects Presets
     this.run('BIT07;DIS00;WAH0F;CHE07;FEE00;TRE07;REV00;PHA0F;VIB01;CHO07')
   }

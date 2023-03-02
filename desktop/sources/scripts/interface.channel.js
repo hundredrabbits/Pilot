@@ -16,7 +16,7 @@ export default function ChannelInterface (pilot, id, node) {
   this.node = node
 
   this.el = document.createElement('div')
-  this.el.id = `ch${id.toString(16)}`
+  this.el.id = `ch${str36(id)}`
   this.el.className = 'channel'
   this.cid_el = document.createElement('span')
   this.cid_el.className = `cid`
@@ -60,7 +60,7 @@ export default function ChannelInterface (pilot, id, node) {
   this.playNote = function (data) {
     if (isNaN(data.octave)) { return }
     if (OCTAVE.indexOf(data.note) < 0) { console.warn(`Unknown Note`); return }
-    if (this.lastNote && performance.now() - this.lastNote < 100) { return }
+    //if (this.lastNote && performance.now() - this.lastNote < 100) { return }
     const name = `${data.note}${data.sharp}${data.octave}`
     const length = clamp(data.length, 0.1, 0.9)
     this.node.triggerAttackRelease(name, length, '+0', data.velocity)
@@ -69,23 +69,44 @@ export default function ChannelInterface (pilot, id, node) {
 
   this.setEnv = function (data) {
     if (this.lastEnv && performance.now() - this.lastEnv < 100) { return }
-    if (!this.node.envelope) { return }
-    if (id > 11) { return }
-    if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
-    if (!isNaN(data.decay)) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
-    if (!isNaN(data.sustain)) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
-    if (!isNaN(data.release)) { this.node.envelope.release = clamp(data.release, 0.01, 1.0) }
+    if (id > 11 && id != 16) { return }
+    if (!this.node.voices) {
+      if (!this.node.envelope) { return }
+      if (!isNaN(data.attack)) { this.node.envelope.attack = clamp(data.attack, 0.01, 1.0) }
+      if (!isNaN(data.decay)) { this.node.envelope.decay = clamp(data.decay, 0.01, 1.0) }
+      if (!isNaN(data.sustain)) { this.node.envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
+      if (!isNaN(data.release)) { this.node.envelope.release = clamp(data.release, 0.01, 1.0) }
+    } else {
+      for (const id in this.node.voices) {
+        if (!this.node.voices[id].envelope) { continue }
+        if (!isNaN(data.attack)) { this.node.voices[id].envelope.attack = clamp(data.attack, 0.01, 1.0) }
+        if (!isNaN(data.decay)) { this.node.voices[id].envelope.decay = clamp(data.decay, 0.01, 1.0) }
+        if (!isNaN(data.sustain)) { this.node.voices[id].envelope.sustain = clamp(data.sustain, 0.01, 1.0) }
+        if (!isNaN(data.release)) { this.node.voices[id].envelope.release = clamp(data.release, 0.01, 1.0) }
+      }
+    }
     this.lastEnv = performance.now()
     this.updateEnv(data)
   }
 
   this.setOsc = function (data) {
     if (this.lastOsc && performance.now() - this.lastOsc < 100) { return }
-    if (data.wav && this.node.oscillator) {
-      this.node.oscillator._oscillator.set('type', data.wav)
-    }
-    if (data.mod && this.node.modulation) {
-      this.node.modulation._oscillator.set('type', data.mod)
+    if (!this.node.voices) {
+      if (data.wav && this.node.oscillator) {
+        this.node.oscillator._oscillator.set('type', data.wav)
+      }
+      if (data.mod && this.node.modulation) {
+        this.node.modulation._oscillator.set('type', data.mod)
+      }
+    } else {
+      for (const id in this.node.voices) {
+        if (data.wav && this.node.voices[id].oscillator) {
+          this.node.voices[id].oscillator._oscillator.set('type', data.wav)
+        }
+        if (data.mod && this.node.voices[id].modulation) {
+          this.node.voices[id].modulation._oscillator.set('type', data.mod)
+        }        
+      }
     }
     this.lastOsc = performance.now()
     this.updateOsc(data)
@@ -101,14 +122,16 @@ export default function ChannelInterface (pilot, id, node) {
   this.updateEnv = function (data, force = false) {
     if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isEnv)) { return }
-    if (!this.node.envelope) { return }
-    setContent(this.env_el, `${to16(this.node.envelope.attack)}${to16(this.node.envelope.decay)}${to16(this.node.envelope.sustain)}${to16(this.node.envelope.release)}`)
+    const node = !this.node.voices ? this.node : this.node.voices[0];
+    if (!node.envelope) { return }
+    setContent(this.env_el, `${to16(node.envelope.attack)}${to16(node.envelope.decay)}${to16(node.envelope.sustain)}${to16(node.envelope.release)}`)
   }
 
   this.updateOsc = function (data, force = false) {
     if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isOsc)) { return }
-    setContent(this.osc_el, `${this.node.oscillator ? wavCode(this.node.oscillator._oscillator.type) : '--'}${this.node.modulation ? wavCode(this.node.modulation._oscillator.type) : '--'}`)
+    const node = !this.node.voices ? this.node : this.node.voices[0];
+    setContent(this.osc_el, `${node.oscillator ? wavCode(node.oscillator._oscillator.type) : '--'}${node.modulation ? wavCode(node.modulation._oscillator.type) : '--'}`)
   }
 
   this.randEnv = function () {
