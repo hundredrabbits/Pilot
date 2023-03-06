@@ -1,5 +1,5 @@
 import ChannelInterface from './interface.channel.js'
-import {str36,to16,clamp} from './interface.js'
+import {int36,to16,clamp} from './interface.js'
 'use strict'
 
 const Tone = require('tone')

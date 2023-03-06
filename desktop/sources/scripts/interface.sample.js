@@ -53,4 +53,12 @@ export default function SampleInterface (pilot, id, node, name) {
 
   this.reset = function() {
   }
+
+
+  this.randEnv = function () {
+  }
+
+  this.randOsc = function () {
+  }
+
 }

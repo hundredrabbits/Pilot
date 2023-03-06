@@ -66,7 +66,7 @@ export default function Commander (pilot) {
     e.preventDefault()
     this.isBrowsingHistory = false
     this.history.push(this.input.value)
-    pilot.mixer.run(this.input.value)
+    pilot.mixer.run_effect(this.input.value)
     this.input.value = ''
   }
 }

@@ -152,33 +152,33 @@ export default function Mixer (pilot) {
       }
       return
     }
-    // Single
-    const id = int36(`${msg}`.substr(0, 1))
-    if (this.effects_map[id]) {
-      this.effects_map[id].run(`${msg}`.substr(1))
-    }
     // Special
     if (msg && `${msg}`.substr(0, 3).toLowerCase() === 'bpm') {
       this.setSpeed(msg.substr(3))
     }
-    // Special
-    if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'renv') {
+    else if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'renv') {
       for (const id in this.channels) {
         this.channels[id].randEnv()
       }
     }
-    if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'rosc') {
+    else if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'rosc') {
       for (const id in this.channels) {
         this.channels[id].randOsc()
       }
     }
-    if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'refx') {
+    else if (msg && `${msg}`.substr(0, 4).toLowerCase() === 'refx') {
       for (const id in this.effects) {
         this.effects[id].rand(msg)
       }
     }
-    if (msg && `${msg}`.substr(0, 5).toLowerCase() === 'reset') {
+    else if (msg && `${msg}`.substr(0, 5).toLowerCase() === 'reset') {
       this.reset()
+    }
+    else {
+      const id = int36(`${msg}`.substr(0, 1))
+      if (this.effects_map[id]) {
+        this.effects_map[id].run(`${msg}`.substr(1))
+      }  
     }
   }
 

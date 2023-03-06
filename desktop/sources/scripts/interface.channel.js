@@ -56,5 +56,10 @@ export default function ChannelInterface (pilot, id, node) {
     return { id, value, note, octave }
   }
 
+  this.randEnv = function () {
+  }
+
+  this.randOsc = function () {
+  }
 
 }

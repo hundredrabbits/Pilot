@@ -38,12 +38,11 @@ export default function DrumInterface (pilot, id, name) {
   }
 
   this.parseMsg = function(msg) {
-    if (msg.length < 2) { console.warn(`Misformatted note`); return }
+    if (msg.length < 1) { console.warn(`Misformatted note`); return }
     const pad = str36(clamp(int36(msg.substr(0, 1)), 0, this.parts.length))
-    const volume = msg.length >= 2 ? int36(msg.substr(1, 1)) : 0
-    const length = msg.length >= 3 ? from16(msg.substr(2, 1)) : 0.1
-    const offset = msg.length === 4 ? from16(msg.substr(3, 1)) : 0
-    return { pad: pad, length: length, volume: volume, offset: offset }
+    const volume = msg.length >= 2 ? from16(msg.substr(1, 1)) : 1
+    const length = msg.length >= 3 ? from16(msg.substr(2, 1)) : 1
+    return { pad: pad, length: length, volume: volume }
   }
 
   this.playDrum = (data) => {
@@ -52,8 +51,8 @@ export default function DrumInterface (pilot, id, name) {
       return;
     }
     const player = this.node.get(data.pad);
-    player.volume.value = -data.volume
-    player.start(undefined, data.offset, data.length)
+    player.volume.value = (data.volume * 36) - 36
+    player.start(undefined, 0, data.length)
   }
 
   this.updateAll = function (data, force = false) {
