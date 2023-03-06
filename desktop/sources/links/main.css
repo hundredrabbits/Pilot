@@ -5,48 +5,10 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 #mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; min-width: 420px}
 #mixer > div { position: absolute; width: 95px}
 #mixer > div.channel { position: absolute; }
-#mixer > div.effect { width:65px; }
+#mixer > div.effect { width: 85px }
 #mixer > div .cid { font-family: 'input_mono_medium'; font-weight: normal; }
 #mixer > div canvas { position: absolute; right: -10px;top: 0.5px;}
 #mixer span { padding: 0px 2.55px; }
-
-#mixer #ch0 { top:calc(0 * 15px); left:0px; }
-#mixer #ch1 { top:calc(1 * 15px); left:0px; }
-#mixer #ch2 { top:calc(2 * 15px); left:0px; }
-#mixer #ch3 { top:calc(3 * 15px); left:0px; }
-#mixer #ch4 { top:calc(4 * 15px); left:0px; }
-#mixer #ch5 { top:calc(5 * 15px); left:0px; }
-#mixer #ch6 { top:calc(6 * 15px); left:0px; }
-#mixer #ch7 { top:calc(7 * 15px); left:0px; }
-#mixer #ch8 { top:calc(8 * 15px); left:0px; }
-
-#mixer #ch9 { top:calc(0 * 15px); left:calc(1 * 110px); }
-#mixer #cha { top:calc(1 * 15px); left:calc(1 * 110px); }
-#mixer #chb { top:calc(2 * 15px); left:calc(1 * 110px); }
-#mixer #chc { top:calc(3 * 15px); left:calc(1 * 110px); }
-#mixer #chd { top:calc(4 * 15px); left:calc(1 * 110px); }
-#mixer #che { top:calc(5 * 15px); left:calc(1 * 110px); }
-#mixer #chf { top:calc(6 * 15px); left:calc(1 * 110px); }
-#mixer #chg { top:calc(7 * 15px); left:calc(1 * 110px); }
-
-
-#mixer #chbit { top:calc(0 * 15px); left:calc(2 * 110px); }
-#mixer #chdis { top:calc(1 * 15px); left:calc(2 * 110px); }
-#mixer #chwah { top:calc(2 * 15px); left:calc(2 * 110px); }
-#mixer #chche { top:calc(3 * 15px); left:calc(2 * 110px); }
-#mixer #chfee { top:calc(4 * 15px); left:calc(2 * 110px); }
-#mixer #chdel { top:calc(5 * 15px); left:calc(2 * 110px); }
-#mixer #chtre { top:calc(6 * 15px); left:calc(2 * 110px); }
-#mixer #chrev { top:calc(7 * 15px); left:calc(2 * 110px); }
-
-#mixer #chpha { top:calc(0 * 15px); left:calc(2 * 150px); }
-#mixer #chvib { top:calc(1 * 15px); left:calc(2 * 150px); }
-#mixer #chcho { top:calc(2 * 15px); left:calc(2 * 150px); }
-#mixer #chste { top:calc(3 * 15px); left:calc(2 * 150px); }
-#mixer #chequ { top:calc(4 * 15px); left:calc(2 * 150px); }
-#mixer #chcom { top:calc(5 * 15px); left:calc(2 * 150px); }
-#mixer #chvol { top:calc(6 * 15px); left:calc(2 * 150px); }
-#mixer #chlim { top:calc(7 * 15px); left:calc(2 * 150px); }
 
 /* Commander */
 
@@ -55,49 +17,13 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 /* Recorder */
 
 #pilot.recording #recorder { animation: blink 500ms linear infinite; }
-#recorder { position: absolute; top: calc(11 * 15px); color: #333; left: 30px; font-family: 'input_mono_medium'; font-weight: normal;}
 
-#commander { top: calc(11 * 15px); left: 55px; position: absolute; line-height: 11px;  }
+#pilot #mixer { columns:1 !important; min-width: 0px }
+#pilot #mixer > div { max-width: 100%}
 
-@media (max-width: 420px) {
-  #pilot #mixer { columns:1 !important; min-width: 0px }
-  #pilot #mixer > div { max-width: 100%}
+#mixer .channel { top:calc(var(--id) * 15px); left:0px; }
+#mixer .effect { top:calc(var(--id) * 15px); left:calc(1 * 110px) }
 
-  #mixer #ch0 { top:calc(0 * 15px); left:0px; }
-  #mixer #ch1 { top:calc(1 * 15px); left:0px; }
-  #mixer #ch2 { top:calc(2 * 15px); left:0px; }
-  #mixer #ch3 { top:calc(3 * 15px); left:0px; }
-  #mixer #ch4 { top:calc(4 * 15px); left:0px; }
-  #mixer #ch5 { top:calc(5 * 15px); left:0px; }
-  #mixer #ch6 { top:calc(6 * 15px); left:0px; }
-  #mixer #ch7 { top:calc(7 * 15px); left:0px; }
-  #mixer #ch8 { top:calc(8 * 15px); left:0px; }
-  #mixer #ch9 { top:calc(9 * 15px); left:0px; }
-  #mixer #cha { top:calc(10 * 15px); left:0px; }
-  #mixer #chb { top:calc(11 * 15px); left:0px; }
-  #mixer #chc { top:calc(12 * 15px); left:0px; }
-  #mixer #chd { top:calc(13 * 15px); left:0px; }
-  #mixer #che { top:calc(14 * 15px); left:0px; }
-  #mixer #chf { top:calc(15 * 15px); left:0px; }
-  #mixer #chg { top:calc(16 * 15px); left:0px; }
+#recorder { position: absolute; top: calc(33 * 15px); color: #333; left: 30px; font-family: 'input_mono_medium'; font-weight: normal;}
+#commander { top: calc(33 * 15px); left: 55px; position: absolute; line-height: 11px;  }
 
-  #mixer #chbit { top:calc(0 * 15px); left:calc(1 * 110px) }
-  #mixer #chdis { top:calc(1 * 15px); left:calc(1 * 110px) }
-  #mixer #chwah { top:calc(2 * 15px); left:calc(1 * 110px) }
-  #mixer #chche { top:calc(3 * 15px); left:calc(1 * 110px) }
-  #mixer #chfee { top:calc(4 * 15px); left:calc(1 * 110px) }
-  #mixer #chdel { top:calc(5 * 15px); left:calc(1 * 110px) }
-  #mixer #chtre { top:calc(6 * 15px); left:calc(1 * 110px) }
-  #mixer #chrev { top:calc(7 * 15px); left:calc(1 * 110px) }
-  #mixer #chpha { top:calc(8 * 15px); left:calc(1 * 110px) }
-  #mixer #chvib { top:calc(9 * 15px); left:calc(1 * 110px) }
-  #mixer #chcho { top:calc(10 * 15px); left:calc(1 * 110px) }
-  #mixer #chste { top:calc(11 * 15px); left:calc(1 * 110px) }
-  #mixer #chequ { top:calc(12 * 15px); left:calc(1 * 110px) }
-  #mixer #chcom { top:calc(13 * 15px); left:calc(1 * 110px) }
-  #mixer #chvol { top:calc(14 * 15px); left:calc(1 * 110px) }
-  #mixer #chlim { top:calc(15 * 15px); left:calc(1 * 110px) }
-
-  #commander {top:calc(18 * 16px); } 
-  #recorder {top:calc(18 * 16px); } 
-}

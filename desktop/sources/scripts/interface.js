@@ -1,12 +1,13 @@
 const Tone = require('tone')
 
-export default function Interface (pilot, id, node) {
+function Interface (pilot, id, index, node) {
   this.node = node
   this.meter = new Tone.Meter(0.95)
   this.waveform = new Tone.Waveform(256)
 
   this.el = document.createElement('div')
-  this.el.id = `ch${id}`
+  this.el.id = id
+  this.el.style.setProperty('--id', index)
   this.canvas = document.createElement('canvas')
 
   const self = this
@@ -98,5 +99,14 @@ export default function Interface (pilot, id, node) {
     draw()
   }
 
-  function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
 }
+// Helpers
+function letterValue (c) { return c.toLowerCase().charCodeAt(0) - 97 }
+function isUpperCase (s) { return `${s}`.toUpperCase() === `${s}` }
+function from16 (str) { return (int36(str) / 15) }
+function int36 (str) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'].indexOf(`${str.toLowerCase()}`) }
+function to16 (float) { return str36(Math.floor(float * 15)) }
+function str36 (int) { return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'][parseInt(int)] }
+function clamp (v, min, max) { return v < min ? min : v > max ? max : v }
+
+export {Interface, str36, int36, from16, to16, clamp, letterValue, isUpperCase}
