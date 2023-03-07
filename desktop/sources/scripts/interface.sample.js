@@ -3,7 +3,7 @@ import {str36,to16,clamp} from './interface.js'
 'use strict'
 
 export default function SampleInterface (pilot, id, node, name) {
-  ChannelInterface.call(this, pilot, id, node)
+  ChannelInterface.call(this, pilot, str36(id), id+1, node)
 
   this.samp_el = document.createElement('span')
   this.samp_el.className = `cid`

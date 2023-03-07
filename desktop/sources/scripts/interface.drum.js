@@ -14,7 +14,7 @@ export default function DrumInterface (pilot, id, name) {
     this.isReady = true
     console.log(name, 'Loading Drums Finished..')
   })
-  Interface.call(this, pilot, `dr${str36(id)}`, id, node)
+  Interface.call(this, pilot, `dr${str36(id)}`, id+1, node)
 
   this.el.className = 'effect'
   this.samp_el = document.createElement('span')

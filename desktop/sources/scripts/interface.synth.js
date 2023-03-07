@@ -1,5 +1,5 @@
 import ChannelInterface from './interface.channel.js'
-import {int36,to16,clamp} from './interface.js'
+import {str36,int36,to16,clamp} from './interface.js'
 'use strict'
 
 const Tone = require('tone')
@@ -8,7 +8,7 @@ const WAVCODES = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4
 const WAVNAMES = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8']
 
 export default function SynthInterface (pilot, id, node) {
-  ChannelInterface.call(this, pilot, id, node, true)
+  ChannelInterface.call(this, pilot, str36(id), id, node)
 
   this.env_el = document.createElement('span')
   this.env_el.className = `env`

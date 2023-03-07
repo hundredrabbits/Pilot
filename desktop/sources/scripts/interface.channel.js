@@ -8,12 +8,12 @@ const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B']
 const MAJOR = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const MINOR = ['c', 'd', 'F', 'f', 'g', 'a', 'C']
 
-export default function ChannelInterface (pilot, id, node) {
-  Interface.call(this, pilot, `ch${str36(id)}`, id, node)
+export default function ChannelInterface (pilot, id, index, node) {
+  Interface.call(this, pilot, `ch${id}`, index, node)
   this.el.className = 'channel'
   this.cid_el = document.createElement('span')
   this.cid_el.className = 'cid'
-  this.cid_el.innerHTML = `${str36(id)}`
+  this.cid_el.innerHTML = `${id}`
   this.el.appendChild(this.cid_el)
   
   // Run

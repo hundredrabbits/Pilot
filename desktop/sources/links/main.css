@@ -21,9 +21,11 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 #pilot #mixer { columns:1 !important; min-width: 0px }
 #pilot #mixer > div { max-width: 100%}
 
-#mixer .channel { top:calc(var(--id) * 15px); left:0px; }
-#mixer .effect { top:calc(var(--id) * 15px); left:calc(1 * 110px) }
+#mixer .channel { top:calc(var(--id) * 15px + 15px); left:0px; }
+#mixer .effect { top:calc(var(--id) *15px + 15px); left:calc(1 * 110px) }
+#mixer #synth_head { top: 0px; left:0px; }
+#mixer #effect_head { top: 0px; left:calc(1 * 110px) }
 
-#recorder { position: absolute; top: calc(33 * 15px); color: #333; left: 30px; font-family: 'input_mono_medium'; font-weight: normal;}
-#commander { top: calc(33 * 15px); left: 55px; position: absolute; line-height: 11px;  }
+#recorder { position: absolute; top: calc(34 * 15px); color: #333; left: 30px; font-family: 'input_mono_medium'; font-weight: normal;}
+#commander { top: calc(34 * 15px); left: 55px; position: absolute; line-height: 11px;  }
 

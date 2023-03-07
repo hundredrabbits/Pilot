@@ -8,6 +8,20 @@ const Tone = require('tone')
 export default function Mixer (pilot) {
   this.el = document.createElement('div')
   this.el.id = 'mixer'
+  this.synth_head_div = document.createElement('div')
+  this.synth_head_div.id = 'synth_head'
+  this.synth_head = document.createElement('span')
+  this.synth_head.className = 'cid'
+  this.synth_head.innerHTML = 'Synths(;)'
+  this.synth_head_div.appendChild(this.synth_head)
+  this.el.appendChild(this.synth_head_div)
+  this.effect_head_div = document.createElement('div')
+  this.effect_head_div.id = 'effect_head'
+  this.effect_head = document.createElement('span')
+  this.effect_head.className = 'cid'
+  this.effect_head.innerHTML = 'Effects(=)'
+  this.effect_head_div.appendChild(this.effect_head)
+  this.el.appendChild(this.effect_head_div)
 
   this.channels = []
   this.effects = {}
@@ -101,12 +115,29 @@ export default function Mixer (pilot) {
     for (const id in this.channels) {
       this.channels[id].install(this.el)
     }
-
+    
     // Add all effects to dom
     for (const id in this.effects) {
       this.effects[id].install(this.el)
       this.effects_map[this.effects[id].index] = this.effects[id]
     }
+
+    this.sample_head_div = document.createElement('div')
+    this.sample_head_div.className = 'channel'
+    this.sample_head_div.style.setProperty('--id', 17)
+    this.sample_head = document.createElement('span')
+    this.sample_head.className = 'cid'
+    this.sample_head.innerHTML = 'Sampler(;)'
+    this.sample_head_div.appendChild(this.sample_head)
+    this.el.appendChild(this.sample_head_div)  
+    this.drum_head_div = document.createElement('div')
+    this.drum_head_div.className = 'effect'
+    this.drum_head_div.style.setProperty('--id', 17)
+    this.drum_head = document.createElement('span')
+    this.drum_head.className = 'cid'
+    this.drum_head.innerHTML = 'Drums(=)'
+    this.drum_head_div.appendChild(this.drum_head)
+    this.el.appendChild(this.drum_head_div)  
 
     host.appendChild(this.el)
   }
