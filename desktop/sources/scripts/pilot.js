@@ -24,20 +24,20 @@ export default function Pilot () {
     this.mixer = new Mixer(this)
     this.listener = new Listener(this)
     this.recorder = new Recorder(this)
-    this.commander = new Commander(this)
+    //this.commander = new Commander(this)
 
     host.appendChild(this.el)
 
     this.theme.install()
     this.mixer.install(this.el)
     this.recorder.install(this.el)
-    this.commander.install(this.el)
+    //this.commander.install(this.el)
   }
 
   this.start = function () {
     console.info('Pilot is starting..')
     this.mixer.start()
-    this.commander.start()
+    //this.commander.start()
     this.theme.start()
 
     const zoomFactor = Number(localStorage.getItem('zoomFactor'))

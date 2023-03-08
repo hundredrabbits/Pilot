@@ -2,7 +2,7 @@ body { background:black; padding: 30px; font-family: 'input_mono_regular'; font-
 
 /* Mixer */
 
-#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase; min-width: 420px}
+#mixer { line-height: 15px; color:#666; position: relative; text-transform: uppercase;}
 #mixer > div { position: absolute; width: 95px}
 #mixer > div.channel { position: absolute; }
 #mixer > div.effect { width: 85px }
