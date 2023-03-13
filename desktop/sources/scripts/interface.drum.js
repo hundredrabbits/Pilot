@@ -55,9 +55,9 @@ export default function DrumInterface (pilot, id, name) {
     player.start(undefined, 0, data.length)
   }
 
-  this.updateAll = function (data, force = false) {
-  }
+  this.updateAll = (data, force = false) => {}
 
-  this.reset = function() {
-  }
+  this.reset = () => {}
+
+  this.rand = () => {}
 }

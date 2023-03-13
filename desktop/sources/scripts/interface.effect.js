@@ -63,7 +63,7 @@ export default function EffectInterface (pilot, id, index, node) {
       } else if (data.code === 'che') {
         this.node.order = clamp(parseInt(data.value * 100), 0, 8)
       } else {
-        console.warn('Unknown value', this.node)
+        console.warn('Unknown value', data.code)
       }
     }
     this.lastEffect = performance.now()
