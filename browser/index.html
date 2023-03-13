@@ -15,10 +15,8 @@
       const pilot = new Pilot()
 
       pilot.install(document.body)
-      window.addEventListener('load', () => {
-        window.pilotClient = pilot;
-        pilot.start()
-      })
+      window.pilotClient = pilot;
+      pilot.start()
     </script>
   </body>
 </html>
