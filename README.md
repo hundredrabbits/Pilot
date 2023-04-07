@@ -48,10 +48,22 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 
 | Command     | Channel | Operation  | Info |
 | :-          | :-      | :-         | :-   |
+| `BITff`     | All     | Bitcrusher | ..   |
 | `DISff`     | All     | Distortion | ..   |
-| `CHOff`     | All     | Chorus     | ..   |
-| `REVff`     | All     | Reverb     | ..   |
+| `WAHff`     | All     | AutoWah | ..   |
+| `CHEff`     | All     | Chebyshev | ..   |
 | `FEEff`     | All     | Feedback   | ..   |
+| `DELff`     | All     | Ping Pong Delay   | ..   |
+| `TREff`     | All     | Tremolo   | ..   |
+| `REVff`     | All     | Reverb     | ..   |
+| `PHAff`     | All     | Pashor     | ..   |
+| `VIBff`     | All     | Vibrato     | ..   |
+| `CHOff`     | All     | Chorus     | ..   |
+| `STEff`     | All     | StereoWidener     | ..   |
+| `EQUff`     | All     | EQ3     | ..   |
+| `COMff`     | All     | Compressor     | ..   |
+| `VOLff`     | All     | Volume     | ..   |
+| `LIMff`     | All     | Limiter     | ..   |
 
 #### Masters
 
@@ -63,6 +75,7 @@ The Effects are applied to all channels. The effect command format is a 3 charac
 - `renv`, randomizes envelopes.
 - `rosc`, randomizes oscillators.
 - `refx`, randomizes effects.
+- `reset`, reset all.
 
 ## Record
 
