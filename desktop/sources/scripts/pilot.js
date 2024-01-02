@@ -2,6 +2,7 @@ import Listener from './listener.js'
 import Mixer from './mixer.js'
 import Recorder from './recorder.js'
 import Commander from './commander.js'
+import Source from './lib/source.js'
 import Theme from './lib/theme.js'
 
 const { webFrame } = require('electron')
@@ -11,6 +12,7 @@ export default function Pilot () {
   this.mixer = null
   this.recorder = null
   this.commander = null
+  this.source = new Source()
   this.theme = new Theme({ background: '#000000', f_high: '#ffffff', f_med: '#777777', f_low: '#444444', f_inv: '#000000', b_high: '#eeeeee', b_med: '#333', b_low: '#444444', b_inv: '#fff' })
 
   this.el = document.createElement('div')
@@ -53,5 +55,20 @@ export default function Pilot () {
     const newZoomFactor = set ? mod : currentZoomFactor + mod
     webFrame.setZoomFactor(newZoomFactor)
     localStorage.setItem('zoomFactor', newZoomFactor)
+  }
+
+  this.open = function () {
+    this.source.open('pilot', this.whenOpen)
+  }
+
+  this.whenOpen = (file, text) => {
+    const lines = text.trim().split('\n')
+    for (const line of lines) {
+      this.mixer.run(line)
+    }
+  }
+
+  this.save = function () {
+    this.source.write('pilot', 'pilot', this.mixer.state(), 'text/plain')
   }
 }

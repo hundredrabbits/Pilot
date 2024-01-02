@@ -90,6 +90,20 @@ export default function EffectInterface (pilot, id, node) {
     if (pilot.animate !== true) { return }
     if (force !== true && (!data || !data.isEffect)) { return }
 
+    if (this.node.wet) {
+      setContent(this.val_el, `${to16(this.node.wet.value)}${to16(this.depth())}`)
+    }
+  }
+
+  this.toString = function () {
+    let str = ''
+    if (this.node.wet) {
+      str = id + to16(this.node.wet.value) + to16(this.depth()) + ';'
+    }
+    return str
+  }
+
+  this.depth = function () {
     let value = 0
     if (id === 'rev') {
       value = this.node.roomSize.value
@@ -114,10 +128,7 @@ export default function EffectInterface (pilot, id, node) {
     } else if (id === 'che') {
       value = this.node.order / 100
     }
-
-    if (this.node.wet) {
-      setContent(this.val_el, `${to16(this.node.wet.value)}${to16(value)}`)
-    }
+    return value
   }
 
   // Parsers
